@@ -1,13 +1,12 @@
-# wrench
-
-system implementation for wrench
-
+# astra
 
 #### folder structure
 
-web
+android/
+android app source code will be here
 
-android
+api/
+api that will be needed reside here
 
-api
-
+web/
+optional if we have web app it will be here
