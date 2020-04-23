@@ -8,6 +8,12 @@ class Config(object):
     CSRF_ENABLED = True
     SECRET_KEY = 'this-really-needs-to-be-changed'
     SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
+    APP_CODE = os.environ['ASTRA_CODE']
+    VERIFY_CODE_LENGTH = os.environ['VERIFY_CODE_LENGTH']
+    FAILED = os.environ['FAILED']
+
+
+
 
 
 class ProductionConfig(Config):
