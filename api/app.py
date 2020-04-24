@@ -69,6 +69,13 @@ def create_people():
     return person_schema.jsonify(people)
 
 
+@app.route('/person/', methods=['GET'])
+def get_person():
+    _id = request.args.get("id")
+    person_found = db.session.query(Person).filter_by(id=_id).first()
+    return person_schema(person_found).jsonify()
+
+
 def get_hash(data):
     return hashlib.sha3_512(data.encode()).hexdigest()
 
