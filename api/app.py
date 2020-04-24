@@ -1,18 +1,19 @@
 import os
-import json
 from flask_sqlalchemy import SQLAlchemy
+from flask_marshmallow import Marshmallow
 from flask import Flask, render_template, request, jsonify
 import hashlib
 from sqlalchemy.exc import IntegrityError
+import json
 
 app = Flask(__name__)
 
 app.config.from_object(os.environ['APP_SETTINGS'])
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+mb = Marshmallow(app)
 
-from models import User
-
+from models import User, user_schema
 
 @app.route('/auth/signup/', methods=['POST'])
 def signup():
@@ -21,16 +22,26 @@ def signup():
     try:
         db.session.add(user)
         db.session.commit()
-        return jsonify("account created", {"id" : user.id}, True)
+        return user_schema.jsonify(user)
     except IntegrityError as e:
-        return jsonify("account didnt created", {"details": {"id": ""}}, False)
+        return user_schema.jsonify(user)
 
 
 @app.route('/auth/signin/', methods=['POST'])
 def sign_in():
     sign_in_details = request.json
-    all_users = User(db.session.query(User).filter_by(email=sign_in_details["email"],
-                                                 password=get_hash(sign_in_details["password"])).first())
+
+    user_found = db.session.query(User).filter_by(email=sign_in_details["email"],
+                                             password=get_hash(sign_in_details["password"])).first()
+    if user_found is None:
+        return jsonify("Email and password don't match", {}, False)
+    else:
+        user = user_schema.load(user_found)
+        user.update_modified_to_current_time()
+        db.session.commit()
+
+        return user_schema.jsonify(user_found)
+
 
 
 @app.route('/auth/forgotpassword/', methods=['POST'])
@@ -43,7 +54,7 @@ def sign_in():
 
 
 def get_hash(data):
-    return hashlib.sha256(data.encode()).hexdigest()
+    return hashlib.sha3_512(data.encode()).hexdigest()
 
 if __name__ == '__main__':
     app.run(debug=True)

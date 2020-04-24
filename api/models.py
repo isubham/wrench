@@ -1,8 +1,10 @@
 from app import db
+from app import mb
 from sqlalchemy.dialects.postgresql import JSON
 from random import randint
 from datetime import datetime
 import os
+from enum import Enum
 import hashlib
 # from email import Email
 
@@ -38,34 +40,29 @@ class User(db.Model):
 
 
     def __repr__(self):
-        return '<id {} email {} AppCode {} Verified {} FaildAttempts {} LastLogin {} Created {} Modified {}'\
-            .format(self.id, self.email, self.appCode, self.verified, self.failedAttempts, self.lastLogin, self.created, self.modified)
+        return '<id {} email {} AppCode {} Verified {} Failed_attempts {} LastLogin {} Created {} Modified {}'.format(
+            self.id, self.email, self.appCode, self.verified, self.failedAttempts, self.lastLogin, self.created,
+            self.modified)
 
     def random_with_n_digits(self, n):
         range_start = 10**(n-1)
         range_end = (10**n)-1
         return randint(range_start, range_end)
 
-    def email_exists(self, email):
-        pass
-
-    def sign_in(self, email, password):
-        pass
-
-    def forgot_password(self, email):
-        pass
-
-    def change_password(self, id, password):
-        pass
-
-    def verify_code_valid(self, id, verify_code):
-        pass
+    def update_modified_to_current_time(self):
+        self.modified = datetime.now()
 
 
+    def set_response(self, message, success):
+        self.message = message
+        self.success = success
 
 
+class UserSchema(mb.Schema):
+    class Meta:
+        fields = ('id', 'password', 'email', 'username', 'appCode', 'verified', 'verify_code', 'failed_attempts',
+                  'last_login', 'created', 'modified', 'message', 'success')
 
 
-
-
-
+user_schema = UserSchema()
+users_schema = UserSchema(many=True)
