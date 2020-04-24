@@ -5,6 +5,7 @@ from datetime import datetime
 import os
 from cryptography.fernet import Fernet
 
+
 class User(db.Model):
     __tablename__ = 'User'
 
@@ -115,7 +116,6 @@ class Activity(db.Model):
     type = db.Column(db.Integer)
     location = db.Column(db.String())
 
-
     def __init__(self, user_id, person_id, location, type):
         self.user_id = user_id
         self.person_id = person_id
@@ -129,52 +129,47 @@ class ActivitySchema(mb.Schema):
         fields = ('id', 'user_id', 'person_id', 'type', 'location', 'when')
 
 
-
 activity_schema = ActivitySchema()
 activities_schema = ActivitySchema(many=True)
 
 
-
 class License(db.Model):
-
     __tablename__ = "License"
     user_id = db.Column(db.Integer, primary_key=True)
     secret_key = db.Column(db.LargeBinary)
     license_key = db.Column(db.LargeBinary)
 
-
-    def __init__(self, user_id, app_id, license_valid):
+    def __init__(self, user_id, app_code, validity):
         self.user_id = user_id
         self.secret_key = Fernet.generate_key()
-        self.license_text = self.getLicenseText(user_id, app_id, license_valid)
+        self.license_text = self.generate_license_text(user_id, app_code, validity)
 
-
-    def get_license_text(self):
-        f = Fernet(self.license_key)
+    def generate_license_text(self, user_id, app_id, validity):
+        f = Fernet(self.secret_key)
         license_salt = os.environ["LICENSE_SALT"]
-        license_text = "user_id:{}|app_id:{}|license_valid:{}" \
-            .format(self.user_id, self.app_id, self.license_valid.toString(), license_salt).encode()
+        license_text = "user_id:{}|app_code:{}|license_valid:{}" \
+            .format(user_id, app_id, validity).encode()
+        return f.encrypt(license_text)
 
-        return str(f.encrypt(license_text))
+    def license_valid(self, user_id, app_code, license_text):
 
-
-    def is_license_valid(self, user_id, app_id, license_valid):
         f = Fernet(self.license_key)
-        license_text = f.decrypt(self.license_text)
-        user_id, app_id, license_valid = license_text.split('|')
+        license_decryped = f.decrypt(license_text)
+        license_user_id, license_app_code, license_valid = license_decryped.decode().split('|')
 
+        user_id_matches = user_id == user_id
+        app_id_matches = license_app_code == app_code
+        license_validity_left = license_valid - datetime.now() > 0
 
-
-
+        if user_id_matches and app_id_matches and license_validity_left:
+            return {"valid": True, "validity": license_validity_left}
+        else:
+            return {"valid": False, "validity": 0}
 
 
 class LicenseSchema(mb.Schema):
     class Meta:
-        fields = ('user_id', 'license_key')
+        fields = ('user_id', 'license_text')
 
 
 license_schema = LicenseSchema()
-
-
-
-
