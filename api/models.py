@@ -3,7 +3,7 @@ from app import mb
 from random import randint
 from datetime import datetime
 import os
-
+from cryptography.fernet import Fernet
 
 class User(db.Model):
     __tablename__ = 'User'
@@ -129,7 +129,52 @@ class ActivitySchema(mb.Schema):
         fields = ('id', 'user_id', 'person_id', 'type', 'location', 'when')
 
 
+
 activity_schema = ActivitySchema()
 activities_schema = ActivitySchema(many=True)
+
+
+
+class License(db.Model):
+
+    __tablename__ = "License"
+    user_id = db.Column(db.Integer, primary_key=True)
+    secret_key = db.Column(db.LargeBinary)
+    license_key = db.Column(db.LargeBinary)
+
+
+    def __init__(self, user_id, app_id, license_valid):
+        self.user_id = user_id
+        self.secret_key = Fernet.generate_key()
+        self.license_text = self.getLicenseText(user_id, app_id, license_valid)
+
+
+    def get_license_text(self):
+        f = Fernet(self.license_key)
+        license_salt = os.environ["LICENSE_SALT"]
+        license_text = "user_id:{}|app_id:{}|license_valid:{}" \
+            .format(self.user_id, self.app_id, self.license_valid.toString(), license_salt).encode()
+
+        return str(f.encrypt(license_text))
+
+
+    def is_license_valid(self, user_id, app_id, license_valid):
+        f = Fernet(self.license_key)
+        license_text = f.decrypt(self.license_text)
+        user_id, app_id, license_valid = license_text.split('|')
+
+
+
+
+
+
+class LicenseSchema(mb.Schema):
+    class Meta:
+        fields = ('user_id', 'license_key')
+
+
+license_schema = LicenseSchema()
+
+
 
 
