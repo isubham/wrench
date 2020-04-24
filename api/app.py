@@ -13,7 +13,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 mb = Marshmallow(app)
 
-from models import User, user_schema
+from models import User, user_schema, Person, person_schema
 
 @app.route('/auth/signup/', methods=['POST'])
 def signup():
@@ -51,6 +51,22 @@ def sign_in():
 @app.route('/auth/verifycode/', methods=['POST'])
 
 
+@app.route('/person/', methods=['POST'])
+def create_people():
+    people = request.json
+    user = User(people["email"], people["password"], people[os.environ["ASTRA_CODE"]])
+    try:
+        db.session.add(user)
+        db.session.commit()
+    except IntegrityError as e:
+        return jsonify({"message" : "Email exists", "sucess" : False})
+
+    people = Person(user.id, people["first_name"], people["last_name"], people["profile_pic"],
+                    people["id_front"], people["id_back"], people["father_name"], people["username"])
+
+    db.session.add(people)
+    db.session.commit()
+    return person_schema.jsonify(people)
 
 
 def get_hash(data):

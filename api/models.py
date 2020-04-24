@@ -66,3 +66,44 @@ class UserSchema(mb.Schema):
 
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)
+
+
+class Person(db.Model):
+    __tablename__ = 'People'
+    id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String())
+    last_name = db.Column(db.String())
+    profile_pic = db.Column(db.String())
+    id_front = db.Column(db.String())
+    id_back = db.Column(db.String())
+    father_name = db.Column(db.String())
+    username = db.Column(db.String())
+    created = db.Column(db.DateTime())
+    modified = db.Column(db.DateTime())
+
+    def __init__(self, id, first_name, last_name, profile_pic, id_front, id_back, father_name, username):
+        self.id = id
+        self.first_name = first_name
+        self.last_name = last_name
+        self.profile_pic = profile_pic
+        self.id_front = id_front
+        self.id_back = id_back
+        self.father_name = father_name
+        self.username = username
+        self.created = datetime.now()
+        self.modified = datetime.now()
+
+
+    def __repr__(self):
+        pass
+
+
+class PersonSchema(mb.Schema):
+    class Meta:
+        fields = (
+            'id', 'first_name', 'last_name', 'profile_pic', 'id_front', 'id_back',
+            'father_name', 'username','created', 'modified')
+
+
+person_schema = PersonSchema()
+people_schema = PersonSchema(many=True)
