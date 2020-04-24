@@ -69,10 +69,24 @@ def create_people():
     return person_schema.jsonify(people)
 
 
-@app.route('/person/', methods=['GET'])
+@app.route('/person/by_id/', methods=['GET'])
 def get_person():
     _id = request.args.get("id")
     person_found = db.session.query(Person).filter_by(id=_id).first()
+    return person_schema(person_found).jsonify()
+
+
+@app.route('/person/by_email_and_dob/', methods=['GET'])
+def person_search():
+    email, dob = request.args.get("email"), request.args.get("dob")
+    person_found = db.session.query(Person).filter_by(email=email, dob=dob).first()
+    return person_schema(person_found).jsonify()
+
+
+@app.route('/person/by_aadhar_id/', methods=['GET'])
+def person_scan():
+    aadhar_id = request.args.get("aadhar_id")
+    person_found = db.session.query(Person).filter_by(aadhar_id=aadhar_id).first()
     return person_schema(person_found).jsonify()
 
 
