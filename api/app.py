@@ -13,7 +13,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 mb = Marshmallow(app)
 
-from models import User, user_schema, Person, person_schema
+from models import User, user_schema, Person, person_schema, Activity, activity_schema
 
 @app.route('/auth/signup/', methods=['POST'])
 def signup():
@@ -88,6 +88,16 @@ def person_scan():
     aadhar_id = request.args.get("aadhar_id")
     person_found = db.session.query(Person).filter_by(aadhar_id=aadhar_id).first()
     return person_schema(person_found).jsonify()
+
+@app.route('/activity/', methods=['POST'])
+def create_activity():
+    activity_json = request.json
+    user_id, person_id, location, _type = activity_json["user_id"], activity_json['person_id'], \
+                                          activity_json["location"], activity_json["type"]
+    new_activity = Activity(user_id, person_id, location, _type)
+    db.session.add(new_activity)
+    db.session.commit()
+    return activity_schema.jsonify(new_activity)
 
 
 def get_hash(data):

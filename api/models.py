@@ -1,14 +1,9 @@
 from app import db
 from app import mb
-from sqlalchemy.dialects.postgresql import JSON
 from random import randint
 from datetime import datetime
 import os
-from enum import Enum
-import hashlib
 
-
-# from email import Email
 
 class User(db.Model):
     __tablename__ = 'User'
@@ -109,3 +104,32 @@ class PersonSchema(mb.Schema):
 
 person_schema = PersonSchema()
 people_schema = PersonSchema(many=True)
+
+
+class Activity(db.Model):
+    __tablename__ = 'Activity'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer)
+    person_id = db.Column(db.Integer)
+    when = db.Column(db.DateTime)
+    type = db.Column(db.Integer)
+    location = db.Column(db.String())
+
+
+    def __init__(self, user_id, person_id, location, type):
+        self.user_id = user_id
+        self.person_id = person_id
+        self.type = type
+        self.location = location
+        self.when = datetime.now()
+
+
+class ActivitySchema(mb.Schema):
+    class Meta:
+        fields = ('id', 'user_id', 'person_id', 'type', 'location', 'when')
+
+
+activity_schema = ActivitySchema()
+activities_schema = ActivitySchema(many=True)
+
+
