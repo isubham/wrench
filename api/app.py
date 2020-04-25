@@ -125,6 +125,12 @@ def validate_license():
 def get_hash(data):
     return hashlib.sha3_512(data.encode()).hexdigest()
 
+
+@app.route('/', methods=['POST'])
+def index():
+    render_template("index.html")
+
+
 if __name__ == '__main__':
     app.run(debug=True)
 
