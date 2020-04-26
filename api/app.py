@@ -89,6 +89,7 @@ def person_scan():
     person_found = db.session.query(Person).filter_by(aadhar_id=aadhar_id).first()
     return person_schema(person_found).jsonify()
 
+
 @app.route('/activity/', methods=['POST'])
 def create_activity():
     activity_json = request.json
@@ -111,7 +112,6 @@ def create_license():
     return license_schema.jsonify(new_license)
 
 
-
 @app.route('/license/valid/', methods=['POST'])
 def validate_license():
     license_json = request.json
@@ -126,9 +126,9 @@ def get_hash(data):
     return hashlib.sha3_512(data.encode()).hexdigest()
 
 
-@app.route('/', methods=['POST'])
+@app.route('/', methods=['GET'])
 def index():
-    render_template("index.html")
+    return render_template("index.html")
 
 
 if __name__ == '__main__':
