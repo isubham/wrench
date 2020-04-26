@@ -37,10 +37,10 @@ public class AdminHomeScreen extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null)
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("ASTRA");
-        // toolbar.setTitleTextColor(getResources().getColor(R.color.appbar_text_color));
-
+            toolbar.setTitleTextColor(getResources().getColor(R.color.appbarTextColor));
+        }
     }
 
     /**
@@ -55,7 +55,9 @@ public class AdminHomeScreen extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
+         super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.admin_home_screen_menu, menu);
+        return true;
     }
 
     public void showProgressBar() {

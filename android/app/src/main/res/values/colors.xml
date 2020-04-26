@@ -2,13 +2,16 @@
 <resources>
     <color name="colorPrimary">#FBFBFB</color>
     <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
-    <color name="primaryTextColor">#0D8BB3</color>
+    <color name="colorAccent">#14AFA0</color>
+    <color name="primaryTextColor">#418E8E</color>
     <color name="textColor">#000000</color>
     <color name="colorWhite">#FFFFFF</color>
+    <color name="colorGrey">#A1A1A1</color>
 
 <!--    Appbar stuff-->
     <color name="appbarBgColor">#FFFFFF</color>
+    <color name="appbarTextColor">#418E8E</color>
+    <color name="appbarSecondaryTextColor">#D7DCDC</color>
 
 <!--   For Popups -->
     <color name="popupBgColor">#EAEAEA</color>
