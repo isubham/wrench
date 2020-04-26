@@ -4,25 +4,24 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/primaryTextColor</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorPrimary">@color/primaryTextColor</item>
         <item name="android:textColor">@color/textColor</item>
     </style>
 
-
+<!--app bar main header and sub header as well as visible menu text(secondary) -->
     <style name="MyCustomToolbarTheme" parent="ThemeOverlay.AppCompat.Light">
-        <item name="android:textColorPrimary">@color/primaryTextColor</item>
-        <item name="android:textColorSecondary">@color/appbarSecondaryTextColor</item>
+        <item name="android:textColorPrimary">@color/menuTextColor</item>
+        <item name="android:textColorSecondary">@color/colorGrey</item>
+
 
     </style>
 
-
+<!--Menu popup's background and text Color-->
     <style name="MyCustomPopupTheme" parent="ThemeOverlay.AppCompat.Light">
-
-        <item name="android:background">@color/popupBgColor</item>
-        <item name="android:textColor">@color/popupTextColor</item>
-
+        <item name="android:background">@color/menuBackgroundColor</item>
+        <item name="android:textColor">@color/menuTextColor</item>
     </style>
 
     <style name="MyProgressBar" parent="@style/Widget.AppCompat.ProgressBar.Horizontal">
@@ -31,4 +30,5 @@
         <item name="android:minWidth">200dp</item>
     </style>
 
+    <color name="menuTextColor">#000000</color>
 </resources>

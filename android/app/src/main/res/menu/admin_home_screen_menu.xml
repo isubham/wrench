@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_add_admin"
+        android:id="@+id/register_user"
         android:title="@string/REGISTER_USER"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
 </menu>
 

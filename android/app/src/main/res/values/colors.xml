@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#FBFBFB</color>
-    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorPrimaryDark">#418E8E</color>
     <color name="colorAccent">#14AFA0</color>
     <color name="primaryTextColor">#418E8E</color>
     <color name="textColor">#000000</color>
@@ -14,7 +14,7 @@
     <color name="appbarSecondaryTextColor">#D7DCDC</color>
 
 <!--   For Popups -->
-    <color name="popupBgColor">#EAEAEA</color>
+    <color name="menuBackgroundColor">#EAEAEA</color>
     <color name="popupTextColor">#2F93A1</color>
 
 </resources>

@@ -2,9 +2,11 @@ package io.gitub.isubham.astra.adminUser;
 
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -24,7 +26,7 @@ public class AdminHomeScreen extends AppCompatActivity {
         //General Ids
         findViewByIds();
         //ProgressBar
-        showProgressBar();
+        //showProgressBar();
         //get the Data from Previous screen before setting things up .
         getBundleData();
         //To setup tool bar
@@ -34,12 +36,10 @@ public class AdminHomeScreen extends AppCompatActivity {
     }
 
     private void toolbarSetup() {
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("ASTRA");
-            toolbar.setTitleTextColor(getResources().getColor(R.color.appbarTextColor));
+            toolbar.setTitleTextColor(getResources().getColor(R.color.colorPrimaryDark));
         }
     }
 
@@ -55,9 +55,21 @@ public class AdminHomeScreen extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.admin_home_screen_menu, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.register_user:
+                Toast.makeText(this, "REGISTER USER", Toast.LENGTH_SHORT).show();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
     }
 
     public void showProgressBar() {
