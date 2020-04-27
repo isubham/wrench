@@ -4,7 +4,7 @@ from flask_marshmallow import Marshmallow
 from flask import Flask, render_template, request, jsonify
 import hashlib
 from sqlalchemy.exc import IntegrityError
-import json
+import datetime
 
 app = Flask(__name__)
 
@@ -13,7 +13,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 mb = Marshmallow(app)
 
-from models import User, user_schema, Person, person_schema, Activity, activity_schema, License, license_schema
+from models import User, user_schema, People, person_schema, Activity, activity_schema, License, license_schema
 
 @app.route('/auth/signup/', methods=['POST'])
 def signup():
@@ -33,14 +33,11 @@ def sign_in():
 
     user_found = db.session.query(User).filter_by(email=sign_in_details["email"],
                                              password=get_hash(sign_in_details["password"])).first()
-    if user_found is None:
-        return jsonify("Email and password don't match", {}, False)
-    else:
-        user = user_schema.load(user_found)
-        user.update_modified_to_current_time()
+    if not user_found is None:
+        user_found.update_modified_to_current_time()
         db.session.commit()
 
-        return user_schema.jsonify(user_found)
+    return user_schema.jsonify(user_found)
 
 
 
@@ -54,40 +51,50 @@ def sign_in():
 @app.route('/person/', methods=['POST'])
 def create_people():
     people = request.json
-    user = User(people["email"], people["password"], people[os.environ["ASTRA_CODE"]])
+    user = User(people["email"], people["password"], os.environ["ASTRA_CODE"])
     try:
         db.session.add(user)
+        db.session.flush()
+    except IntegrityError as e:
+        return user_schema.jsonify(user)
+
+    people = People(user.id, people["first_name"], people["last_name"], get_date(people["dob"]),people["profile_pic"],
+                    people["id_front"], people["id_back"], people["father_name"], people["username"], people["aadhar_id"])
+
+    try:
+        db.session.add(people)
         db.session.commit()
     except IntegrityError as e:
-        return jsonify({"message" : "Email exists", "sucess" : False})
+        db.session.rollback()
 
-    people = Person(user.id, people["first_name"], people["last_name"], people["profile_pic"],
-                    people["id_front"], people["id_back"], people["father_name"], people["username"])
-
-    db.session.add(people)
-    db.session.commit()
     return person_schema.jsonify(people)
 
 
-@app.route('/person/by_id/', methods=['GET'])
-def get_person():
-    _id = request.args.get("id")
-    person_found = db.session.query(Person).filter_by(id=_id).first()
-    return person_schema(person_found).jsonify()
+@app.route('/person/id/<_id>', methods=['GET'])
+def get_person(_id):
+    person_found = db.session.query(People).filter_by(id=_id).first()
+    return person_schema.jsonify(person_found)
 
 
-@app.route('/person/by_email_and_dob/', methods=['GET'])
+@app.route('/person/', methods=['GET'])
 def person_search():
-    email, dob = request.args.get("email"), request.args.get("dob")
-    person_found = db.session.query(Person).filter_by(email=email, dob=dob).first()
-    return person_schema(person_found).jsonify()
+    email, dob = request.json["email"], get_date(request.json["dob"])
+    user_found = db.session.query(User).filter_by(email=email).first()
+
+    if not user_found is None:
+        person = user_found.People[0]
+        if dob == get_date_from_datetime(str(person.dob)):
+            return person_schema.jsonify(person)
+        else:
+            return jsonify({"message": "Incorrect Date of Birth"})
+    else:
+        return jsonify({"message": "Incorrect details"})
 
 
-@app.route('/person/by_aadhar_id/', methods=['GET'])
-def person_scan():
-    aadhar_id = request.args.get("aadhar_id")
-    person_found = db.session.query(Person).filter_by(aadhar_id=aadhar_id).first()
-    return person_schema(person_found).jsonify()
+@app.route('/person/aadhar_id/<aadhar_id>', methods=['GET'])
+def person_scan(aadhar_id):
+    person_found = db.session.query(People).filter_by(aadhar_id=aadhar_id).first()
+    return person_schema.jsonify(person_found)
 
 
 @app.route('/activity/', methods=['POST'])
@@ -105,7 +112,13 @@ def create_activity():
 @app.route('/license/', methods=['POST'])
 def create_license():
     license_json = request.json
-    user_id, app_id, validity = license_json["user_id"], license_json["app_id"], license_json["validity_id"]
+    user_id, app_id, validity = license_json["user_id"], os.environ["ASTRA_CODE"], license_json["validity"]
+
+    license_exist = db.session.query(License).filter_by(user_id=user_id).first()
+
+    if not license_exist is None:
+        return jsonify({"message" : "License exist"})
+
     new_license = License(user_id, app_id, validity)
     db.session.add(new_license)
     db.session.commit()
@@ -115,15 +128,21 @@ def create_license():
 @app.route('/license/valid/', methods=['POST'])
 def validate_license():
     license_json = request.json
-    user_id, app_code, license_text = license_json["user_id"], license_json["app_code"], license_json["license_text"]
+    user_id, app_code, license_text = license_json["user_id"], os.environ["ASTRA_CODE"], license_json["license_key"]
 
-    result = db.session.query(License).filter_by(user_id=user_id)
-    license_found = person_schema.load(result)
-    return license_found.license_valid(user_id, app_code, license_text)
+    result = db.session.query(License).filter_by(user_id=user_id).first()
+    return result.license_valid(user_id, app_code, license_text)
 
 
 def get_hash(data):
     return hashlib.sha3_512(data.encode()).hexdigest()
+
+
+def get_date(date_string):
+    return datetime.datetime.strptime(date_string, '%d-%m-%Y').date()
+
+def get_date_from_datetime(date_time):
+    return datetime.datetime.strptime(date_time, '%Y-%m-%d %H:%M:%S').date()
 
 
 @app.route('/', methods=['GET'])

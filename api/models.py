@@ -3,6 +3,7 @@ from app import mb
 from random import randint
 from datetime import datetime
 import os
+from sqlalchemy.orm import relationship
 from cryptography.fernet import Fernet
 
 
@@ -21,6 +22,9 @@ class User(db.Model):
     last_login = db.Column(db.DateTime)
     created = db.Column(db.DateTime)
     modified = db.Column(db.DateTime)
+    People = relationship("People", back_populates="User")
+    Activity = relationship("Activity", back_populates="User")
+    License = relationship("License", back_populates="User")
 
     def __init__(self, email, password, appCode):
         self.email = email
@@ -57,32 +61,36 @@ class User(db.Model):
 class UserSchema(mb.Schema):
     class Meta:
         fields = ('id', 'password', 'email', 'username', 'appCode', 'verified', 'verify_code', 'failed_attempts',
-                  'last_login', 'created', 'modified', 'message', 'success')
+                  'last_login', 'created', 'modified')
 
 
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)
 
 
-class Person(db.Model):
+class People(db.Model):
     __tablename__ = 'People'
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String())
     last_name = db.Column(db.String())
+    dob = db.Column(db.Date())
     profile_pic = db.Column(db.String())
     id_front = db.Column(db.String())
     id_back = db.Column(db.String())
     father_name = db.Column(db.String())
-    username = db.Column(db.String())
+    username = db.Column(db.String(), unique=True)
     created = db.Column(db.DateTime())
     modified = db.Column(db.DateTime())
-    aadhar_id = db.Column(db.String())
+    aadhar_id = db.Column(db.String(), unique=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('User.id'))
+    User = relationship("User", back_populates="People")
 
-    def __init__(self, id, first_name, last_name, profile_pic, id_front,
-                 id_back, father_name, username, aadhar_id):
-        self.id = id
+    def __init__(self, user_id, first_name, last_name, dob, profile_pic, id_front,
+                 id_back, father_name, username, aadhar_id=None):
+        self.user_id = user_id
         self.first_name = first_name
         self.last_name = last_name
+        self.dob = dob
         self.profile_pic = profile_pic
         self.id_front = id_front
         self.id_back = id_back
@@ -99,8 +107,8 @@ class Person(db.Model):
 class PersonSchema(mb.Schema):
     class Meta:
         fields = (
-            'id', 'first_name', 'last_name', 'profile_pic', 'id_front', 'id_back',
-            'father_name', 'username', 'created', 'modified')
+            'id', 'user_id', 'first_name', 'last_name', 'dob', 'profile_pic', 'id_front', 'id_back',
+            'father_name', 'username', 'created', 'modified', 'aadhar_id')
 
 
 person_schema = PersonSchema()
@@ -110,11 +118,12 @@ people_schema = PersonSchema(many=True)
 class Activity(db.Model):
     __tablename__ = 'Activity'
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer)
     person_id = db.Column(db.Integer)
     when = db.Column(db.DateTime)
     type = db.Column(db.Integer)
     location = db.Column(db.String())
+    user_id = db.Column(db.Integer, db.ForeignKey("User.id"))
+    User = relationship("User",  back_populates="Activity")
 
     def __init__(self, user_id, person_id, location, type):
         self.user_id = user_id
@@ -135,27 +144,30 @@ activities_schema = ActivitySchema(many=True)
 
 class License(db.Model):
     __tablename__ = "License"
-    user_id = db.Column(db.Integer, primary_key=True)
+    app_code = db.Column(db.Integer)
     secret_key = db.Column(db.LargeBinary)
     license_key = db.Column(db.LargeBinary)
+    user_id = db.Column(db.Integer, db.ForeignKey("User.id"), primary_key=True)
+    User = relationship("User", back_populates="License")
 
     def __init__(self, user_id, app_code, validity):
         self.user_id = user_id
+        self.app_code = app_code
         self.secret_key = Fernet.generate_key()
-        self.license_text = self.generate_license_text(user_id, app_code, validity)
+        self.license_key = self.generate_license_key(user_id, app_code, validity)
 
-    def generate_license_text(self, user_id, app_id, validity):
+    def generate_license_key(self, user_id, app_id, validity):
         f = Fernet(self.secret_key)
         license_salt = os.environ["LICENSE_SALT"]
-        license_text = "user_id:{}|app_code:{}|license_valid:{}" \
-            .format(user_id, app_id, validity).encode()
+        license_text = "user_id:{}|app_code:{}|license_valid:{}|license_salt{}" \
+            .format(user_id, app_id, validity, license_salt).encode()
         return f.encrypt(license_text)
 
     def license_valid(self, user_id, app_code, license_text):
 
         f = Fernet(self.license_key)
         license_decryped = f.decrypt(license_text)
-        license_user_id, license_app_code, license_valid = license_decryped.decode().split('|')
+        license_user_id, license_app_code, license_valid, license_salt = license_decryped.decode().split('|')
 
         user_id_matches = user_id == user_id
         app_id_matches = license_app_code == app_code
@@ -169,7 +181,7 @@ class License(db.Model):
 
 class LicenseSchema(mb.Schema):
     class Meta:
-        fields = ('user_id', 'license_text')
+        fields = ('user_id', 'license_key')
 
 
 license_schema = LicenseSchema()
