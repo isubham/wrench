@@ -1,10 +1,13 @@
 from app import db
 from app import mb
-from random import randint
 from datetime import datetime
 import os
 from sqlalchemy.orm import relationship
 from cryptography.fernet import Fernet
+from cryptography.fernet import InvalidToken
+
+
+from utility import Utility
 
 
 class User(db.Model):
@@ -33,7 +36,7 @@ class User(db.Model):
         self.phone = None
         self.appCode = appCode
         self.verified = 0
-        self.verify_code = self.random_with_n_digits(int(os.environ["VERIFY_CODE_LENGTH"]))
+        self.verify_code = Utility.random_with_n_digits(int(os.environ["VERIFY_CODE_LENGTH"]))
         self.failed_attempts = 0
         self.last_login = datetime.now()
         self.created = datetime.now()
@@ -45,12 +48,8 @@ class User(db.Model):
             self.id, self.email, self.appCode, self.verified, self.failedAttempts, self.lastLogin, self.created,
             self.modified)
 
-    def random_with_n_digits(self, n):
-        range_start = 10 ** (n - 1)
-        range_end = (10 ** n) - 1
-        return randint(range_start, range_end)
 
-    def update_modified_to_current_time(self):
+    def post_signin(self):
         self.modified = datetime.now()
 
     def set_response(self, message, success):
@@ -159,24 +158,33 @@ class License(db.Model):
     def generate_license_key(self, user_id, app_id, validity):
         f = Fernet(self.secret_key)
         license_salt = os.environ["LICENSE_SALT"]
-        license_text = "user_id:{}|app_code:{}|license_valid:{}|license_salt{}" \
+        license_text = "user_id:{}|app_code:{}|license_valid:{}|license_salt:{}" \
             .format(user_id, app_id, validity, license_salt).encode()
         return f.encrypt(license_text)
 
     def license_valid(self, user_id, app_code, license_text):
 
-        f = Fernet(self.license_key)
-        license_decryped = f.decrypt(license_text)
-        license_user_id, license_app_code, license_valid, license_salt = license_decryped.decode().split('|')
+        f = Fernet(self.secret_key)
+        license_decrypted = ''
+        try:
+            license_decryped = f.decrypt(license_text.encode())
+        except InvalidToken as i:
+            raise InvalidToken
 
-        user_id_matches = user_id == user_id
-        app_id_matches = license_app_code == app_code
-        license_validity_left = license_valid - datetime.now() > 0
 
-        if user_id_matches and app_id_matches and license_validity_left:
-            return {"valid": True, "validity": license_validity_left}
+        license_components = license_decryped.decode().split('|')
+        license_user_id, license_app_code, license_valid, license_salt = map(lambda s : s.split(":")[1],
+                                                                                 license_components)
+
+        user_id_matches = str(user_id) == license_user_id
+        app_id_matches =  app_code == license_app_code
+        license_validity_left = (Utility.parseDateYMD(license_valid) - \
+                                Utility.parseDateYMD(str(datetime.now()).split(" ")[0])).days
+
+        if user_id_matches and app_id_matches and license_validity_left > 0:
+            return {"valid": True, "day_left": license_validity_left}
         else:
-            return {"valid": False, "validity": 0}
+            return {"valid": False, "day_left": 0}
 
 
 class LicenseSchema(mb.Schema):
@@ -185,3 +193,6 @@ class LicenseSchema(mb.Schema):
 
 
 license_schema = LicenseSchema()
+
+
+

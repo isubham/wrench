@@ -2,9 +2,9 @@ import os
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask import Flask, render_template, request, jsonify
-import hashlib
 from sqlalchemy.exc import IntegrityError
-import datetime
+from utility import Utility
+from cryptography.fernet import InvalidToken
 
 app = Flask(__name__)
 
@@ -18,7 +18,7 @@ from models import User, user_schema, People, person_schema, Activity, activity_
 @app.route('/auth/signup/', methods=['POST'])
 def signup():
     signup_details = request.json
-    user = User(signup_details["email"], get_hash(signup_details["password"]), os.environ["ASTRA_CODE"])
+    user = User(signup_details["email"], Utility.get_hash(signup_details["password"]), os.environ["ASTRA_CODE"])
     try:
         db.session.add(user)
         db.session.commit()
@@ -32,9 +32,9 @@ def sign_in():
     sign_in_details = request.json
 
     user_found = db.session.query(User).filter_by(email=sign_in_details["email"],
-                                             password=get_hash(sign_in_details["password"])).first()
+                                             password=Utility.get_hash(sign_in_details["password"])).first()
     if not user_found is None:
-        user_found.update_modified_to_current_time()
+        user_found.post_signin()
         db.session.commit()
 
     return user_schema.jsonify(user_found)
@@ -58,7 +58,7 @@ def create_people():
     except IntegrityError as e:
         return user_schema.jsonify(user)
 
-    people = People(user.id, people["first_name"], people["last_name"], get_date(people["dob"]),people["profile_pic"],
+    people = People(user.id, people["first_name"], people["last_name"], Utility.get_date(people["dob"]),people["profile_pic"],
                     people["id_front"], people["id_back"], people["father_name"], people["username"], people["aadhar_id"])
 
     try:
@@ -78,12 +78,12 @@ def get_person(_id):
 
 @app.route('/person/', methods=['GET'])
 def person_search():
-    email, dob = request.json["email"], get_date(request.json["dob"])
+    email, dob = request.json["email"], Utility.get_date(request.json["dob"])
     user_found = db.session.query(User).filter_by(email=email).first()
 
     if not user_found is None:
         person = user_found.People[0]
-        if dob == get_date_from_datetime(str(person.dob)):
+        if dob == Utility.get_date_from_datetime(str(person.dob)):
             return person_schema.jsonify(person)
         else:
             return jsonify({"message": "Incorrect Date of Birth"})
@@ -114,15 +114,26 @@ def create_license():
     license_json = request.json
     user_id, app_id, validity = license_json["user_id"], os.environ["ASTRA_CODE"], license_json["validity"]
 
+    try:
+        Utility.parseDateYMD(validity)
+    except Exception as e:
+        return jsonify({"message": "invalid validity"})
+
     license_exist = db.session.query(License).filter_by(user_id=user_id).first()
 
     if not license_exist is None:
         return jsonify({"message" : "License exist"})
 
-    new_license = License(user_id, app_id, validity)
-    db.session.add(new_license)
-    db.session.commit()
-    return license_schema.jsonify(new_license)
+
+
+    try:
+        new_license = License(user_id, app_id, validity)
+        db.session.add(new_license)
+        db.session.commit()
+        return license_schema.jsonify(new_license)
+    except IntegrityError as e:
+        return jsonify({"message" : "user don't exist"})
+
 
 
 @app.route('/license/valid/', methods=['POST'])
@@ -131,18 +142,14 @@ def validate_license():
     user_id, app_code, license_text = license_json["user_id"], os.environ["ASTRA_CODE"], license_json["license_key"]
 
     result = db.session.query(License).filter_by(user_id=user_id).first()
-    return result.license_valid(user_id, app_code, license_text)
+    if not result is None:
+        try:
+            return result.license_valid(user_id, app_code, license_text)
+        except InvalidToken as i:
+            return jsonify({"message" : "invalid license"})
+    else:
+        return jsonify({"message" : "user not found"})
 
-
-def get_hash(data):
-    return hashlib.sha3_512(data.encode()).hexdigest()
-
-
-def get_date(date_string):
-    return datetime.datetime.strptime(date_string, '%d-%m-%Y').date()
-
-def get_date_from_datetime(date_time):
-    return datetime.datetime.strptime(date_time, '%Y-%m-%d %H:%M:%S').date()
 
 
 @app.route('/', methods=['GET'])
