@@ -1,7 +1,8 @@
 import hashlib
 import datetime
 from random import randint
-
+import requests
+import os
 
 class Utility:
 
@@ -28,4 +29,13 @@ class Utility:
         range_start = 10 ** (n - 1)
         range_end = (10 ** n) - 1
         return randint(range_start, range_end)
+
+
+    @staticmethod
+    def send_email(_from, to, subject, text):
+        return requests.post(
+            "https://api.mailgun.net/v3/{}/messages".format(os.environ['MAILGUN_DOMAIN']),
+            auth=("api", os.environ['MAILGUN_API_KEY']),
+            data={"from": _from, "to": [to], "subject": subject, "text": text})
+
 

@@ -151,6 +151,13 @@ def validate_license():
         return jsonify({"message" : "user not found"})
 
 
+@app.route('/email/', methods=['POST'])
+def send_simple_message():
+    email_data = request.json
+    _from, to, subject, text = email_data["from"], email_data["to"], email_data["subject"], email_data["text"]
+    return Utility.send_email(_from, to, subject, text)
+
+
 
 @app.route('/', methods=['GET'])
 def index():
