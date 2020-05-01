@@ -14,9 +14,12 @@ public class GeneralUserHomeScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_general_user_home_screen);
-        existing_user = (Button)findViewById(R.id.button_existing_user);
-        register_user = (Button)findViewById(R.id.button_register_user);
+        setContentView(R.layout.general_user_home_screen);
+        existing_user = findViewById(R.id.button_existing_user);
+        register_user = findViewById(R.id.button_register_user);
+
+        setContentView(R.layout.general_user_home_screen);
+
     }
     public void ExistingUser(View view){
 

@@ -23,7 +23,7 @@ android {
     sourceSets {
         main {
             res {
-                srcDirs 'src/main/res', 'src/main/res/layout/auth'
+                srcDirs 'src/main/res', 'src/main/res/layout/auth', 'src/main/res/layout/general_user', 'src/main/res/layout/admin_user', 'src/main/res/layout/common_elements'
             }
         }
     }

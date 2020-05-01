@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="500dp">
+
+        <EditText
+            android:id="@+id/edittext_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Name"
+            android:inputType="text"
+            android:selectAllOnFocus="true" >
+
+        </EditText>
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="400dp">
+
+        <EditText
+            android:id="@+id/edittext_dob"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter DOB"
+            android:inputType="date"
+            android:selectAllOnFocus="true">
+
+        </EditText>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/edittext_father_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="300dp">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Fathers name"
+            android:inputType="text"
+            android:selectAllOnFocus="true">
+
+        </EditText>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="100dp">
+
+        <Button
+            android:id="@+id/button_search_user"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/button_existing_user"
+            android:text="Search user"
+            android:onClick="searchUser"/>
+
+    </RelativeLayout>
+</RelativeLayout>
