@@ -11,6 +11,6 @@ public class GeneralUserHomeScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_general_user_home_screen);
+        setContentView(R.layout.general_user_home_screen);
     }
 }

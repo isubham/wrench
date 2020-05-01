@@ -15,6 +15,21 @@ mb = Marshmallow(app)
 
 from models import User, user_schema, People, person_schema, Activity, activity_schema, License, license_schema
 
+
+unprotected_paths = {'/auth/signup/', '/auth/signin/', '/person/'}
+
+
+@app.before_request
+def before_request_callback():
+    method = request.method
+    path = request.path
+    data = request.json
+    token = request.environ['HTTP_AUTHORIZATION']
+
+    if not unprotected_paths.__contains__(path):
+        Utility.get_payload_from_jwt(token)
+
+
 @app.route('/auth/signup/', methods=['POST'])
 def signup():
     signup_details = request.json
@@ -22,9 +37,9 @@ def signup():
     try:
         db.session.add(user)
         db.session.commit()
-        return user_schema.jsonify(user)
+        return jsonify({"token" : Utility.create_secret({"id" : user.id}).decode()})
     except IntegrityError as e:
-        return user_schema.jsonify(user)
+        return jsonify({"error" : "Account with same email exists"})
 
 
 @app.route('/auth/signin/', methods=['POST'])
@@ -37,7 +52,7 @@ def sign_in():
         user_found.post_signin()
         db.session.commit()
 
-    return user_schema.jsonify(user_found)
+    return jsonify({"token" : Utility.create_secret({"id" : user_found.id}).decode()})
 
 
 
@@ -154,8 +169,9 @@ def validate_license():
 @app.route('/email/', methods=['POST'])
 def send_simple_message():
     email_data = request.json
-    _from, to, subject, text = email_data["from"], email_data["to"], email_data["subject"], email_data["text"]
-    return Utility.send_email(_from, to, subject, text)
+    _from, to, subject, text, domain = \
+        email_data["from"], email_data["to"], email_data["subject"], email_data["text"], email_data["domain"]
+    return Utility.send_email(domain, _from,  to, subject, text).json()
 
 
 
