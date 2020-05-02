@@ -23,7 +23,7 @@ android {
     sourceSets {
         main {
             res {
-                srcDirs 'src/main/res', 'src/main/res/layout/auth', 'src/main/res/layout/\''
+                srcDirs 'src/main/res', 'src/main/res/layout/auth', 'src/main/res/layout/general_user', 'src/main/res/layout/admin_user', 'src/main/res/layout/common_elements'
             }
         }
     }
@@ -53,8 +53,6 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     //Permission
     implementation 'com.karumi:dexter:4.2.0'
-
-
 
 
     testImplementation 'junit:junit:4.12'
