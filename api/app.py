@@ -5,6 +5,8 @@ from flask import Flask, render_template, request, jsonify
 from sqlalchemy.exc import IntegrityError
 from utility import Utility
 from cryptography.fernet import InvalidToken
+from resources import Resources
+import jwt
 
 app = Flask(__name__)
 
@@ -17,17 +19,28 @@ from models import User, user_schema, People, person_schema, Activity, activity_
 
 
 unprotected_paths = {'/auth/signup/', '/auth/signin/', '/person/'}
+user_id = None
+details = dict()
 
 
 @app.before_request
 def before_request_callback():
-    method = request.method
-    path = request.path
-    data = request.json
-    token = request.environ['HTTP_AUTHORIZATION']
+    details["method"] = request.method
+    details["path"] = request.path
 
-    if not unprotected_paths.__contains__(path):
-        Utility.get_payload_from_jwt(token)
+    if request.headers.__contains__('Content-Type'):
+        if request.headers['Content-Type'] == 'application/json; charset=UTF-8':
+            details["data"] = request.json
+
+    if not unprotected_paths.__contains__(details["path"]):
+        token = request.environ['HTTP_AUTHORIZATION']
+        try:
+            user_id = Utility.get_payload_from_jwt(token)["id"]
+        except jwt.ExpiredSignatureError:
+            return jsonify({"message": "token expired"})
+        except jwt.InvalidTokenError:
+            return jsonify({"message": "token invalid"})
+
 
 
 @app.route('/auth/signup/', methods=['POST'])
@@ -39,7 +52,7 @@ def signup():
         db.session.commit()
         return jsonify({"token" : Utility.create_secret({"id" : user.id}).decode()})
     except IntegrityError as e:
-        return jsonify({"error" : "Account with same email exists"})
+        return jsonify(Resources.error_existing_email())
 
 
 @app.route('/auth/signin/', methods=['POST'])
@@ -51,9 +64,10 @@ def sign_in():
     if not user_found is None:
         user_found.post_signin()
         db.session.commit()
+        return jsonify({"token" : Utility.create_secret({"id" : user_found.id}).decode()})
 
-    return jsonify({"token" : Utility.create_secret({"id" : user_found.id}).decode()})
-
+    else:
+        return jsonify(Resources.error_email_password_incorrect())
 
 
 @app.route('/auth/forgotpassword/', methods=['POST'])
@@ -71,7 +85,7 @@ def create_people():
         db.session.add(user)
         db.session.flush()
     except IntegrityError as e:
-        return user_schema.jsonify(user)
+        return jsonify(Resources.error_existing_email())
 
     people = People(user.id, people["first_name"], people["last_name"], Utility.get_date(people["dob"]),people["profile_pic"],
                     people["id_front"], people["id_back"], people["father_name"], people["username"], people["aadhar_id"])
@@ -79,31 +93,39 @@ def create_people():
     try:
         db.session.add(people)
         db.session.commit()
+        return jsonify({"token" : Utility.create_secret({"id" : people.user_id}).decode()})
     except IntegrityError as e:
         db.session.rollback()
+        return jsonify(Resources.error_existing_username_or_aadhar_id())
 
-    return person_schema.jsonify(people)
+
+@app.route('/person/token', methods=['GET'])
+def person_by_token(_id):
+    person_found = db.session.query(People).filter_by(id=user_id).first()
+    return person_schema.jsonify(person_found)
+
 
 
 @app.route('/person/id/<_id>', methods=['GET'])
 def get_person(_id):
-    person_found = db.session.query(People).filter_by(id=_id).first()
+    person_found = db.session.query(People).filter_by(user_id=_id).first()
     return person_schema.jsonify(person_found)
 
 
 @app.route('/person/', methods=['GET'])
 def person_search():
-    email, dob = request.json["email"], Utility.get_date(request.json["dob"])
-    user_found = db.session.query(User).filter_by(email=email).first()
+    name, father_name, dob = request.json["name"], request.json["father_name"], Utility.get_date(request.json["dob"])
+    user_found = db.session.query(User)\
+        .filter_by(first_name=name.split()[0], last_name=name.split()[1], father_name=father_name).first()
 
     if not user_found is None:
         person = user_found.People[0]
         if dob == Utility.get_date_from_datetime(str(person.dob)):
             return person_schema.jsonify(person)
         else:
-            return jsonify({"message": "Incorrect Date of Birth"})
+            return jsonify(Resources.dob_incorrect())
     else:
-        return jsonify({"message": "Incorrect details"})
+        return jsonify(Resources.error_detail_not_found())
 
 
 @app.route('/person/aadhar_id/<aadhar_id>', methods=['GET'])
@@ -132,14 +154,12 @@ def create_license():
     try:
         Utility.parseDateYMD(validity)
     except Exception as e:
-        return jsonify({"message": "invalid validity"})
+        return jsonify(Resources.license_invalid_validity())
 
     license_exist = db.session.query(License).filter_by(user_id=user_id).first()
 
     if not license_exist is None:
-        return jsonify({"message" : "License exist"})
-
-
+        return jsonify(Resources.error_license_exist())
 
     try:
         new_license = License(user_id, app_id, validity)
