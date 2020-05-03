@@ -1,19 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--    Android Specific   -->
     <color name="colorPrimary">#FBFBFB</color>
     <color name="colorPrimaryDark">#418E8E</color>
     <color name="colorAccent">#14AFA0</color>
     <color name="primaryTextColor">#418E8E</color>
     <color name="textColor">#000000</color>
+    <color name="menuTextColor">#000000</color>
+    <color name="windowBackground">#FFFFFF</color>
+    <color name="navigationBarColor">#418E8E</color>
+
+    <!-- Developer's specific  -->
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorGrey">#A1A1A1</color>
+    <color name="highlightedTextLabel">#8F8F8F</color>
 
-<!--    Appbar stuff-->
+
+    <!--    Appbar stuff-->
     <color name="appbarBgColor">#FFFFFF</color>
     <color name="appbarTextColor">#418E8E</color>
     <color name="appbarSecondaryTextColor">#D7DCDC</color>
 
-<!--   For Popups -->
+    <!--   For Popups -->
     <color name="menuBackgroundColor">#EAEAEA</color>
     <color name="popupTextColor">#2F93A1</color>
 

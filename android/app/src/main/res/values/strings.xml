@@ -18,5 +18,13 @@
 
     <string name="dont_have_account_create_one">Dont\' have Account. Create One</string>
 
+<!--   admin home screen -->
+    <string name="admin_home_switch_label_out">OUT</string>
+    <string name="press_to_scan_qr_here">QrScanner</string>
+    <string name="input_label">Enter Unique Id / User name</string>
+    <string name="desc_of_send">SendDataButton</string>
+    <string name="cd_scanner">TODO</string>
+    <string name="click_here_to_scan">CLick here to Scan</string>
+
 
 </resources>

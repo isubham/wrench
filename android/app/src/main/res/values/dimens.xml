@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Common Attributes -->
+    <dimen name="basic_button_elevation">20dp</dimen>
+
+    <!--amdin home attributes-->
+    <dimen name="admin_home_switch_padding">5dp</dimen>
+    <dimen name="admin_home_switch_margin">15dp</dimen>
+    <dimen name="admin_home_switch_label">12sp</dimen>
+    <dimen name="admin_home_bottom_container_height">60dp</dimen>
+</resources>
