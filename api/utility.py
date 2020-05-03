@@ -45,13 +45,9 @@ class Utility:
 
     @staticmethod
     def get_payload_from_jwt(encoded_data):
-        try:
-            found_data = jwt.decode(encoded_data, os.environ['JWT_SECRET'], algorithm=['HS256'])
-            return found_data["payload"]
-        except jwt.ExpiredSignatureError:
-            raise Exception('Signature expired. Please log in again.')
-        except jwt.InvalidTokenError:
-            return Exception('Invalid token')
+        cleaned_jwt = encoded_data.split()[1].encode()
+        found_data = jwt.decode(cleaned_jwt, os.environ['JWT_SECRET'], algorithm=['HS256'])
+        return found_data
 
 
 

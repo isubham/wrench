@@ -1,6 +1,7 @@
 alembic==1.4.2
 attrs==19.3.0
 beautifulsoup4==4.8.2
+blinker==1.4
 certifi==2020.4.5.1
 cffi==1.14.0
 chardet==3.0.4
@@ -9,6 +10,7 @@ clickclick==1.2.2
 connexion==2.6.0
 cryptography==2.9.2
 Flask==1.1.1
+Flask-Mail==0.9.1
 flask-marshmallow==0.11.0
 Flask-Migrate==2.5.2
 Flask-Script==2.0.6
@@ -24,12 +26,20 @@ Mako==1.1.2
 MarkupSafe==1.1.1
 marshmallow==3.5.1
 marshmallow-sqlalchemy==0.22.3
+more-itertools==8.2.0
 nltk==3.4.5
 openapi-spec-validator==0.2.8
+packaging==20.3
+pluggy==0.13.1
 psycopg2==2.8.4
+py==1.8.1
 pycparser==2.20
+PyJWT==1.7.1
+pyparsing==2.4.7
 pyrsistent==0.16.0
+pytest==5.4.1
 python-dateutil==2.8.1
+python-dotenv==0.13.0
 python-editor==1.0.4
 PyYAML==5.3.1
 requests==2.22.0
@@ -37,5 +47,6 @@ six==1.14.0
 soupsieve==2.0
 SQLAlchemy==1.3.16
 urllib3==1.25.9
+wcwidth==0.1.9
 Werkzeug==1.0.1
 zipp==3.1.0

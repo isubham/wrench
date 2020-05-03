@@ -27,6 +27,9 @@ android {
             }
         }
     }
+    viewBinding {
+        enabled = true
+    }
 
 }
 
@@ -53,8 +56,6 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     //Permission
     implementation 'com.karumi:dexter:4.2.0'
-
-
 
 
     testImplementation 'junit:junit:4.12'
