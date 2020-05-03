@@ -1,4 +1,22 @@
 <resources>
     <string name="app_name"> ASTRA </string>
     <string name="REGISTER_USER">REGISTER USER</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="license_key">License Key</string>
+    <string name="already_have_account_sign_in">Already have Account. Sign In</string>
+
+    <string name="error_email_empty">Email cannot be empty</string>
+    <string name="error_email_wrong_format">Wrong email format</string>
+
+    <string name="error_password_empty">Password cannot be empty</string>
+    <string name="error_password_length">Password should be atleast 8 letters</string>
+    <string name="error_confirm_password_empty">Confirm Password cannot be empty</string>
+    <string name="error_license_empty">License cannot be empty</string>
+
+    <string name="dont_have_account_create_one">Dont\' have Account. Create One</string>
+
+
 </resources>

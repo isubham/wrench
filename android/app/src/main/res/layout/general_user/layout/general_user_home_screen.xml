@@ -1,9 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".generalUser.GeneralUserHomeScreen">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button_layout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="150dp"
+        android:layout_marginEnd="150dp"
+        android:layout_marginBottom="30dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:text="ASTRA"
+            android:textSize="40dp" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/button_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="200dp"
+        android:layout_marginTop="200dp">
+
+        <View
+            android:id="@+id/strut"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_centerHorizontal="true" />
+
+        <Button
+            android:id="@+id/button_existing_user"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_alignRight="@id/strut"
+            android:layout_alignParentLeft="true"
+            android:onClick="ExistingUser"
+            android:background="@drawable/button_existing_user"
+            android:text="Existing user" />
+
+        <Button
+            android:id="@+id/button_register_user"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_alignLeft="@id/strut"
+            android:layout_alignParentRight="true"
+            android:onClick="RegisterUser"
+            android:background="@drawable/button_register_user"
+            android:text="Register User"
+            />
+    </RelativeLayout>
+</RelativeLayout>
