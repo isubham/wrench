@@ -12,11 +12,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import io.github.isubham.astra.R;
+import io.github.isubham.astra.databinding.AdminHomeScreenBinding;
 
 public class AdminHomeScreen extends AppCompatActivity {
 
+    AdminHomeScreenBinding adminHomeScreenBinding;
     private ProgressBar progressBar;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -8,9 +8,13 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorPrimary">@color/primaryTextColor</item>
         <item name="android:textColor">@color/textColor</item>
+        <item name="android:windowBackground">@color/windowBackground</item>
+        <item name="android:navigationBarColor" tools:targetApi="lollipop">
+            @color/navigationBarColor
+        </item>
     </style>
-
-<!--app bar main header and sub header as well as visible menu text(secondary) -->
+    s
+    <!--app bar main header and sub header as well as visible menu text(secondary) -->
     <style name="MyCustomToolbarTheme" parent="ThemeOverlay.AppCompat.Light">
         <item name="android:textColorPrimary">@color/menuTextColor</item>
         <item name="android:textColorSecondary">@color/colorGrey</item>
@@ -18,19 +22,20 @@
 
     </style>
 
-<!--Menu popup's background and text Color-->
+    <!--Menu popup's background and text Color-->
     <style name="MyCustomPopupTheme" parent="ThemeOverlay.AppCompat.Light">
         <item name="android:background">@color/menuBackgroundColor</item>
         <item name="android:textColor">@color/menuTextColor</item>
     </style>
 
     <style name="MyProgressBar" parent="@style/Widget.AppCompat.ProgressBar.Horizontal">
-        <item name="android:progressBackgroundTint" tools:targetApi="lollipop">@color/colorPrimaryDark</item>
+        <item name="android:progressBackgroundTint" tools:targetApi="lollipop">
+            @color/colorPrimaryDark
+        </item>
         <item name="android:progressTint" tools:targetApi="lollipop">@color/colorAccent</item>
         <item name="android:minWidth">200dp</item>
     </style>
 
-    <color name="menuTextColor">#000000</color>
 
     <style name="baseFulWidthElement" parent="ThemeOverlay.AppCompat.Light">
         <item name="android:layout_width">match_parent</item>
