@@ -24,7 +24,7 @@
     <string name="input_label">Enter Unique Id / User name</string>
     <string name="desc_of_send">SendDataButton</string>
     <string name="cd_scanner">TODO</string>
-    <string name="click_here_to_scan">CLick here to Scan</string>
+    <string name="click_here_to_scan">Click here to Scan</string>
 
 
 </resources>
