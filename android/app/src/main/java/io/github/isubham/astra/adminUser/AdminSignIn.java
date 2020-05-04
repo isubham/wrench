@@ -1,11 +1,13 @@
 package io.github.isubham.astra.adminUser;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
@@ -25,6 +27,8 @@ import io.github.isubham.astra.tools.validators;
 public class AdminSignIn extends AppCompatActivity {
 
     AdminSignInBinding binding;
+    private boolean backPressedToExitOnce = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +68,7 @@ public class AdminSignIn extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
 
                     }
-                }){
+                }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 return super.getParams();
@@ -119,5 +123,23 @@ public class AdminSignIn extends AppCompatActivity {
     @SuppressLint("NewApi")
     private String getPassword() {
         return Objects.requireNonNull(binding.adminSignInPassword).getText().toString();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (backPressedToExitOnce) {
+//          super.onBackPressed();
+            System.exit(0);
+        } else {
+            this.backPressedToExitOnce = true;
+            Toast.makeText(this, "Press again to exit", Toast.LENGTH_SHORT).show();
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    backPressedToExitOnce = false;
+                }
+            }, 2000);
+        }
     }
 }

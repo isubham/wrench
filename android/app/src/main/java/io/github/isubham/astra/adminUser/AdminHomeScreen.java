@@ -1,12 +1,15 @@
 package io.github.isubham.astra.adminUser;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -19,19 +22,21 @@ import com.google.zxing.integration.android.IntentResult;
 
 import io.github.isubham.astra.R;
 import io.github.isubham.astra.databinding.AdminHomeScreenBinding;
+import io.github.isubham.astra.generalUser.CreateGeneralUser;
 
 public class AdminHomeScreen extends AppCompatActivity {
 
-    AdminHomeScreenBinding adminHomeScreenBinding;
+    private AdminHomeScreenBinding adminHomeScreenBinding;
     private ProgressBar progressBar;
+    private boolean backPressedToExitOnce = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         adminHomeScreenBinding = AdminHomeScreenBinding.inflate(getLayoutInflater());
-        View view = adminHomeScreenBinding.getRoot();
-        setContentView(view);
+        setContentView(adminHomeScreenBinding.getRoot());
 
         findViewByIds();
         toolbarSetup();
@@ -66,7 +71,11 @@ public class AdminHomeScreen extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.register_user:
-                Toast.makeText(this, "REGISTER USER", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, CreateGeneralUser.class));
+                return true;
+            case R.id.logout:
+                sendStatusForLogout();
+                startActivity(new Intent(this, AdminSignIn.class));
                 return true;
 
             default:
@@ -75,15 +84,10 @@ public class AdminHomeScreen extends AppCompatActivity {
 
     }
 
-    public void showProgressBar() {
-        progressBar.setVisibility(View.VISIBLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-
-    }
-
-    public void hideProgressBar() {
-        progressBar.setVisibility(View.INVISIBLE);
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    /**
+     * TODO - to send status flag for user Logout action
+     */
+    private void sendStatusForLogout() {
     }
 
     public void scanCode(View view) {
@@ -103,6 +107,7 @@ public class AdminHomeScreen extends AppCompatActivity {
 
             Toast.makeText(AdminHomeScreen.this, "" + adminHomeScreenBinding.adminHomeInputId.getText(), Toast.LENGTH_SHORT).show();
             adminHomeScreenBinding.adminHomeInputId.setText(null);
+            hideKeyboard();
         }
     }
 
@@ -118,4 +123,37 @@ public class AdminHomeScreen extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if (backPressedToExitOnce) {
+            super.onBackPressed();
+        } else {
+            this.backPressedToExitOnce = true;
+            Toast.makeText(this, "Press again to exit", Toast.LENGTH_SHORT).show();
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    backPressedToExitOnce = false;
+                }
+            }, 2000);
+        }
+    }
+
+    public void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        assert imm != null;
+        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+    }
+
+    public void showProgressBar() {
+        progressBar.setVisibility(View.VISIBLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+    }
+
+    public void hideProgressBar() {
+        progressBar.setVisibility(View.INVISIBLE);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
 }
