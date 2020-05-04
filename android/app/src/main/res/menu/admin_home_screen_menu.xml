@@ -7,5 +7,11 @@
         android:title="@string/REGISTER_USER"
         app:showAsAction="always" />
 
+    <item
+        android:id="@+id/logout"
+        android:title="@string/LOGOUT"
+        app:showAsAction="never" />
+
+
 </menu>
 

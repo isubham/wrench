@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="io.github.isubham.astra.generalUser.CreateGeneralUser">
+
+    <include layout="@layout/app_bar" />
+
+    <include layout="@layout/progress_bar" />
+
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/body"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/app_padding">
+
+            <com.mikhaellopez.circularimageview.CircularImageView
+                android:id="@+id/profilePic"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_centerHorizontal="true"
+                android:onClick="getUserPic"
+                android:src="@mipmap/user"
+                app:civ_border_color="#000"
+                app:civ_border_width="0.75dp" />
+
+            <TextView
+                android:id="@+id/userName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/profilePic"
+                android:layout_centerHorizontal="true"
+                android:hint="userName" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textContainer1"
+                style="@style/baseFulWidthElement"
+                android:layout_below="@+id/userName"
+                android:hint="@string/create_general_user_name">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/create_general_user_name"
+                    style="@style/baseFulWidthElement"
+                    android:inputType="textPersonName|textCapCharacters"
+                    android:imeOptions="actionNext" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textContainer2"
+                style="@style/baseFulWidthElement"
+                android:layout_below="@+id/textContainer1"
+                android:hint="@string/create_general_fathers_name">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/create_general_fathers_name"
+                    style="@style/baseFulWidthElement"
+                    android:inputType="textPersonName|textCapCharacters"
+                    android:imeOptions="actionNext" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textContainer3"
+                style="@style/baseFulWidthElement"
+                android:layout_below="@+id/textContainer2"
+                android:hint="@string/create_general_user_email_address">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/create_general_user_email_address"
+                    style="@style/baseFulWidthElement"
+                    android:inputType="textWebEmailAddress"
+                    android:imeOptions="actionNext" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textContainer4"
+                style="@style/baseFulWidthElement"
+                android:layout_below="@+id/textContainer3"
+                android:hint="@string/create_general_user_dob">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/create_general_user_dob"
+                    style="@style/baseFulWidthElement"
+                    android:inputType="date"
+                    android:imeOptions="actionNext" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textContainer5"
+                style="@style/baseFulWidthElement"
+                android:layout_below="@+id/textContainer4"
+                android:hint="@string/create_general_user_contact">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/create_general_user_contact"
+                    style="@style/baseFulWidthElement"
+                    android:inputType="phone"
+                    android:imeOptions="actionNext" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textContainer6"
+                style="@style/baseFulWidthElement"
+                android:layout_below="@+id/textContainer5"
+                android:hint="@string/create_general_user_address">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/create_general_user_address"
+                    style="@style/baseFulWidthElement"
+                    android:inputType="textPostalAddress"
+                    android:imeOptions="actionNext" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</LinearLayout>
