@@ -9,10 +9,13 @@
     <color name="menuTextColor">#000000</color>
     <color name="windowBackground">#FFFFFF</color>
     <color name="navigationBarColor">#418E8E</color>
+    <color name="colorHint">#939393</color>
+
 
     <!-- Developer's specific  -->
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorGrey">#A1A1A1</color>
+    <color name="lightGrey">#E4E4E4</color>
     <color name="highlightedTextLabel">#8F8F8F</color>
 
 
