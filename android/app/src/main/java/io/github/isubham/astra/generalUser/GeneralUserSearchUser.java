@@ -16,7 +16,7 @@ import io.github.isubham.astra.R;
 
 public class GeneralUserSearchUser extends AppCompatActivity {
     TextInputLayout til_name ,til_dob,til_father_name;
-    GeneralUserSearchUserBinding binding;
+
 //    TextInputEditText et_name,et_dob,et_father_name;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

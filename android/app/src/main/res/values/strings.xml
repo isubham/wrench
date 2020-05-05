@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name"> ASTRA </string>
+    <string name="LOGOUT">Logout</string>
     <string name="REGISTER_USER">REGISTER USER</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
@@ -18,13 +19,28 @@
 
     <string name="dont_have_account_create_one">Dont\' have Account. Create One</string>
 
-<!--   admin home screen -->
+    <!--   admin home screen -->
     <string name="admin_home_switch_label_out">OUT</string>
     <string name="press_to_scan_qr_here">QrScanner</string>
     <string name="input_label">Enter Unique Id / User name</string>
     <string name="desc_of_send">SendDataButton</string>
     <string name="cd_scanner">TODO</string>
     <string name="click_here_to_scan">Click here to Scan</string>
+    <string name="or">OR</string>
+
+
+    <!--    create general user-->
+    <string name="create_general_user_name">Full Name</string>
+    <string name="create_general_fathers_name">Father Name</string>
+    <string name="create_general_user_email_address">Email</string>
+    <string name="create_general_user_dob">Date Of Birth (DD/MM/YYYY)</string>
+    <string name="create_general_user_contact">Contact</string>
+    <string name="create_general_user_address">Address</string>
+    <string name="doc">Doc</string>
+    <string name="save_user">Save</string>
+    <string name="front_doc">Front Doc</string>
+    <string name="back_doc">Back Doc</string>
+    <string name="username">userName</string>
 
 
 </resources>
