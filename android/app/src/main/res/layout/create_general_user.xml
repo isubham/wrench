@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/profilePic"
                 android:layout_centerHorizontal="true"
-                android:hint="userName" />
+                android:hint="@string/username" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textContainer1"
@@ -132,7 +132,7 @@
 
             <LinearLayout
                 android:id="@+id/docContainer"
-               style="@style/baseFulWidthElement"
+                style="@style/baseFulWidthElement"
                 android:layout_below="@+id/textContainer6"
                 android:layout_margin="5dp"
                 android:orientation="horizontal"
@@ -156,9 +156,8 @@
                     android:layout_weight="0.30"
                     android:background="@drawable/create_gen_user_doc_image_holder_bg"
                     android:contentDescription="@string/front_doc"
-                    android:padding="@dimen/create_gen_user_doc_holder_padding"
-
-                    />
+                    android:onClick="frontDocScan"
+                    android:padding="@dimen/create_gen_user_doc_holder_padding" />
 
                 <ImageView
                     android:id="@+id/back_doc"
@@ -169,6 +168,7 @@
                     android:layout_weight="0.30"
                     android:background="@drawable/create_gen_user_doc_image_holder_bg"
                     android:contentDescription="@string/back_doc"
+                    android:onClick="backDocScan"
                     android:padding="@dimen/create_gen_user_doc_holder_padding" />
 
             </LinearLayout>
@@ -183,6 +183,7 @@
                 android:background="@drawable/save_button_bg"
                 android:text="@string/save_user"
                 android:textColor="@color/colorPrimary"
+                android:onClick="saveGeneralUser"
                 android:textStyle="bold" />
 
 
