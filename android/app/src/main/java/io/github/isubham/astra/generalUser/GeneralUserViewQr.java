@@ -15,8 +15,8 @@ public class GeneralUserViewQr extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout. activity_general_user_view_qr_code);
-        profilepic = findViewById(R.id.profile_pic);
-        qrcode = findViewById(R.id.qr_placeholder);
+        profilepic = findViewById(R.id.general_user_view_qr_profile_pic);
+        qrcode = findViewById(R.id.general_user_view_qr_placeholder);
 
 
         // code to show profile pic
