@@ -12,6 +12,7 @@
         <item name="android:navigationBarColor" tools:targetApi="lollipop">
             @color/navigationBarColor
         </item>
+        <item name="hintTextColor">@color/colorHint</item>
     </style>
     s
     <!--app bar main header and sub header as well as visible menu text(secondary) -->

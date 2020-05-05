@@ -27,12 +27,19 @@
     <string name="cd_scanner">TODO</string>
     <string name="click_here_to_scan">Click here to Scan</string>
     <string name="or">OR</string>
+
+
+    <!--    create general user-->
     <string name="create_general_user_name">Full Name</string>
     <string name="create_general_fathers_name">Father Name</string>
     <string name="create_general_user_email_address">Email</string>
     <string name="create_general_user_dob">Date Of Birth (DD/MM/YYYY)</string>
     <string name="create_general_user_contact">Contact</string>
     <string name="create_general_user_address">Address</string>
+    <string name="doc">Doc</string>
+    <string name="save_user">Save</string>
+    <string name="front_doc">Front Doc</string>
+    <string name="back_doc">Back Doc</string>
 
 
 </resources>

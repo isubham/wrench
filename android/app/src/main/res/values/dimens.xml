@@ -10,4 +10,7 @@
     <dimen name="admin_home_switch_margin">15dp</dimen>
     <dimen name="admin_home_switch_label">12sp</dimen>
     <dimen name="admin_home_bottom_container_height">60dp</dimen>
+    <dimen name="create_gen_user_doc_holder_padding">2dp</dimen>
+    <dimen name="create_gen_user_doc_holder_height">130dp</dimen>
+    <dimen name="app_padding_create_user">16dp</dimen>
 </resources>

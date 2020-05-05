@@ -20,7 +20,7 @@
             android:id="@+id/body"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="@dimen/app_padding">
+            android:padding="@dimen/app_padding_create_user">
 
             <com.mikhaellopez.circularimageview.CircularImageView
                 android:id="@+id/profilePic"
@@ -29,7 +29,7 @@
                 android:layout_centerHorizontal="true"
                 android:onClick="getUserPic"
                 android:src="@mipmap/user"
-                app:civ_border_color="#000"
+                app:civ_border_color="@color/colorHint"
                 app:civ_border_width="0.75dp" />
 
             <TextView
@@ -44,13 +44,14 @@
                 android:id="@+id/textContainer1"
                 style="@style/baseFulWidthElement"
                 android:layout_below="@+id/userName"
-                android:hint="@string/create_general_user_name">
+                android:hint="@string/create_general_user_name"
+                android:textColorHint="@color/colorHint">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/create_general_user_name"
                     style="@style/baseFulWidthElement"
-                    android:inputType="textPersonName|textCapCharacters"
-                    android:imeOptions="actionNext" />
+                    android:imeOptions="actionNext"
+                    android:inputType="textPersonName|textCapCharacters" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -58,13 +59,14 @@
                 android:id="@+id/textContainer2"
                 style="@style/baseFulWidthElement"
                 android:layout_below="@+id/textContainer1"
-                android:hint="@string/create_general_fathers_name">
+                android:hint="@string/create_general_fathers_name"
+                android:textColorHint="@color/colorHint">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/create_general_fathers_name"
                     style="@style/baseFulWidthElement"
-                    android:inputType="textPersonName|textCapCharacters"
-                    android:imeOptions="actionNext" />
+                    android:imeOptions="actionNext"
+                    android:inputType="textPersonName|textCapCharacters" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -72,13 +74,14 @@
                 android:id="@+id/textContainer3"
                 style="@style/baseFulWidthElement"
                 android:layout_below="@+id/textContainer2"
-                android:hint="@string/create_general_user_email_address">
+                android:hint="@string/create_general_user_email_address"
+                android:textColorHint="@color/colorHint">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/create_general_user_email_address"
                     style="@style/baseFulWidthElement"
-                    android:inputType="textWebEmailAddress"
-                    android:imeOptions="actionNext" />
+                    android:imeOptions="actionNext"
+                    android:inputType="textWebEmailAddress" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -86,13 +89,14 @@
                 android:id="@+id/textContainer4"
                 style="@style/baseFulWidthElement"
                 android:layout_below="@+id/textContainer3"
-                android:hint="@string/create_general_user_dob">
+                android:hint="@string/create_general_user_dob"
+                android:textColorHint="@color/colorHint">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/create_general_user_dob"
                     style="@style/baseFulWidthElement"
-                    android:inputType="date"
-                    android:imeOptions="actionNext" />
+                    android:imeOptions="actionNext"
+                    android:inputType="date" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -100,13 +104,14 @@
                 android:id="@+id/textContainer5"
                 style="@style/baseFulWidthElement"
                 android:layout_below="@+id/textContainer4"
-                android:hint="@string/create_general_user_contact">
+                android:hint="@string/create_general_user_contact"
+                android:textColorHint="@color/colorHint">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/create_general_user_contact"
                     style="@style/baseFulWidthElement"
-                    android:inputType="phone"
-                    android:imeOptions="actionNext" />
+                    android:imeOptions="actionNext"
+                    android:inputType="phone" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -114,15 +119,72 @@
                 android:id="@+id/textContainer6"
                 style="@style/baseFulWidthElement"
                 android:layout_below="@+id/textContainer5"
-                android:hint="@string/create_general_user_address">
+                android:hint="@string/create_general_user_address"
+                android:textColorHint="@color/colorHint">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/create_general_user_address"
                     style="@style/baseFulWidthElement"
-                    android:inputType="textPostalAddress"
-                    android:imeOptions="actionNext" />
+                    android:imeOptions="actionNext"
+                    android:inputType="textPostalAddress" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/docContainer"
+               style="@style/baseFulWidthElement"
+                android:layout_below="@+id/textContainer6"
+                android:layout_margin="5dp"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <TextView
+                    android:id="@+id/docLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/create_gen_user_doc_holder_height"
+                    android:layout_weight="0.42"
+                    android:gravity="center"
+                    android:padding="@dimen/create_gen_user_doc_holder_padding"
+                    android:text="@string/doc"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/front_doc"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/create_gen_user_doc_holder_height"
+                    android:layout_weight="0.30"
+                    android:background="@drawable/create_gen_user_doc_image_holder_bg"
+                    android:contentDescription="@string/front_doc"
+                    android:padding="@dimen/create_gen_user_doc_holder_padding"
+
+                    />
+
+                <ImageView
+                    android:id="@+id/back_doc"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/create_gen_user_doc_holder_height"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="0.30"
+                    android:background="@drawable/create_gen_user_doc_image_holder_bg"
+                    android:contentDescription="@string/back_doc"
+                    android:padding="@dimen/create_gen_user_doc_holder_padding" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/SaveUser"
+                android:layout_width="400dp"
+                android:layout_height="40dp"
+                android:layout_below="@+id/docContainer"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="4dp"
+                android:background="@drawable/save_button_bg"
+                android:text="@string/save_user"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold" />
+
 
         </RelativeLayout>
 
