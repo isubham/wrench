@@ -2,15 +2,20 @@
 <resources>
     <!--Common Attributes -->
     <dimen name="basic_button_elevation">20dp</dimen>
+    <dimen name="text_heading_one">40dp</dimen>
+    <dimen name="text_heading_two">30dp</dimen>
+    <dimen name="text_heading_three">20dp</dimen>
     <dimen name="app_padding">10dp</dimen>
-
 
     <!--admin home attributes-->
     <dimen name="admin_home_switch_padding">5dp</dimen>
     <dimen name="admin_home_switch_margin">15dp</dimen>
     <dimen name="admin_home_switch_label">12sp</dimen>
     <dimen name="admin_home_bottom_container_height">60dp</dimen>
+
+
     <dimen name="create_gen_user_doc_holder_padding">2dp</dimen>
     <dimen name="create_gen_user_doc_holder_height">130dp</dimen>
     <dimen name="app_padding_create_user">16dp</dimen>
+
 </resources>
