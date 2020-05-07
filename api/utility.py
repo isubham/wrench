@@ -45,6 +45,7 @@ class Utility:
 
     @staticmethod
     def get_payload_from_jwt(encoded_data):
+        # contains "Basic Key" so splitting
         cleaned_jwt = encoded_data.split()[1].encode()
         found_data = jwt.decode(cleaned_jwt, os.environ['JWT_SECRET'], algorithm=['HS256'])
         return found_data
