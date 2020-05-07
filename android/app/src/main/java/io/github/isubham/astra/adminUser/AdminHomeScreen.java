@@ -108,6 +108,8 @@ public class AdminHomeScreen extends AppCompatActivity {
             Toast.makeText(AdminHomeScreen.this, "" + adminHomeScreenBinding.adminHomeInputId.getText(), Toast.LENGTH_SHORT).show();
             adminHomeScreenBinding.adminHomeInputId.setText(null);
             hideKeyboard();
+
+            startActivity(new Intent(this, AdminVerifyDoc.class));
         }
     }
 

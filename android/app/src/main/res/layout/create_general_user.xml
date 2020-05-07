@@ -24,8 +24,8 @@
 
             <com.mikhaellopez.circularimageview.CircularImageView
                 android:id="@+id/profilePic"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="@dimen/create_general_user_profile_pic_length"
+                android:layout_height="@dimen/create_general_user_profile_pic_length"
                 android:layout_centerHorizontal="true"
                 android:onClick="getUserPic"
                 android:src="@mipmap/user"
@@ -181,9 +181,9 @@
                 android:layout_centerHorizontal="true"
                 android:layout_margin="4dp"
                 android:background="@drawable/save_button_bg"
+                android:onClick="saveGeneralUser"
                 android:text="@string/save_user"
                 android:textColor="@color/colorPrimary"
-                android:onClick="saveGeneralUser"
                 android:textStyle="bold" />
 
 
