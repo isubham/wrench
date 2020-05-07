@@ -14,8 +14,16 @@ class Resources:
         return {"message": "Aadhar or Username exists"}
 
     @staticmethod
+    def error_existing_aadhar_id():
+        return {"message": "Aadhar exists"}
+
+    @staticmethod
+    def error_existing_username():
+        return {"message": "Username exists"}
+
+    @staticmethod
     def error_detail_not_found():
-        return {"message": "No user with this detail"}
+        return {"message": "No user with this name and father name"}
 
 
     @staticmethod
@@ -30,4 +38,21 @@ class Resources:
     @staticmethod
     def error_license_exist():
         return {"message": "License exist"}
+
+    @staticmethod
+    def error_license_dont_exist():
+        return {"message": "License dont exist"}
+
+    @staticmethod
+    def error_license_incorrect():
+        return {"message": "License incorrect"}
+
+    @staticmethod
+    def error_license_invalid():
+        return {"message": "License invalid"}
+
+
+    @staticmethod
+    def activity_logged():
+        return {"message": "saved"}
 

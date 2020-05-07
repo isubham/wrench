@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- For Scanner -->
     <!-- Storage Access for File Read And Save -->
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- Location -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- Camera -->
@@ -50,7 +51,12 @@
             tools:ignore="LockedOrientationActivity" />
         <activity android:name=".adminUser.AdminSignIn" />
         <activity android:name=".adminUser.AdminCreateAccount" />
+
+        <activity android:name=".generalUser.GeneralUserSearchUser" />
+        <activity android:name=".generalUser.GeneralUserViewQr" />
+
         <activity android:name=".generalUser.GeneralUserHomeScreen" />
+
         <activity android:name=".MainActivity" />
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
