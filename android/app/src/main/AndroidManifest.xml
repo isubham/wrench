@@ -5,19 +5,16 @@
     <!-- For Internet -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- For Scanner -->
+    <!-- Storage Access for File Read And Save -->
 
-    <!--    Storage Access for File Read And Save-->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <!--Location-->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <!--Camera-->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- Location -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- Camera -->
     <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-feature android:name="android.hardware.camera2" />
     <uses-feature android:name="com.android.hardware.Camera.focus" />
     <uses-feature android:name="android.hardware.camera.flash" />
-
 
     <application
         android:allowBackup="true"
@@ -26,6 +23,18 @@
         android:roundIcon="@mipmap/app_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".adminUser.AdminVerifyDoc"
+            android:noHistory="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/ActivityDialog"
+            tools:ignore="LockedOrientationActivity">
+            <!--            <intent-filter>-->
+            <!--                <action android:name="android.intent.action.MAIN" />-->
+
+            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
+            <!--            </intent-filter>-->
+        </activity>
         <activity
             android:name=".adminUser.AdminHomeScreen"
             android:screenOrientation="portrait"
@@ -43,10 +52,8 @@
         <activity android:name=".adminUser.AdminSignIn" />
         <activity android:name=".adminUser.AdminCreateAccount" />
 
-
-
-        <activity android:name=".generalUser.GeneralUserSearchUser"/>
-        <activity android:name=".generalUser.GeneralUserViewQr"/>
+        <activity android:name=".generalUser.GeneralUserSearchUser" />
+        <activity android:name=".generalUser.GeneralUserViewQr" />
 
         <activity android:name=".generalUser.GeneralUserHomeScreen" />
 
@@ -54,9 +61,7 @@
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="fullSensor"
-            tools:replace="screenOrientation" />
-
-        <!--    content provider for Image Saving    -->
+            tools:replace="screenOrientation" /> <!-- content provider for Image Saving -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -66,6 +71,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-
     </application>
+
 </manifest>

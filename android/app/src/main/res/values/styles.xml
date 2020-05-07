@@ -46,4 +46,7 @@
 
     </style>
 
+
+    <style name="ActivityDialog" parent="Theme.AppCompat.Light.Dialog.MinWidth"/>
+
 </resources>

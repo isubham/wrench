@@ -41,6 +41,9 @@
     <string name="front_doc">Front Doc</string>
     <string name="back_doc">Back Doc</string>
     <string name="username">userName</string>
+    <string name="ok">OK</string>
+    <string name="registered_doc">Registered Doc</string>
+    <string name="admin_verify_doc">User Documents</string>
 
 
 </resources>
