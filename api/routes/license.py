@@ -36,13 +36,14 @@ def create_license():
 
 @routes.route('/license/validate/', methods=['POST'])
 def validate_license():
-    license_json = request.json
-    app_code, license_text, user_email = os.environ["ASTRA_CODE"], license_json["license_key"], license_json["user_email"]
+    app_code = os.environ["ASTRA_CODE"]
+    token = request.environ['HTTP_AUTHORIZATION']
+    user_email = Utility.get_payload_from_jwt(token)["email"]
 
-    result = db.session.query(License).filter_by(user_email=user_email).first()
+    result : License = db.session.query(License).filter_by(user_email=user_email).first()
     if not result is None:
         try:
-            return result.license_valid(user_email, app_code, license_text)
+            return result.license_valid(user_email, app_code, result.license_key)
         except InvalidToken as i:
             return jsonify(Resources.error_license_invalid())
     else:

@@ -66,14 +66,10 @@ def person_search():
     first_name, father_name, dob = request.json["name"], request.json["father_name"], \
                                    Utility.get_date(request.json["dob"])
     user_found = db.session.query(People) \
-        .filter_by(first_name=first_name, father_name=father_name).first()
+        .filter_by(first_name=first_name, father_name=father_name, dob = dob).first()
 
     if user_found is not None:
-        person = user_found
-        if dob == Utility.parseDateYMD(str(person.dob)):
-            return person_schema.jsonify(person)
-        else:
-            return jsonify(Resources.dob_incorrect())
+        return person_schema.jsonify(user_found)
     else:
         return jsonify(Resources.error_detail_not_found())
 

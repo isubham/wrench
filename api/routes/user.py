@@ -27,7 +27,7 @@ def signup():
     try:
         db.session.add(user)
         db.session.commit()
-        return jsonify({"token" : Utility.create_secret({"id" : user.id}).decode()})
+        return jsonify({"token" : Utility.create_secret({"id" : user.id, "email" : user.email}).decode()})
     except IntegrityError as e:
         return jsonify(Resources.error_existing_email())
 
@@ -36,12 +36,12 @@ def signup():
 def sign_in():
     sign_in_details = request.json
 
-    user_found = db.session.query(User).filter_by(email=sign_in_details["email"],
+    user_found : User = db.session.query(User).filter_by(email=sign_in_details["email"],
                                              password=Utility.get_hash(sign_in_details["password"])).first()
     if not user_found is None:
         user_found.post_signin()
         db.session.commit()
-        return jsonify({"token" : Utility.create_secret({"id" : user_found.id}).decode()})
+        return jsonify({"token" : Utility.create_secret({"id" : user_found.id, "email" : user_found.email}).decode()})
 
     else:
         return jsonify(Resources.error_email_password_incorrect())

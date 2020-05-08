@@ -164,7 +164,7 @@ class License(db.Model):
     def license_valid(self, user_email, app_code, license_text):
         try:
             f = Fernet(self.secret_key)
-            license_decryped = f.decrypt(license_text.encode())
+            license_decryped = f.decrypt(license_text)
 
             license_components = license_decryped.decode().split('|')
             license_user_email, license_app_code, license_valid, license_salt = map(lambda s: s.split(":")[1],
