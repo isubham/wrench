@@ -23,7 +23,7 @@ class Resources:
 
     @staticmethod
     def error_detail_not_found():
-        return {"message": "No user with this name and father name"}
+        return {"message": "No user with this details"}
 
 
     @staticmethod
