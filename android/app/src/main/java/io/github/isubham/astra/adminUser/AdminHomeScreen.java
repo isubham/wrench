@@ -95,7 +95,7 @@ public class AdminHomeScreen extends AppCompatActivity {
         intentIntegrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
         intentIntegrator.setCameraId(0);
         intentIntegrator.setOrientationLocked(false);
-        intentIntegrator.setPrompt("Scanning through ASTRA");
+        intentIntegrator.setPrompt(getString(R.string.Scan_Alert));
         intentIntegrator.setBeepEnabled(true);
         intentIntegrator.setBarcodeImageEnabled(true);
         intentIntegrator.initiateScan();
