@@ -29,4 +29,18 @@
     <color name="menuBackgroundColor">#EAEAEA</color>
     <color name="popupTextColor">#2F93A1</color>
 
+
+    <!-- for buttons-->
+    <color name="disabled">#C6C6C6</color>
+    <color name="active">#669BA2</color>
+    <color name="progress">#B2669BA2</color>
+    <color name="danger">#F44336</color>
+    <color name="sucess">#8BC34A</color>
+
+    <color name="disabledText">#333333</color>
+    <color name="activeText">#fefefe</color>
+    <color name="progressText">#333333</color>
+    <color name="dangerText">#fefefe</color>
+    <color name="sucessText">#fefefe</color>
+
 </resources>
