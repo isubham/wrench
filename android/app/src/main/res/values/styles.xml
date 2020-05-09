@@ -54,10 +54,20 @@
     </style>
 
 
+    <style name="baseFulWidthElementWithSmallText" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">15sp</item>
+
+
+    </style>
+
+
     <style name="activeButton" parent="baseFulWidthElement">
         <item name="android:textColor">@color/activeText</item>
         <item name="android:backgroundTint">@color/active</item>
     </style>
+
 
     <style name="progressgButton" parent="baseFulWidthElement">
         <item name="android:textColor">@color/progressText</item>
