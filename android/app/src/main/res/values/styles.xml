@@ -73,4 +73,19 @@
         <item name="android:textColor">@color/dangerText</item>
         <item name="android:backgroundTint">@color/danger</item>
     </style>
+    <!--    Custom SnackBar TextView Style-->
+    <style name="CustomSnackBarTextViewStyle" parent="@android:style/Widget.TextView">
+        <item name="android:textSize">@dimen/snackbar_textview_textSize</item>
+        <item name="android:textColor">@color/colorWhite</item>
+
+    </style>
+
+    <!--    Custom SnackBar Ation Button Style-->
+    <style name="CustomSnackBarActionButtonStyle" parent="@android:style/Widget.TextView">
+        <item name="android:textSize">@dimen/snackbar_button_textSize</item>
+        <item name="android:textColor">@color/colorOffWhite</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+
 </resources>
