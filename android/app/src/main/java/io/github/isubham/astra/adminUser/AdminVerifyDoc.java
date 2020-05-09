@@ -9,12 +9,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
+import com.bumptech.glide.Glide;
+
 import java.util.Arrays;
 import java.util.List;
 
 import io.github.isubham.astra.R;
 import io.github.isubham.astra.adapters.ViewPagerAdapter;
 import io.github.isubham.astra.databinding.AdminVerifyDocBinding;
+import io.github.isubham.astra.tools.Constants;
 
 public class AdminVerifyDoc extends AppCompatActivity {
 
@@ -26,24 +29,45 @@ public class AdminVerifyDoc extends AppCompatActivity {
     private int dotsCount;
     private ImageView[] dotImages;
 
+    //dataFromServer
+
+    //dataFromBundle
+    private String userName, name;
+    private String profilePicUrl;
+    private String idFrontUrl, idBackUrl;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         adminVerifyDocBinding = AdminVerifyDocBinding.inflate(getLayoutInflater());
         setContentView(adminVerifyDocBinding.getRoot());
 
+        setBundleData();
+
         setupPagerAdapter();
+    }
+
+    private void setBundleData() {
+
+        Bundle b = getIntent().getExtras();
+        if (b != null) {
+            userName = b.getString(Constants.USER_NAME);
+            profilePicUrl = b.getString(Constants.PROFILE_PIC_URL);
+            name = b.getString(Constants.NAME);
+
+            //set To Ui Elements
+            imageUrls = Arrays.asList(b.getString(Constants.ID_FRONT_URL), b.getString(Constants.ID_BACK_URL));
+            adminVerifyDocBinding.userName.setText(name);
+            adminVerifyDocBinding.uniqueId.setText(userName);
+
+        }
+
     }
 
     private void setupPagerAdapter() {
 
-        imageUrls = Arrays.asList("https://resize.indiatvnews.com/en/resize/newbucket/715_-/2019/04/pjimage-1-1556514034.jpg",
-                "https://www.mwallpapers.com/download-image/22526/576x768",
-                "https://st1.photogallery.ind.sh/wp-content/uploads/indiacom/anushka-sharma-flaunts-her-cleavage-in-hot-swimsuit-201610-1475585677-650x510.jpg",
-                "https://i.pinimg.com/originals/66/ce/4e/66ce4ee1543d9ffa2fb26a58a9acacd2.png",
-                "https://i.ytimg.com/vi/2eHyRLwQZmw/maxresdefault.jpg",
-                "https://www.quirkybyte.com/trendz/wp-content/uploads/sites/4/2018/09/Anushka-Sharma-flaunts-her-hot-boobs-1.jpg",
-                "https://i.pinimg.com/originals/7e/c6/99/7ec6995ab5b5cae7016eab0a4f24468e.jpg");
+        //imageUrls = Arrays.asList("https://resize.indiatvnews.com/en/resize/newbucket/715_-/2019/04/pjimage-1-1556514034.jpg","https://www.mwallpapers.com/download-image/22526/576x768","https://st1.photogallery.ind.sh/wp-content/uploads/indiacom/anushka-sharma-flaunts-her-cleavage-in-hot-swimsuit-201610-1475585677-650x510.jpg","https://i.pinimg.com/originals/66/ce/4e/66ce4ee1543d9ffa2fb26a58a9acacd2.png","https://i.ytimg.com/vi/2eHyRLwQZmw/maxresdefault.jpg","https://www.quirkybyte.com/trendz/wp-content/uploads/sites/4/2018/09/Anushka-Sharma-flaunts-her-hot-boobs-1.jpg","https://i.pinimg.com/originals/7e/c6/99/7ec6995ab5b5cae7016eab0a4f24468e.jpg");
         pagerAdapter = new ViewPagerAdapter(this, imageUrls);
         adminVerifyDocBinding.docViewer.setAdapter(pagerAdapter);
         // slider dots configuration
@@ -56,7 +80,7 @@ public class AdminVerifyDoc extends AppCompatActivity {
             dotImages[i].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.non_active_dot));
 
 
-            // setting layoutparams
+            // setting layout params
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             params.setMargins(0, 0, 0, 0);
             adminVerifyDocBinding.sliderDots.addView(dotImages[i]);
@@ -103,4 +127,9 @@ public class AdminVerifyDoc extends AppCompatActivity {
     }
 
 
+    public void loadProfilePic(View view) {
+        if (profilePicUrl != null)
+            Glide.with(this).load(profilePicUrl).centerCrop().into(adminVerifyDocBinding.profilePic);
+
+    }
 }

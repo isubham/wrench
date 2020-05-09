@@ -13,7 +13,7 @@
 
 <!--    Snack Bar Designs-->
 
-    <dimen name="snackbar_textview_textSize">18sp</dimen>
+    <dimen name="snackbar_textview_textSize">14sp</dimen>
     <dimen name="snackbar_button_textSize">14sp</dimen>
 
 
