@@ -27,6 +27,8 @@
     <string name="cd_scanner">TODO</string>
     <string name="click_here_to_scan">Click here to Scan</string>
     <string name="or">OR</string>
+    <string name="admin_home_screen_wrong_scan_text">Nothing to scan</string>
+    <string name="admin_home_screen_retry_action_text">Retry</string>
 
 
     <!--    create general user-->
@@ -42,8 +44,11 @@
     <string name="back_doc">Back Doc</string>
     <string name="username">userName</string>
     <string name="ok">OK</string>
+
+    <!--    Admin Verify Doc-->
     <string name="registered_doc">Registered Doc</string>
     <string name="admin_verify_doc">User Documents</string>
+    <string name="scan_alert_msg">Scanning through ASTRA</string>
 
 
 </resources>

@@ -28,13 +28,8 @@
             android:noHistory="true"
             android:screenOrientation="portrait"
             android:theme="@style/ActivityDialog"
-            tools:ignore="LockedOrientationActivity">
-            <!--            <intent-filter>-->
-            <!--                <action android:name="android.intent.action.MAIN" />-->
+            tools:ignore="LockedOrientationActivity" />
 
-            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-            <!--            </intent-filter>-->
-        </activity>
         <activity
             android:name=".adminUser.AdminHomeScreen"
             android:screenOrientation="portrait"

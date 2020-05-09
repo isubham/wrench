@@ -14,6 +14,7 @@
 
     <!-- Developer's specific  -->
     <color name="colorWhite">#FFFFFF</color>
+    <color name="colorOffWhite">#E0E1E0</color>
     <color name="colorGrey">#A1A1A1</color>
     <color name="lightGrey">#F4F2F2</color>
     <color name="highlightedTextLabel">#8F8F8F</color>

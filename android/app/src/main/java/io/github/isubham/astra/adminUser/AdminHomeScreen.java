@@ -23,6 +23,7 @@ import com.google.zxing.integration.android.IntentResult;
 import io.github.isubham.astra.R;
 import io.github.isubham.astra.databinding.AdminHomeScreenBinding;
 import io.github.isubham.astra.generalUser.CreateGeneralUser;
+import io.github.isubham.astra.tools.CustomSnackbar;
 
 public class AdminHomeScreen extends AppCompatActivity {
 
@@ -44,21 +45,6 @@ public class AdminHomeScreen extends AppCompatActivity {
         getBundleData();
         hideProgressBar();
 
-    }
-
-    private void toolbarSetup() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            toolbar.setTitleTextColor(getResources().getColor(R.color.colorPrimaryDark));
-        }
-    }
-
-    private void getBundleData() {
-    }
-
-    private void findViewByIds() {
-        progressBar = findViewById(R.id.progressBar);
     }
 
     @Override
@@ -84,44 +70,24 @@ public class AdminHomeScreen extends AppCompatActivity {
 
     }
 
-    /**
-     * TODO - to send status flag for user Logout action
-     */
-    private void sendStatusForLogout() {
-    }
-
-    public void scanCode(View view) {
-        IntentIntegrator intentIntegrator = new IntentIntegrator(AdminHomeScreen.this);
-        intentIntegrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
-        intentIntegrator.setCameraId(0);
-        intentIntegrator.setOrientationLocked(false);
-        intentIntegrator.setPrompt("Scanning through ASTRA");
-        intentIntegrator.setBeepEnabled(true);
-        intentIntegrator.setBarcodeImageEnabled(true);
-        intentIntegrator.initiateScan();
-
-    }
-
-    public void searchForUser(View view) {
-        if (!TextUtils.isEmpty(adminHomeScreenBinding.adminHomeInputId.getText())) {
-
-            Toast.makeText(AdminHomeScreen.this, "" + adminHomeScreenBinding.adminHomeInputId.getText(), Toast.LENGTH_SHORT).show();
-            adminHomeScreenBinding.adminHomeInputId.setText(null);
-            hideKeyboard();
-
-            startActivity(new Intent(this, AdminVerifyDoc.class));
-        }
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-
         if (result != null) {
             if (result.getContents() != null) {
-                Toast.makeText(this, result.getFormatName() + "\n" + result.getContents(), Toast.LENGTH_SHORT).show();
-                super.onActivityResult(requestCode, resultCode, data);
+                // Log.d("SCAN_FORMAT_NAME", result.getFormatName().trim());
+                sendScannedDetailsToCreateLog(result.getContents().trim());
+
+            } else {
+                new CustomSnackbar(this, getString(R.string.admin_home_screen_wrong_scan_text), getString(R.string.admin_home_screen_retry_action_text), adminHomeScreenBinding.layoutContainer) {
+                    @Override
+                    public void onActionClick(View view) {
+                        scanCode(view);
+                    }
+                }.showWithAction();
             }
+
         }
     }
 
@@ -140,6 +106,56 @@ public class AdminHomeScreen extends AppCompatActivity {
                 }
             }, 2000);
         }
+    }
+
+
+    private void toolbarSetup() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            toolbar.setTitleTextColor(getResources().getColor(R.color.colorPrimaryDark));
+        }
+    }
+
+    private void getBundleData() {
+    }
+
+    private void findViewByIds() {
+        progressBar = findViewById(R.id.progressBar);
+    }
+
+
+    /**
+     * TODO - to send status flag for user Logout action
+     */
+    private void sendStatusForLogout() {
+    }
+
+    public void scanCode(View view) {
+        IntentIntegrator intentIntegrator = new IntentIntegrator(AdminHomeScreen.this);
+        intentIntegrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+        intentIntegrator.setCameraId(0);
+        intentIntegrator.setOrientationLocked(false);
+        intentIntegrator.setPrompt(getString(R.string.scan_alert_msg));
+        intentIntegrator.setBeepEnabled(true);
+        intentIntegrator.setBarcodeImageEnabled(true);
+        intentIntegrator.initiateScan();
+
+    }
+
+    public void searchForUser(View view) {
+        if (!TextUtils.isEmpty(adminHomeScreenBinding.adminHomeInputId.getText())) {
+
+            Toast.makeText(AdminHomeScreen.this, "" + adminHomeScreenBinding.adminHomeInputId.getText(), Toast.LENGTH_SHORT).show();
+            adminHomeScreenBinding.adminHomeInputId.setText(null);
+            hideKeyboard();
+
+            startActivity(new Intent(this, AdminVerifyDoc.class));
+        }
+    }
+
+
+    private void sendScannedDetailsToCreateLog(String scannedDetails) {
     }
 
     public void hideKeyboard() {

@@ -11,6 +11,12 @@
 
     <dimen name="space">16dp</dimen>
 
+<!--    Snack Bar Designs-->
+
+    <dimen name="snackbar_textview_textSize">18sp</dimen>
+    <dimen name="snackbar_button_textSize">14sp</dimen>
+
+
     <!--admin home attributes-->
     <dimen name="admin_home_switch_padding">5dp</dimen>
     <dimen name="admin_home_switch_margin">15dp</dimen>
