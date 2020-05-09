@@ -38,6 +38,10 @@
     <string name="create_general_user_dob">Date Of Birth (DD/MM/YYYY)</string>
     <string name="create_general_user_contact">Contact</string>
     <string name="create_general_user_address">Address</string>
+    <string name="create_general_user_aadhar">Aadhar</string>
+    <string name="create_general_user_pin_code">Pincode</string>
+
+
     <string name="doc">Doc</string>
     <string name="save_user">Save</string>
     <string name="front_doc">Front Doc</string>

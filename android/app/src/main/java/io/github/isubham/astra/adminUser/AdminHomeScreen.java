@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,9 +39,12 @@ import io.github.isubham.astra.tools.ApplicationController;
 import io.github.isubham.astra.tools.Constants;
 import io.github.isubham.astra.tools.CustomSnackbar;
 import io.github.isubham.astra.tools.Endpoints;
+import io.github.isubham.astra.tools.Errors;
 
 
 public class AdminHomeScreen extends AppCompatActivity {
+
+    private String TAG = "AdminHomeScreen";
 
     private AdminHomeScreenBinding adminHomeScreenBinding;
     private ProgressBar progressBar;
@@ -79,7 +81,7 @@ public class AdminHomeScreen extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.register_user:
-                startActivity(new Intent(this, CreateGeneralUser.class));
+                startActivity(new Intent(this, CreateGeneralUser.class).putExtra(Constants.USER_TYPE, Constants.USER_TYPE_ADMIN));
                 return true;
             case R.id.logout:
                 sendStatusForLogout();
@@ -173,7 +175,6 @@ public class AdminHomeScreen extends AppCompatActivity {
         }
     }
 
-
     private void getUserDetailsFromServerFor(Editable userName) {
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, Endpoints.SEARCH_BY_USER_NAME + userName, null, new Response.Listener<JSONObject>() {
@@ -192,12 +193,12 @@ public class AdminHomeScreen extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 hideProgressBar();
-                Log.d("response \n", "" + error.toString());
+                Errors.handleVolleyError(error, TAG, AdminHomeScreen.this);
             }
         }) {
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
                 headers.put("Authorization", "Basic eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Mn0.1HCAwj7aXeFFAjUJXDATBBUYsWy2-8c01chWoISVPP4");
                 return headers;
             }
