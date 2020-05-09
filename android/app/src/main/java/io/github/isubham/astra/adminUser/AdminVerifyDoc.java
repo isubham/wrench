@@ -1,6 +1,7 @@
 package io.github.isubham.astra.adminUser;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -61,6 +62,8 @@ public class AdminVerifyDoc extends AppCompatActivity {
             adminVerifyDocBinding.userName.setText(name);
             adminVerifyDocBinding.uniqueId.setText(userName);
 
+            if (!TextUtils.isEmpty(profilePicUrl))
+                Glide.with(this).load(profilePicUrl).centerCrop().into(adminVerifyDocBinding.profilePic);
         }
 
     }

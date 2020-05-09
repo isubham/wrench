@@ -172,6 +172,7 @@ public class AdminHomeScreen extends AppCompatActivity {
         }
     }
 
+
     private void getUserDetailsFromServerFor(Editable userName) {
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, Endpoints.SEARCH_BY_USER_NAME + userName, null, new Response.Listener<JSONObject>() {
