@@ -29,28 +29,27 @@
             android:screenOrientation="portrait"
             android:theme="@style/ActivityDialog"
             tools:ignore="LockedOrientationActivity">
-            <!--            <intent-filter>-->
-            <!--                <action android:name="android.intent.action.MAIN" />-->
 
-            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-            <!--            </intent-filter>-->
         </activity>
         <activity
             android:name=".adminUser.AdminHomeScreen"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".generalUser.CreateGeneralUser"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity android:name=".adminUser.AdminSignIn" />
-        <activity android:name=".adminUser.AdminCreateAccount" />
+        <activity android:name=".adminUser.AdminCreateAccount" >
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <activity android:name=".generalUser.GeneralUserSearchUser" />
         <activity android:name=".generalUser.GeneralUserViewQr" />
