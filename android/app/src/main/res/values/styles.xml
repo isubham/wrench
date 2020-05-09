@@ -42,13 +42,37 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginBottom">@dimen/material_element_margin</item>
-
-
+        <item name="textAllCaps">false</item>
     </style>
 
 
     <style name="ActivityDialog" parent="Theme.AppCompat.Light.Dialog.MinWidth" />
 
+    <style name="disableButton" parent="baseFulWidthElement">
+        <item name="android:textColor">@color/disabledText</item>
+        <item name="android:backgroundTint">@color/disabled</item>
+    </style>
+
+
+    <style name="activeButton" parent="baseFulWidthElement">
+        <item name="android:textColor">@color/activeText</item>
+        <item name="android:backgroundTint">@color/active</item>
+    </style>
+
+    <style name="progressgButton" parent="baseFulWidthElement">
+        <item name="android:textColor">@color/progressText</item>
+        <item name="android:backgroundTint">@color/progress</item>
+    </style>
+
+    <style name="successButton" parent="baseFulWidthElement">
+        <item name="android:textColor">@color/sucessText</item>
+        <item name="android:backgroundTint">@color/sucess</item>
+    </style>
+
+    <style name="dangerButton" parent="baseFulWidthElement">
+        <item name="android:textColor">@color/dangerText</item>
+        <item name="android:backgroundTint">@color/danger</item>
+    </style>
     <!--    Custom SnackBar TextView Style-->
     <style name="CustomSnackBarTextViewStyle" parent="@android:style/Widget.TextView">
         <item name="android:textSize">@dimen/snackbar_textview_textSize</item>
