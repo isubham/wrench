@@ -57,6 +57,8 @@
     <string name="error_signing_up">Error Signing Up !!</string>
     <string name="signin_up">Signing Up ...</string>
     <string name="continue_to_panel">Continue</string>
+    <string name="signing_in">Signing In ...</string>
+    <string name="sign_in">Sign In</string>
 
 
 </resources>
