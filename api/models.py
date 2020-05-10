@@ -6,7 +6,6 @@ from sqlalchemy.orm import relationship
 from cryptography.fernet import Fernet
 from cryptography.fernet import InvalidToken
 
-
 from utility import Utility
 
 
@@ -14,7 +13,7 @@ class User(db.Model):
     __tablename__ = 'User'
 
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(), unique=True)
+    email = db.Column(db.String(), db.ForeignKey('License.user_email'), unique=True)
     username = db.Column(db.String(), unique=True)
     password = db.Column(db.String())
     phone = db.Column(db.String(), unique=True)
@@ -48,7 +47,6 @@ class User(db.Model):
             self.id, self.email, self.appCode, self.verified, self.failedAttempts, self.lastLogin, self.created,
             self.modified)
 
-
     def post_signin(self):
         self.modified = datetime.now()
 
@@ -78,14 +76,19 @@ class People(db.Model):
     id_back = db.Column(db.String())
     father_name = db.Column(db.String())
     username = db.Column(db.String(), unique=True)
+    created_by = db.Column(db.Integer)
     created = db.Column(db.DateTime())
     modified = db.Column(db.DateTime())
     aadhar_id = db.Column(db.String(), unique=True)
+    contact = db.Column(db.String())
+    pin_code = db.Column(db.String())
+    address = db.Column(db.String())
+    email = db.Column(db.String())
     user_id = db.Column(db.Integer, db.ForeignKey('User.id'))
     User = relationship("User", back_populates="People")
 
     def __init__(self, user_id, first_name, last_name, dob, profile_pic, id_front,
-                 id_back, father_name, username, aadhar_id=None):
+                 id_back, father_name, username, created_by, contact, pin_code, address, email, aadhar_id=None):
         self.user_id = user_id
         self.first_name = first_name
         self.last_name = last_name
@@ -96,8 +99,13 @@ class People(db.Model):
         self.father_name = father_name
         self.username = username
         self.aadhar_id = aadhar_id
+        self.created_by = created_by
         self.created = datetime.now()
         self.modified = datetime.now()
+        self.contact = contact
+        self.pin_code = pin_code
+        self.address = address
+        self.email = email
 
     def __repr__(self):
         pass
@@ -107,7 +115,7 @@ class PersonSchema(mb.Schema):
     class Meta:
         fields = (
             'id', 'user_id', 'first_name', 'last_name', 'dob', 'profile_pic', 'id_front', 'id_back',
-            'father_name', 'username', 'created', 'modified', 'aadhar_id')
+            'father_name', 'username', 'created', 'created_by', 'modified', 'aadhar_id', 'contact', 'pincode', 'address', 'email')
 
 
 person_schema = PersonSchema()
@@ -122,7 +130,7 @@ class Activity(db.Model):
     type = db.Column(db.Integer)
     location = db.Column(db.String())
     user_id = db.Column(db.Integer, db.ForeignKey("User.id"))
-    User = relationship("User",  back_populates="Activity")
+    User = relationship("User", back_populates="Activity")
 
     def __init__(self, user_id, person_id, location, type):
         self.user_id = user_id
@@ -146,53 +154,48 @@ class License(db.Model):
     app_code = db.Column(db.Integer)
     secret_key = db.Column(db.LargeBinary)
     license_key = db.Column(db.LargeBinary)
-    user_id = db.Column(db.Integer, db.ForeignKey("User.id"), primary_key=True)
+    user_email = db.Column(db.String(), primary_key=True)
     User = relationship("User", back_populates="License")
 
-    def __init__(self, user_id, app_code, validity):
-        self.user_id = user_id
+
+    def __init__(self, email, app_code, validity):
+        self.user_email = email
         self.app_code = app_code
         self.secret_key = Fernet.generate_key()
-        self.license_key = self.generate_license_key(user_id, app_code, validity)
+        self.license_key = self.generate_license_key(email, app_code, validity)
 
-    def generate_license_key(self, user_id, app_id, validity):
+    def generate_license_key(self, user_email, app_id, validity):
         f = Fernet(self.secret_key)
         license_salt = os.environ["LICENSE_SALT"]
-        license_text = "user_id:{}|app_code:{}|license_valid:{}|license_salt:{}" \
-            .format(user_id, app_id, validity, license_salt).encode()
+        license_text = "user_email:{}|app_code:{}|license_valid:{}|license_salt:{}" \
+            .format(user_email, app_id, validity, license_salt).encode()
         return f.encrypt(license_text)
 
-    def license_valid(self, user_id, app_code, license_text):
-
-        f = Fernet(self.secret_key)
-        license_decrypted = ''
+    def license_valid(self, user_email, app_code, license_text):
         try:
+            f = Fernet(self.secret_key)
             license_decryped = f.decrypt(license_text.encode())
+
+            license_components = license_decryped.decode().split('|')
+            license_user_email, license_app_code, license_valid, license_salt = map(lambda s: s.split(":")[1],
+                                                                                    license_components)
+
+            user_email_matches = user_email == license_user_email
+            app_id_matches = app_code == license_app_code
+            license_validity_left = (Utility.parseDateYMD(license_valid) - \
+                                     Utility.parseDateYMD(str(datetime.now()).split(" ")[0])).days
+
+            if user_email_matches and app_id_matches and license_validity_left > 0:
+                return {"valid": True, "day_left": license_validity_left}
+            else:
+                return {"invalid": False, "day_left": 0}
+
         except InvalidToken as i:
             raise InvalidToken
 
-
-        license_components = license_decryped.decode().split('|')
-        license_user_id, license_app_code, license_valid, license_salt = map(lambda s : s.split(":")[1],
-                                                                                 license_components)
-
-        user_id_matches = str(user_id) == license_user_id
-        app_id_matches =  app_code == license_app_code
-        license_validity_left = (Utility.parseDateYMD(license_valid) - \
-                                Utility.parseDateYMD(str(datetime.now()).split(" ")[0])).days
-
-        if user_id_matches and app_id_matches and license_validity_left > 0:
-            return {"valid": True, "day_left": license_validity_left}
-        else:
-            return {"valid": False, "day_left": 0}
-
-
 class LicenseSchema(mb.Schema):
     class Meta:
-        fields = ('user_id', 'license_key')
+        fields = ('user_email', 'license_key')
 
 
 license_schema = LicenseSchema()
-
-
-

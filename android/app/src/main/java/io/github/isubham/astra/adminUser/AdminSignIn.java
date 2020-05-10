@@ -13,6 +13,8 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
@@ -21,13 +23,18 @@ import java.util.Map;
 import java.util.Objects;
 
 import io.github.isubham.astra.databinding.AdminSignInBinding;
+import io.github.isubham.astra.model.ErrorResponse;
+import io.github.isubham.astra.model.User;
 import io.github.isubham.astra.tools.ApplicationController;
+import io.github.isubham.astra.tools.LoginPersistance;
+import io.github.isubham.astra.tools.StatefulButton;
 import io.github.isubham.astra.tools.validators;
 
 public class AdminSignIn extends AppCompatActivity {
 
     AdminSignInBinding binding;
     private boolean backPressedToExitOnce = false;
+    StatefulButton statefulButton;
 
 
     @Override
@@ -38,6 +45,13 @@ public class AdminSignIn extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
+        // (Button active, Button loading, Button next, TextView successMessage) {
+        statefulButton = new StatefulButton(
+                binding.adminSignInActiveButton,
+                binding.adminSignInLoadingButton,
+                binding.adminSignInContinueButton,
+                binding.adminSignInSuccessMessage
+                );
 
         addFocusChangeListers();
 
@@ -48,43 +62,78 @@ public class AdminSignIn extends AppCompatActivity {
     }
 
     public void signIn(View view) {
+        if (!validateFields()) {
+            Toast.makeText(this, "Please Correct Errors", Toast.LENGTH_SHORT).show();
+        }
+        else {
 
-        String url = "https://aastra-stag.herokuapp.com/auth/signin/";
-        HashMap<String, String> signInDetails = new HashMap<>();
-        signInDetails.put("email", getEmail());
-        signInDetails.put("password", getPassword());
+            statefulButton.setLoading();
 
-        JsonObjectRequest signInRequest = new JsonObjectRequest(url, new JSONObject(signInDetails),
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
+            String url = "https://aastra-stag.herokuapp.com/auth/signin/";
+            HashMap<String, String> signInDetails = new HashMap<>();
+            signInDetails.put("email", getEmail());
+            signInDetails.put("password", getPassword());
 
-                        // parse response
 
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
+            JsonObjectRequest signInRequest = new JsonObjectRequest(url, new JSONObject(signInDetails),
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
 
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                return super.getParams();
-            }
+                            if(response.has("code")) {
+                                statefulButton.setActive();
+                                ErrorResponse error = new Gson().fromJson(response.toString(), ErrorResponse.class);
+                                binding.adminSignInEmail.setError(error.message);
+                                binding.adminSignInPassword.setError(error.message);
+                            }
+                            else{
+                                hideAllFields();
+                                User createdUser = new Gson().fromJson(response.toString(), User.class);
+                                LoginPersistance.Save(getEmail(), createdUser.getToken(), AdminSignIn.this);
+                                statefulButton.setNext("Welcome Back " + getEmail());
+                            }
 
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<>();
-                headers.put("Content-Type", "application/json");
-                // headers.put("Authorization", "Basic " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODN9.YgHTISz_lJxtltFpBa1slcjcdxZoFS26b7T-QqbDMuc");
-                return headers;
-            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
 
-        };
+                        }
+                    }) {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    return super.getParams();
+                }
 
-        ApplicationController.getInstance().addToRequestQueue(signInRequest);
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<>();
+                    headers.put("Content-Type", "application/json");
+                    // headers.put("Authorization", "Basic " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODN9.YgHTISz_lJxtltFpBa1slcjcdxZoFS26b7T-QqbDMuc");
+                    return headers;
+                }
+
+            };
+
+            Volley.newRequestQueue(AdminSignIn.this).add(signInRequest);
+        }
+    }
+
+    private void hideAllFields()
+    {
+        binding.adminSignInEmailLayout.setVisibility(View.GONE);
+        binding.adminSignInPasswordLayout.setVisibility(View.GONE);
+        binding.adminSignInEmail.setVisibility(View.GONE);
+        binding.adminSignInPassword.setVisibility(View.GONE);
+        binding.adminSignInCreateAccountLink.setVisibility(View.GONE);
+
+    }
+
+    private boolean validateFields() {
+        boolean emailValid = validateEmail();
+        boolean passwordValid = validatePassword();
+        return emailValid && passwordValid;
     }
 
     private void addFocusChangeListers() {
@@ -92,11 +141,7 @@ public class AdminSignIn extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    String emailValidationErrors =
-                            validators.emailHasErrors(AdminSignIn.this, getEmail());
-                    if (!emailValidationErrors.equals("")) {
-                        binding.adminSignInEmail.setError(emailValidationErrors);
-                    }
+                    validateEmail();
                 }
             }
         });
@@ -105,24 +150,38 @@ public class AdminSignIn extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    String passwordValidationErrors =
-                            validators.passwordHasErrors(AdminSignIn.this, getPassword());
-                    if (!passwordValidationErrors.equals("")) {
-                        binding.adminSignInPassword.setError(passwordValidationErrors);
-                    }
+                    validatePassword();
                 }
             }
         });
     }
 
+    private boolean validatePassword() {
+        String passwordValidationErrors =
+                validators.passwordHasErrors(AdminSignIn.this, getPassword());
+        if (!passwordValidationErrors.equals("")) {
+            binding.adminSignInPassword.setError(passwordValidationErrors);
+        }
+        return passwordValidationErrors.equals("");
+    }
+
+    private boolean validateEmail() {
+        String emailValidationErrors =
+                validators.emailHasErrors(AdminSignIn.this, getEmail());
+        if (!emailValidationErrors.equals("")) {
+            binding.adminSignInEmail.setError(emailValidationErrors);
+        }
+        return emailValidationErrors.equals("");
+    }
+
     @SuppressLint("NewApi")
     private String getEmail() {
-        return Objects.requireNonNull(binding.adminSignInEmail).getText().toString();
+        return Objects.requireNonNull(binding.adminSignInEmail).getText().toString().trim();
     }
 
     @SuppressLint("NewApi")
     private String getPassword() {
-        return Objects.requireNonNull(binding.adminSignInPassword).getText().toString();
+        return Objects.requireNonNull(binding.adminSignInPassword).getText().toString().trim();
     }
 
     @Override
@@ -141,5 +200,9 @@ public class AdminSignIn extends AppCompatActivity {
                 }
             }, 2000);
         }
+    }
+
+    public void gotoPanel(View view) {
+        startActivity(new Intent(AdminSignIn.this,AdminHomeScreen.class));
     }
 }

@@ -1,5 +1,6 @@
 package io.github.isubham.astra.generalUser;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -8,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -18,36 +20,96 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.Gson;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import io.github.isubham.astra.R;
 import io.github.isubham.astra.databinding.CreateGeneralUserBinding;
+import io.github.isubham.astra.model.GeneralUser;
+import io.github.isubham.astra.tools.ApplicationController;
 import io.github.isubham.astra.tools.CameraUtils;
 import io.github.isubham.astra.tools.Constants;
+import io.github.isubham.astra.tools.Endpoints;
+import io.github.isubham.astra.tools.Errors;
+import io.github.isubham.astra.tools.Headers;
 
 public class CreateGeneralUser extends AppCompatActivity {
 
+    public static final String TAG = "CreateGeneralUser";
+
     private static String imageStoragePath = Constants.EMPTY_STRING;
-    private CreateGeneralUserBinding createGeneralUserBinding;
+    private CreateGeneralUserBinding binding;
     private ProgressBar progressBar;
     //camera related
     private Bitmap bitmap, bitmap_front_doc, bitmap_back_doc, bitmap_profile_pic;
     private Uri fileUri;
     private int powerOf2;
 
+    //Data From Bundle
+    private String createdById;
+
+    private Gson gson;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        createGeneralUserBinding = CreateGeneralUserBinding.inflate(getLayoutInflater());
-        setContentView(createGeneralUserBinding.getRoot());
+        binding = CreateGeneralUserBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         findViewByIds();
         toolbarSetup();
         //showProgressBar();
-        getBundleData();
+        setBundleData();
+
+        //check For Permission
+        if (!CameraUtils.checkPermissions(CreateGeneralUser.this))
+            requestCameraPermission();
+
+
         hideProgressBar();
 
+    }
+
+    /**
+     * Requesting permissions using Dexter library
+     */
+    private void requestCameraPermission() {
+        Dexter.withActivity(this)
+                .withPermissions(Manifest.permission.CAMERA,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE)
+                .withListener(new MultiplePermissionsListener() {
+                    @Override
+                    public void onPermissionsChecked(MultiplePermissionsReport report) {
+                        //if (report.areAllPermissionsGranted()) {} else
+                        if (report.isAnyPermissionPermanentlyDenied()) {
+                            showPermissionsAlert();
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                }).check();
     }
 
     public void getUserPic(View view) {
@@ -57,7 +119,11 @@ public class CreateGeneralUser extends AppCompatActivity {
             showPermissionsAlert();
     }
 
-    private void getBundleData() {
+    private void setBundleData() {
+        Bundle b = getIntent().getExtras();
+        if (b != null) {
+            createdById = b.getString(Constants.USER_TYPE);
+        }
     }
 
     private void toolbarSetup() {
@@ -95,12 +161,6 @@ public class CreateGeneralUser extends AppCompatActivity {
             captureImage(Constants.BACK_DOC);
         else
             showPermissionsAlert();
-    }
-
-    public void saveGeneralUser(View view) {
-
-        //bitmap_front_doc, bitmap_back_doc, bitmap_profile_pic    has the updated value for respective images in view
-
     }
 
     /*TODO For Camera Stuff ***/
@@ -199,17 +259,17 @@ public class CreateGeneralUser extends AppCompatActivity {
 
         if (bitmap != null) {
             if (fileUri.toString().contains(Constants.FRONT_DOC)) {
-                createGeneralUserBinding.frontDoc.setRotation(90);
-                createGeneralUserBinding.frontDoc.setImageBitmap(bitmap);
+                binding.frontDoc.setRotation(90);
+                binding.frontDoc.setImageBitmap(bitmap);
                 bitmap_front_doc = bitmap;
             } else if (fileUri.toString().contains(Constants.BACK_DOC)) {
-                createGeneralUserBinding.backDoc.setRotation(90);
-                createGeneralUserBinding.backDoc.setImageBitmap(bitmap);
+                binding.backDoc.setRotation(90);
+                binding.backDoc.setImageBitmap(bitmap);
                 bitmap_back_doc = bitmap;
             } else {
                 // for ProfilePic
-                createGeneralUserBinding.profilePic.setRotation(-90);
-                createGeneralUserBinding.profilePic.setImageBitmap(bitmap);
+                binding.profilePic.setRotation(-90);
+                binding.profilePic.setImageBitmap(bitmap);
                 bitmap_profile_pic = bitmap;
             }
             clearGlobalsForNextUse();
@@ -237,4 +297,71 @@ public class CreateGeneralUser extends AppCompatActivity {
     }
 
     /* TODO Camera Stuff Over */
+
+    /* TODO Image Conversion Stuff*/
+    private String getStringFromBitmap(Bitmap bitmap, int quality) {
+        /* Bitmap Image is converted to byte Array  here   */
+
+        if (bitmap != null) {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
+            byte[] imageBytes = outputStream.toByteArray();
+            return Base64.encodeToString(imageBytes, Base64.DEFAULT);
+        }
+        return Constants.EMPTY_STRING;
+    }
+    /* TODO Image Conversion Stuff Over*/
+
+
+    public void saveGeneralUser(View view) {
+
+        //bitmap_front_doc, bitmap_back_doc, bitmap_profile_pic  ,createdById  has the updated value for respective images in view
+        GeneralUser generalUser = new GeneralUser(getStringFromBitmap(bitmap_profile_pic, Constants.HIGH_QUALITY), String.valueOf(binding.userName.getText()), String.valueOf(binding.fullName.getText()),
+                String.valueOf(binding.fatherName.getText()), String.valueOf(binding.email.getText()), String.valueOf(binding.dob.getText()), String.valueOf(binding.contact.getText()),
+                String.valueOf(binding.aadhar.getText()), String.valueOf(binding.address.getText()), String.valueOf(binding.pincode.getText()), getStringFromBitmap(bitmap_front_doc,
+                Constants.HIGH_QUALITY), getStringFromBitmap(bitmap_back_doc, Constants.HIGH_QUALITY), createdById);
+
+        gson = new Gson();
+        String generalUserJson = gson.toJson(generalUser);
+        try {
+            apiRequestToSaveGeneralUser(new JSONObject(generalUserJson));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void apiRequestToSaveGeneralUser(JSONObject generalUserJson) {
+        showProgressBar();
+        Log.e("request", generalUserJson.toString());
+        Toast.makeText(this, generalUserJson.toString(), Toast.LENGTH_SHORT).show();
+        binding.email.setText(generalUserJson.toString());
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, Endpoints.CREATE_GENERAL_USER, generalUserJson, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                hideProgressBar();
+                Toast.makeText(CreateGeneralUser.this, "" + response.toString(), Toast.LENGTH_SHORT).show();
+                Log.e("response", response.toString());
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                hideProgressBar();
+                Errors.handleVolleyError(error, TAG, CreateGeneralUser.this);
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put(Headers.CONTENT_TYPE, Headers.APPLICATION_JSON);
+                return headers;
+            }
+        };
+
+        ApplicationController.getInstance().addToRequestQueue(request);
+
+    }
+
+
 }

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <dimen name="material_layout_padding">16dp</dimen>
-    <dimen name="material_element_margin">4dp</dimen>
-
-    <dimen name="space">16dp</dimen>
-
-
-</resources>
