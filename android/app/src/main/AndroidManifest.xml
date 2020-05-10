@@ -16,6 +16,9 @@
     <uses-feature android:name="com.android.hardware.Camera.focus" />
     <uses-feature android:name="android.hardware.camera.flash" />
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
     <application
         android:name="io.github.isubham.astra.tools.ApplicationController"
 
@@ -61,7 +64,7 @@
         </activity>
 
         <activity android:name=".generalUser.GeneralUserSearchUser" />
-        <activity android:name=".generalUser.GeneralUserViewQr" />
+        <activity android:name=".generalUser.GeneralUserViewQr"/>
 
         <activity android:name=".generalUser.GeneralUserHomeScreen" />
 

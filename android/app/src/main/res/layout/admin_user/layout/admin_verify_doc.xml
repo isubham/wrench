@@ -16,6 +16,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:onClick="closeActivity"
+        android:visibility="gone"
         android:src="@mipmap/close3" />
 
 
@@ -30,7 +31,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/material_element_margin"
-            android:background="@drawable/create_gen_user_doc_image_holder_bg"
             android:hint="faiz_96"
             android:padding="@dimen/material_element_margin" />
 
@@ -55,7 +55,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/profilePic"
         android:layout_centerHorizontal="true"
-        android:hint="@string/username" />
+        android:hint="@string/username"
+        android:visibility="gone"
+        />
 
     <TextView
         android:id="@+id/label"
@@ -68,6 +70,7 @@
         android:textStyle="bold" />
 
 
+    <!--
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/docViewer"
         android:layout_width="match_parent"
@@ -76,7 +79,31 @@
         android:layout_margin="@dimen/material_element_margin"
         android:contentDescription="@string/admin_verify_doc"
         android:padding="@dimen/material_layout_padding" />
+        -->
 
+    <ImageView
+        android:id="@+id/admin_verify_doc_front_doc"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/create_gen_user_doc_holder_height"
+        android:layout_below="@+id/label"
+        android:background="@drawable/create_gen_user_doc_image_holder_bg"
+        android:contentDescription="@string/front_doc"
+        android:padding="@dimen/create_gen_user_doc_holder_padding" />
+
+    <ImageView
+        android:id="@+id/admin_verify_doc_back_doc"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/create_gen_user_doc_holder_height"
+        android:layout_below="@+id/admin_verify_doc_front_doc"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="@dimen/space"
+        android:background="@drawable/create_gen_user_doc_image_holder_bg"
+        android:contentDescription="@string/back_doc"
+        android:padding="@dimen/create_gen_user_doc_holder_padding" />
+
+
+    <!--
     <LinearLayout
         android:id="@+id/sliderDots"
         android:layout_width="match_parent"
@@ -84,7 +111,9 @@
         android:layout_below="@+id/docViewer"
         android:gravity="center"
         android:orientation="horizontal"
-        android:padding="@dimen/material_layout_padding" />
+        android:padding="@dimen/material_layout_padding"
+        />
+        -->
 
     <Button
         android:id="@+id/SaveUser"
@@ -94,8 +123,8 @@
         android:layout_centerHorizontal="true"
         android:layout_margin="4dp"
         android:background="@drawable/save_button_bg"
-        android:onClick="verifyUser"
-        android:text="@string/ok"
+        android:onClick="LogActivity"
+        android:text="@string/save"
         android:textColor="@color/colorPrimary"
         android:textStyle="bold" />
 
