@@ -76,14 +76,19 @@ class People(db.Model):
     id_back = db.Column(db.String())
     father_name = db.Column(db.String())
     username = db.Column(db.String(), unique=True)
+    created_by = db.Column(db.Integer)
     created = db.Column(db.DateTime())
     modified = db.Column(db.DateTime())
     aadhar_id = db.Column(db.String(), unique=True)
+    contact = db.Column(db.String())
+    pin_code = db.Column(db.String())
+    address = db.Column(db.String())
+    email = db.Column(db.String())
     user_id = db.Column(db.Integer, db.ForeignKey('User.id'))
     User = relationship("User", back_populates="People")
 
     def __init__(self, user_id, first_name, last_name, dob, profile_pic, id_front,
-                 id_back, father_name, username, aadhar_id=None):
+                 id_back, father_name, username, created_by, contact, pin_code, address, email, aadhar_id=None):
         self.user_id = user_id
         self.first_name = first_name
         self.last_name = last_name
@@ -94,8 +99,13 @@ class People(db.Model):
         self.father_name = father_name
         self.username = username
         self.aadhar_id = aadhar_id
+        self.created_by = created_by
         self.created = datetime.now()
         self.modified = datetime.now()
+        self.contact = contact
+        self.pin_code = pin_code
+        self.address = address
+        self.email = email
 
     def __repr__(self):
         pass
@@ -105,7 +115,7 @@ class PersonSchema(mb.Schema):
     class Meta:
         fields = (
             'id', 'user_id', 'first_name', 'last_name', 'dob', 'profile_pic', 'id_front', 'id_back',
-            'father_name', 'username', 'created', 'modified', 'aadhar_id')
+            'father_name', 'username', 'created', 'created_by', 'modified', 'aadhar_id', 'contact', 'pincode', 'address', 'email')
 
 
 person_schema = PersonSchema()
