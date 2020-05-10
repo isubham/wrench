@@ -20,6 +20,7 @@
 
         <!--    email-->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/admin_create_account_email_layout"
             style="@style/baseFulWidthElement"
             android:hint="@string/email">
 
@@ -35,6 +36,7 @@
 
         <!--    password -->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/admin_create_account_password_layout"
             style="@style/baseFulWidthElement"
             android:hint="@string/password">
 
@@ -50,6 +52,7 @@
 
         <!--    confirm password -->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/admin_create_account_confirm_password_layout"
             style="@style/baseFulWidthElement"
             android:hint="@string/confirm_password"
             >
@@ -65,6 +68,7 @@
 
         <!--    license-->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/admin_create_account_license_text_layout"
             style="@style/baseFulWidthElement"
             android:hint="@string/license_key">
 
@@ -91,17 +95,13 @@
             android:text="@string/signin_up" />
 
 
-        <Button
-            android:id="@+id/admin_create_account_signup_button_success"
-            style="@style/successButton"
-            android:onClick="signUp"
-            android:text="@string/successfully_signed_up" />
-
-        <Button
-            android:id="@+id/admin_create_account_signup_button_danger"
-            style="@style/dangerButton"
-            android:onClick="signUp"
-            android:text="@string/error_signing_up" />
+        <TextView
+            style="@style/baseFulWidthElement"
+            android:gravity="center_horizontal"
+            android:textColor="@color/sucess"
+            android:textSize="@dimen/txt_big"
+            android:id="@+id/admin_create_account_success_message"
+            />
 
         <Button
             android:id="@+id/admin_create_account_signup_button_goto_panel"
@@ -113,6 +113,7 @@
             android:id="@+id/admin_create_account_signin_link"
             style="@style/baseFulWidthElement"
             android:layout_marginTop="@dimen/space"
+
             android:gravity="center_horizontal"
             android:onClick="gotoSignIn"
 
