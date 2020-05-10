@@ -61,7 +61,7 @@ def get_person_by_username(_username):
     return person_schema.jsonify(person_found)
 
 
-@routes.route('/person/fuzzy/', methods=['GET'])
+@routes.route('/person/fuzzy/', methods=['POST'])
 def person_search():
     first_name, father_name, dob = request.json["name"], request.json["father_name"], \
                                    Utility.get_date(request.json["dob"])
