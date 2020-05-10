@@ -17,12 +17,12 @@ def create_license():
     try:
         Utility.parseDateYMD(validity)
     except Exception as e:
-        return jsonify(Resources.license_invalid_validity())
+        return jsonify(Resources.data["license_invalid_validity"])
 
     license_exist = db.session.query(License).filter_by(user_email=user_email).first()
 
     if not license_exist is None:
-        return jsonify(Resources.error_license_exist())
+        return jsonify(Resources.data["error_license_exist"])
 
     try:
         new_license = License(user_email, app_id, validity)
@@ -45,7 +45,7 @@ def validate_license():
         try:
             return result.license_valid(user_email, app_code, result.license_key)
         except InvalidToken as i:
-            return jsonify(Resources.error_license_invalid())
+            return jsonify(Resources.data["error_license_invalid"])
     else:
-        return jsonify(Resources.error_license_dont_exist())
+        return jsonify(Resources.data["error_license_dont_exist"])
 
