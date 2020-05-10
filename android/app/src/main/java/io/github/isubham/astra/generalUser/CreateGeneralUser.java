@@ -9,7 +9,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -34,7 +33,6 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
@@ -298,28 +296,14 @@ public class CreateGeneralUser extends AppCompatActivity {
 
     /* TODO Camera Stuff Over */
 
-    /* TODO Image Conversion Stuff*/
-    private String getStringFromBitmap(Bitmap bitmap, int quality) {
-        /* Bitmap Image is converted to byte Array  here   */
-
-        if (bitmap != null) {
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
-            byte[] imageBytes = outputStream.toByteArray();
-            return Base64.encodeToString(imageBytes, Base64.DEFAULT);
-        }
-        return Constants.EMPTY_STRING;
-    }
-    /* TODO Image Conversion Stuff Over*/
-
-
     public void saveGeneralUser(View view) {
 
         //bitmap_front_doc, bitmap_back_doc, bitmap_profile_pic  ,createdById  has the updated value for respective images in view
-        GeneralUser generalUser = new GeneralUser(getStringFromBitmap(bitmap_profile_pic, Constants.HIGH_QUALITY), String.valueOf(binding.userName.getText()), String.valueOf(binding.fullName.getText()),
+        GeneralUser generalUser = new GeneralUser(CameraUtils.getBase64StringFromBitmap(bitmap_profile_pic, Constants.HIGH_QUALITY), String.valueOf(binding.userName.getText()), String.valueOf(binding.fullName.getText()),
                 String.valueOf(binding.fatherName.getText()), String.valueOf(binding.email.getText()), String.valueOf(binding.dob.getText()), String.valueOf(binding.contact.getText()),
-                String.valueOf(binding.aadhar.getText()), String.valueOf(binding.address.getText()), String.valueOf(binding.pincode.getText()), getStringFromBitmap(bitmap_front_doc,
-                Constants.HIGH_QUALITY), getStringFromBitmap(bitmap_back_doc, Constants.HIGH_QUALITY), createdById);
+                String.valueOf(binding.aadhar.getText()), String.valueOf(binding.address.getText()), String.valueOf(binding.pincode.getText()), CameraUtils.getBase64StringFromBitmap(bitmap_front_doc,
+                Constants.HIGH_QUALITY), CameraUtils.getBase64StringFromBitmap(bitmap_back_doc, Constants.HIGH_QUALITY), createdById);
+
 
         gson = new Gson();
         String generalUserJson = gson.toJson(generalUser);
@@ -332,6 +316,7 @@ public class CreateGeneralUser extends AppCompatActivity {
 
     private void apiRequestToSaveGeneralUser(JSONObject generalUserJson) {
         showProgressBar();
+
         Log.e("request", generalUserJson.toString());
         Toast.makeText(this, generalUserJson.toString(), Toast.LENGTH_SHORT).show();
         binding.email.setText(generalUserJson.toString());

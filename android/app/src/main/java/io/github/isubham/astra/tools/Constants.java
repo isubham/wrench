@@ -25,12 +25,19 @@ public class Constants {
     public static final String INVALID_USERNAME = "Invalid UserName";
     public static final String USER_NAME = "USER_NAME";
     public static final String NAME = "NAME";
+    public static final String ID = "id";
+
+
     public static final String ID_FRONT_URL = "ID_FRONT";
     public static final String ID_BACK_URL = "ID_BACK";
     public static final String PROFILE_PIC_URL = "PROFILE_PIC_URL";
     public static final String USER_TYPE = "USER_TYPE";
     public static final String USER_TYPE_ADMIN = "1";
     public static final String USER_TYPE_GENERAL = "2";
+
+    public static final String GENERAL_USER_CLASS_JSON_RESPONSE = "GENERAL_USER_JSON_RESPONSE" ;
+
+
     /////////////////Network Request/////////////////
     public static final String WEAK_INTERNET = "com.android.volley.TimeoutError";
     public static final String NO_INTERNET = "com.android.volley.NoConnectionError";

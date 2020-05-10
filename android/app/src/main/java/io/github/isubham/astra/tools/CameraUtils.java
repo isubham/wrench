@@ -12,12 +12,15 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.util.Base64;
 import android.util.Log;
+import android.widget.ImageView;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -93,7 +96,7 @@ public class CameraUtils {
 
     /**
      * Creates and returns the image or video file before opening the camera
-     *  create file directory , path , name formation
+     * create file directory , path , name formation
      */
     public static File getOutputMediaFile(int type, String side) {
 
@@ -186,5 +189,30 @@ public class CameraUtils {
         return BitmapFactory.decodeFile(filePath, options);
     }
 
+
+    /* TODO Image Conversion Stuff*/
+    public static String getBase64StringFromBitmap(Bitmap bitmap, int quality) {
+        /* Bitmap Image is converted to byte Array  here   */
+
+        if (bitmap != null) {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
+            byte[] imageBytes = outputStream.toByteArray();
+            return Base64.encodeToString(imageBytes, Base64.DEFAULT);
+        }
+        return Constants.EMPTY_STRING;
+    }
+
+    public static Bitmap getBitmapFromBase64ImageString(String base64Image) {
+        /*Base64 String is converted to Bitmap Image here   */
+        byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+    }
+
+    /* TODO Image Conversion Stuff Over*/
+
+    public static void setImage(ImageView imageView, String encodedImage) {
+        imageView.setImageBitmap(getBitmapFromBase64ImageString(encodedImage));
+    }
 
 }
