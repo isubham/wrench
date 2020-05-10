@@ -7,6 +7,8 @@
     android:padding="@dimen/material_layout_padding"
     tools:context="io.github.isubham.astra.adminUser.AdminVerifyDoc">
 
+    <include layout="@layout/progress_bar" />
+
     <ImageView
         android:id="@+id/closeActivity"
         android:layout_width="wrap_content"

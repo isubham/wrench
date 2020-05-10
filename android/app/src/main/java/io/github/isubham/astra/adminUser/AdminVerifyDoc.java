@@ -3,28 +3,48 @@ package io.github.isubham.astra.adminUser;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
-import com.bumptech.glide.Glide;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.Gson;
 
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.github.isubham.astra.R;
 import io.github.isubham.astra.adapters.ViewPagerAdapter;
 import io.github.isubham.astra.databinding.AdminVerifyDocBinding;
+import io.github.isubham.astra.model.GeneralUser;
+import io.github.isubham.astra.tools.ApplicationController;
+import io.github.isubham.astra.tools.CameraUtils;
 import io.github.isubham.astra.tools.Constants;
+import io.github.isubham.astra.tools.Endpoints;
+import io.github.isubham.astra.tools.Errors;
 
 public class AdminVerifyDoc extends AppCompatActivity {
 
+
+    private String TAG = "AdminVerifyDoc";
     private AdminVerifyDocBinding adminVerifyDocBinding;
     private ViewPagerAdapter pagerAdapter;
     private List<String> imageUrls;
+    private ProgressBar progressBar;
+
 
     // For Slider Dots
     private int dotsCount;
@@ -33,9 +53,9 @@ public class AdminVerifyDoc extends AppCompatActivity {
     //dataFromServer
 
     //dataFromBundle
-    private String userName, name;
-    private String profilePicUrl;
-    private String idFrontUrl, idBackUrl;
+    private String userName;
+
+    private Gson gson;
 
 
     @Override
@@ -44,13 +64,22 @@ public class AdminVerifyDoc extends AppCompatActivity {
         adminVerifyDocBinding = AdminVerifyDocBinding.inflate(getLayoutInflater());
         setContentView(adminVerifyDocBinding.getRoot());
 
+        imageUrls = new ArrayList<>();
+
+        findViewById();
+        setupPagerAdapter();
         setBundleData();
 
-        setupPagerAdapter();
+    }
+
+    private void findViewById() {
+        progressBar = findViewById(R.id.progressBar);
+
     }
 
     private void setBundleData() {
 
+<<<<<<< HEAD
         Bundle b = getIntent().getExtras();
         if (b != null) {
             userName = b.getString(Constants.USER_NAME);
@@ -64,13 +93,67 @@ public class AdminVerifyDoc extends AppCompatActivity {
 
             if (!TextUtils.isEmpty(profilePicUrl))
                 Glide.with(this).load(profilePicUrl).centerCrop().into(adminVerifyDocBinding.profilePic);
+=======
+        if (getIntent().getExtras() != null) {
+            userName = getIntent().getExtras().getString(Constants.USER_NAME);
+            fetchUserForUserName(userName);
         }
 
     }
 
+    private void fetchUserForUserName(String userName) {
+        showProgressBar();
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, Endpoints.SEARCH_BY_USER_NAME + userName, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                hideProgressBar();
+                //parse Response
+                if (!String.valueOf(response).equals(Constants.EMPTY_JSON)) {
+                    parseResponseAndSetUi(String.valueOf(response));
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                hideProgressBar();
+                Errors.handleVolleyError(error, TAG, AdminVerifyDoc.this);
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Basic eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Mn0.1HCAwj7aXeFFAjUJXDATBBUYsWy2-8c01chWoISVPP4");
+                return headers;
+            }
+        };
+
+        ApplicationController.getInstance().addToRequestQueue(request);
+
+    }
+
+    private void parseResponseAndSetUi(String response) {
+        gson = new Gson();
+        GeneralUser generalUser = gson.fromJson(response, GeneralUser.class);
+
+        //set To Ui Elements
+        adminVerifyDocBinding.userName.setText(generalUser.getFirst_name());
+        adminVerifyDocBinding.uniqueId.setText(generalUser.getUsername());
+        if (!TextUtils.isEmpty(generalUser.getProfile_pic())) {
+            // Glide.with(this).load(generalUser.getProfile_pic()).centerCrop().into(adminVerifyDocBinding.profilePic);
+            adminVerifyDocBinding.profilePic.setImageBitmap(CameraUtils.getBitmapFromBase64ImageString(generalUser.getProfile_pic()));
+>>>>>>> 4931123659f52bf6559b678685a278d933d8e89f
+        }
+
+
+        imageUrls = Arrays.asList(generalUser.getId_front(), generalUser.getId_back());
+        pagerAdapter.notifyDataSetChanged();
+
+
+    }
+
+
     private void setupPagerAdapter() {
 
-        //imageUrls = Arrays.asList("https://resize.indiatvnews.com/en/resize/newbucket/715_-/2019/04/pjimage-1-1556514034.jpg","https://www.mwallpapers.com/download-image/22526/576x768","https://st1.photogallery.ind.sh/wp-content/uploads/indiacom/anushka-sharma-flaunts-her-cleavage-in-hot-swimsuit-201610-1475585677-650x510.jpg","https://i.pinimg.com/originals/66/ce/4e/66ce4ee1543d9ffa2fb26a58a9acacd2.png","https://i.ytimg.com/vi/2eHyRLwQZmw/maxresdefault.jpg","https://www.quirkybyte.com/trendz/wp-content/uploads/sites/4/2018/09/Anushka-Sharma-flaunts-her-hot-boobs-1.jpg","https://i.pinimg.com/originals/7e/c6/99/7ec6995ab5b5cae7016eab0a4f24468e.jpg");
         pagerAdapter = new ViewPagerAdapter(this, imageUrls);
         adminVerifyDocBinding.docViewer.setAdapter(pagerAdapter);
         // slider dots configuration
@@ -99,8 +182,6 @@ public class AdminVerifyDoc extends AppCompatActivity {
         adminVerifyDocBinding.docViewer.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-
             }
 
             @Override
@@ -114,7 +195,6 @@ public class AdminVerifyDoc extends AppCompatActivity {
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
             }
         });
     }
@@ -126,6 +206,16 @@ public class AdminVerifyDoc extends AppCompatActivity {
         finish();
     }
 
+    public void showProgressBar() {
+        progressBar.setVisibility(View.VISIBLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+    }
+
+    public void hideProgressBar() {
+        progressBar.setVisibility(View.INVISIBLE);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
 
     public void loadProfilePic(View view) {
         if (profilePicUrl != null)

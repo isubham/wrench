@@ -17,18 +17,27 @@
     <uses-feature android:name="android.hardware.camera.flash" />
 
     <application
+        android:name="io.github.isubham.astra.tools.ApplicationController"
+
         android:allowBackup="true"
         android:icon="@mipmap/app_logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/app_logo"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:targetApi="n">
+
+
         <activity
             android:name=".adminUser.AdminVerifyDoc"
             android:noHistory="true"
             android:screenOrientation="portrait"
             android:theme="@style/ActivityDialog"
             tools:ignore="LockedOrientationActivity" />
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
 
 
         <activity
@@ -40,13 +49,27 @@
             <!--                <action android:name="android.intent.action.MAIN" />-->
             <!--                <category android:name="android.intent.category.LAUNCHER" />-->
             <!--            </intent-filter>-->
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
+>>>>>>> 4931123659f52bf6559b678685a278d933d8e89f
         </activity>
         <activity
             android:name=".generalUser.CreateGeneralUser"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity android:name=".adminUser.AdminSignIn">
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+
+=======
+>>>>>>> master
+>>>>>>> 4931123659f52bf6559b678685a278d933d8e89f
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
