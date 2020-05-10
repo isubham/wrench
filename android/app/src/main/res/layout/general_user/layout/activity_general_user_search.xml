@@ -13,14 +13,14 @@
         app:hintTextAppearance="@android:style/TextAppearance.Medium"
         app:layout_constraintBottom_toTopOf="@+id/general_user_til_dob"
         app:layout_constraintTop_toTopOf="parent"
-        android:padding="10dp">
+        android:padding="@dimen/app_padding">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/general_user_et_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
-            android:hint="Full Name"/>
+            android:hint="@string/create_general_user_name"/>
     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -29,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="56dp"
-        android:padding="10dp"
+        android:padding="@dimen/app_padding"
         app:hintTextAppearance="@android:style/TextAppearance.Medium"
         app:layout_constraintBottom_toTopOf="@+id/general_user_til_father_name"
         tools:layout_editor_absoluteX="0dp">
@@ -38,7 +38,7 @@
             android:id="@+id/general_user_et_dob"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="DOB"
+            android:hint="@string/create_general_user_dob"
             android:inputType="date" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -46,7 +46,7 @@
         android:id="@+id/general_user_til_father_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:padding="@dimen/app_padding"
         app:hintTextAppearance="@android:style/TextAppearance.Medium"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -57,7 +57,7 @@
             android:id="@+id/general_user_et_father_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="father name" />
+            android:hint="@string/create_general_fathers_name" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
@@ -68,11 +68,11 @@
         android:background="@color/colorPrimaryDark"
         android:onClick="searchUser"
         android:text="Search user"
-        android:textSize="@dimen/text_heading_one"
+        android:textSize="@dimen/button_heading"
         android:textColor="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/general_user_til_father_name"
         tools:layout_editor_absoluteX="-16dp"
-        android:padding="10dp"/>
+        android:padding="@dimen/app_padding"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
