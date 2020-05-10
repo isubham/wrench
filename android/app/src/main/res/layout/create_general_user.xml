@@ -32,24 +32,35 @@
                 app:civ_border_color="@color/colorHint"
                 app:civ_border_width="0.75dp" />
 
-            <TextView
-                android:id="@+id/userName"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textContainer0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/profilePic"
                 android:layout_centerHorizontal="true"
-                android:hint="@string/username" />
+                android:hint="@string/username"
+                android:textColorHint="@color/colorHint">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/userName"
+                    android:layout_width="@dimen/create_general_user_textView"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_below="@+id/profilePic"
+                    android:layout_centerHorizontal="true" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textContainer1"
-                style="@style/baseFulWidthElement"
-                android:layout_below="@+id/userName"
+                style="@style/baseFulWidthElementWithSmallText"
+                android:layout_below="@+id/textContainer0"
                 android:hint="@string/create_general_user_name"
                 android:textColorHint="@color/colorHint">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/create_general_user_name"
-                    style="@style/baseFulWidthElement"
+                    android:id="@+id/full_name"
+                    style="@style/baseFulWidthElementWithSmallText"
                     android:imeOptions="actionNext"
                     android:inputType="textPersonName|textCapCharacters" />
 
@@ -57,14 +68,14 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textContainer2"
-                style="@style/baseFulWidthElement"
+                style="@style/baseFulWidthElementWithSmallText"
                 android:layout_below="@+id/textContainer1"
                 android:hint="@string/create_general_fathers_name"
                 android:textColorHint="@color/colorHint">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/create_general_fathers_name"
-                    style="@style/baseFulWidthElement"
+                    android:id="@+id/father_name"
+                    style="@style/baseFulWidthElementWithSmallText"
                     android:imeOptions="actionNext"
                     android:inputType="textPersonName|textCapCharacters" />
 
@@ -72,14 +83,14 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textContainer3"
-                style="@style/baseFulWidthElement"
+                style="@style/baseFulWidthElementWithSmallText"
                 android:layout_below="@+id/textContainer2"
                 android:hint="@string/create_general_user_email_address"
                 android:textColorHint="@color/colorHint">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/create_general_user_email_address"
-                    style="@style/baseFulWidthElement"
+                    android:id="@+id/email"
+                    style="@style/baseFulWidthElementWithSmallText"
                     android:imeOptions="actionNext"
                     android:inputType="textWebEmailAddress" />
 
@@ -87,14 +98,14 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textContainer4"
-                style="@style/baseFulWidthElement"
+                style="@style/baseFulWidthElementWithSmallText"
                 android:layout_below="@+id/textContainer3"
                 android:hint="@string/create_general_user_dob"
                 android:textColorHint="@color/colorHint">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/create_general_user_dob"
-                    style="@style/baseFulWidthElement"
+                    android:id="@+id/dob"
+                    style="@style/baseFulWidthElementWithSmallText"
                     android:imeOptions="actionNext"
                     android:inputType="date" />
 
@@ -102,14 +113,14 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textContainer5"
-                style="@style/baseFulWidthElement"
+                style="@style/baseFulWidthElementWithSmallText"
                 android:layout_below="@+id/textContainer4"
                 android:hint="@string/create_general_user_contact"
                 android:textColorHint="@color/colorHint">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/create_general_user_contact"
-                    style="@style/baseFulWidthElement"
+                    android:id="@+id/contact"
+                    style="@style/baseFulWidthElementWithSmallText"
                     android:imeOptions="actionNext"
                     android:inputType="phone" />
 
@@ -117,23 +128,54 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textContainer6"
-                style="@style/baseFulWidthElement"
+                style="@style/baseFulWidthElementWithSmallText"
                 android:layout_below="@+id/textContainer5"
+                android:hint="@string/create_general_user_aadhar"
+                android:textColorHint="@color/colorHint">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/aadhar"
+                    style="@style/baseFulWidthElementWithSmallText"
+                    android:imeOptions="actionNext"
+                    android:inputType="phone" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textContainer7"
+                style="@style/baseFulWidthElementWithSmallText"
+                android:layout_below="@+id/textContainer6"
                 android:hint="@string/create_general_user_address"
                 android:textColorHint="@color/colorHint">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/create_general_user_address"
+                    android:id="@+id/address"
                     style="@style/baseFulWidthElement"
                     android:imeOptions="actionNext"
                     android:inputType="textPostalAddress" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textContainer8"
+                style="@style/baseFulWidthElementWithSmallText"
+                android:layout_below="@+id/textContainer7"
+                android:hint="@string/create_general_user_pin_code"
+                android:textColorHint="@color/colorHint">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/pincode"
+                    style="@style/baseFulWidthElementWithSmallText"
+                    android:imeOptions="actionNext"
+                    android:inputType="number" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
             <LinearLayout
                 android:id="@+id/docContainer"
-                style="@style/baseFulWidthElement"
-                android:layout_below="@+id/textContainer6"
+                style="@style/baseFulWidthElementWithSmallText"
+                android:layout_below="@+id/textContainer8"
                 android:layout_margin="5dp"
                 android:orientation="horizontal"
                 android:weightSum="1">

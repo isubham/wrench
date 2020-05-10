@@ -16,7 +16,7 @@ app.register_blueprint(routes)
 
 
 unprotected_paths = {'/auth/signup/', '/auth/signin/', '/person/create/', '/person/fuzzy/', '/license/create/',
-                     '/license/validate/'}
+                     '/license/validate/', '/auth/emailexist/'}
 details = dict()
 
 
