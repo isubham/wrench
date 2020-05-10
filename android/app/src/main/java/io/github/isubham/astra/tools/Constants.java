@@ -31,6 +31,10 @@ public class Constants {
     public static final String USER_TYPE = "USER_TYPE";
     public static final String USER_TYPE_ADMIN = "1";
     public static final String USER_TYPE_GENERAL = "2";
+    public static final String GENERAL_USER_CLASS_JSON_RESPONSE = "GENERAL_USER_JSON_RESPONSE" ;
+
+
+
     /////////////////Network Request/////////////////
     public static final String WEAK_INTERNET = "com.android.volley.TimeoutError";
     public static final String NO_INTERNET = "com.android.volley.NoConnectionError";
