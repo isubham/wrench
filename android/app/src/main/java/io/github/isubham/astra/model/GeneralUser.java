@@ -5,6 +5,7 @@ public class GeneralUser {
     private String profile_pic;
     private String username;
     private String name;
+    private String first_name;
     private String father_name;
     private String email;
     private String dob;
@@ -15,6 +16,10 @@ public class GeneralUser {
     private String id_front;
     private String id_back;
     private String created_by;
+
+    private String user_id;
+    private String created;
+
 
     public GeneralUser(String profile_pic, String username, String name, String father_name, String email, String dob, String contact, String aadhar_id, String address, String pincode, String id_front, String id_back, String created_by) {
         this.profile_pic = profile_pic;
@@ -30,6 +35,31 @@ public class GeneralUser {
         this.id_front = id_front;
         this.id_back = id_back;
         this.created_by = created_by;
+    }
+
+
+    public String getFirst_name() {
+        return first_name;
+    }
+
+    public void setFirst_name(String first_name) {
+        this.first_name = first_name;
+    }
+
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
+    }
+
+    public String getCreated() {
+        return created;
+    }
+
+    public void setCreated(String created) {
+        this.created = created;
     }
 
     public String getAadhar_id() {
