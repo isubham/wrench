@@ -1,7 +1,15 @@
 package io.github.isubham.astra.model;
 
 public class User {
-    String token, email, password, licenseKey, message;
+    public String token, email, password, licenseKey, error;
+
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
+    }
 
     public User(String email, String password, String licenseKey) {
         this.email = email;

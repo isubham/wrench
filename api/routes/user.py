@@ -8,6 +8,18 @@ from . import routes
 from resources import Resources
 
 
+@routes.route('/auth/emailexist/', methods=['POST'])
+def email_exist():
+    signup_details = request.json
+    email = signup_details["email"]
+    user = db.session.query(User).filter_by(email=email)
+    if user is None:
+        return jsonify(Resources.data["error_existing_email"])
+    else:
+        return jsonify({})
+
+
+
 @routes.route('/auth/signup/', methods=['POST'])
 def signup():
     signup_details = request.json
@@ -15,13 +27,13 @@ def signup():
 
     license_found = db.session.query(License).filter_by(user_email=email).first()
     if license_found is None:
-        return jsonify(Resources.error_license_dont_exist())
+        return jsonify(Resources.data["error_license_dont_exist"])
 
     if not license_found.license_key.decode() == license_key:
-        return jsonify(Resources.error_license_incorrect())
+        return jsonify(Resources.data["error_license_incorrect"])
 
     if not license_found.license_valid(email, os.environ["ASTRA_CODE"], license_key):
-        return jsonify(Resources.error_license_invalid())
+        return jsonify(Resources.data["error_license_invalid"])
 
     user = User(email, Utility.get_hash(password), os.environ["ASTRA_CODE"])
     try:
@@ -29,7 +41,7 @@ def signup():
         db.session.commit()
         return jsonify({"token" : Utility.create_secret({"id" : user.id, "email" : user.email}).decode()})
     except IntegrityError as e:
-        return jsonify(Resources.error_existing_email())
+        return jsonify(Resources.data["error_existing_email"])
 
 
 @routes.route('/auth/signin/', methods=['POST'])
@@ -44,7 +56,7 @@ def sign_in():
         return jsonify({"token" : Utility.create_secret({"id" : user_found.id, "email" : user_found.email}).decode()})
 
     else:
-        return jsonify(Resources.error_email_password_incorrect())
+        return jsonify(Resources.data["error_email_password_incorrect"])
 
 
 # TODO

@@ -28,28 +28,30 @@
             android:noHistory="true"
             android:screenOrientation="portrait"
             android:theme="@style/ActivityDialog"
-            tools:ignore="LockedOrientationActivity">
+            tools:ignore="LockedOrientationActivity" />
 
-
-        </activity>
 
         <activity
             android:name=".adminUser.AdminHomeScreen"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity">
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <!--            <intent-filter>-->
+            <!--                <action android:name="android.intent.action.MAIN" />-->
+            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
+            <!--            </intent-filter>-->
 
         </activity>
-
         <activity
             android:name=".generalUser.CreateGeneralUser"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
-        <activity android:name=".adminUser.AdminSignIn" />
+        <activity android:name=".adminUser.AdminSignIn">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".adminUser.AdminCreateAccount">
 
 
@@ -60,7 +62,6 @@
 
         <activity android:name=".generalUser.GeneralUserHomeScreen" />
 
-        <activity android:name=".MainActivity" />
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="fullSensor"

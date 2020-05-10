@@ -92,10 +92,7 @@ public class AdminVerifyDoc extends AppCompatActivity {
         if (imageUrls.size() > 0)
             dotImages[0].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.active_dot));
 
-
         setupSliderMovement();
-
-
     }
 
     private void setupSliderMovement() {

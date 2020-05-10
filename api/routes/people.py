@@ -7,38 +7,38 @@ from sqlalchemy.exc import IntegrityError
 from . import routes
 from resources import Resources
 
-
 @routes.route('/person/create/', methods=['POST'])
-def create_people():
+def create_people_by_admin():
     people = request.json
     # user = User(people["email"], people["password"], os.environ["ASTRA_CODE"])
     user = User(None, None, os.environ["ASTRA_CODE"])
 
     person_found_by_aadhar = db.session.query(People).filter_by(aadhar_id=people["aadhar_id"]).first()
     if person_found_by_aadhar is not None:
-        return jsonify(Resources.error_existing_aadhar_id())
+        return jsonify(Resources.data["error_existing_aadhar_id"])
 
     person_found_by_username = db.session.query(People).filter_by(username=people["username"]).first()
     if person_found_by_username is not None:
-        return jsonify(Resources.error_existing_username())
+        return jsonify(Resources.data["error_existing_username"])
 
     try:
         db.session.add(user)
         db.session.flush()
     except IntegrityError as e:
-        return jsonify(Resources.error_existing_email())
+        return jsonify(Resources.data["error_existing_email"])
 
     people = People(user.id, people["name"], None, Utility.get_date(people["dob"]), people["profile_pic"],
-                    people["id_front"], people["id_back"], people["father_name"], people["username"],
-                    people["aadhar_id"])
-
+                    people["id_front"], people["id_back"], people["father_name"], people["username"], people["created_by"],
+                    people['contact'], people['address'], people['pincode'], people['email'], people["aadhar_id"])
     try:
         db.session.add(people)
         db.session.commit()
         return jsonify({"token": Utility.create_secret({"id": user.id}).decode()})
     except IntegrityError as e:
         db.session.rollback()
-        return jsonify(Resources.error_existing_username_or_aadhar_id())
+        return jsonify(Resources.data["error_existing_username_or_aadhar_id"])
+
+
 
 
 @routes.route('/person/token/', methods=['GET'])
@@ -61,7 +61,7 @@ def get_person_by_username(_username):
     return person_schema.jsonify(person_found)
 
 
-@routes.route('/person/fuzzy/', methods=['GET'])
+@routes.route('/person/fuzzy/', methods=['POST'])
 def person_search():
     first_name, father_name, dob = request.json["name"], request.json["father_name"], \
                                    Utility.get_date(request.json["dob"])
@@ -71,7 +71,7 @@ def person_search():
     if user_found is not None:
         return person_schema.jsonify(user_found)
     else:
-        return jsonify(Resources.error_detail_not_found())
+        return jsonify(Resources.data["error_detail_not_found"])
 
 
 @routes.route('/person/aadhar_id/<aadhar_id>', methods=['GET'])
