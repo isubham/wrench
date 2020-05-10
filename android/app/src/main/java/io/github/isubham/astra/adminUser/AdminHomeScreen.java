@@ -40,8 +40,11 @@ import io.github.isubham.astra.tools.Constants;
 import io.github.isubham.astra.tools.CustomSnackbar;
 import io.github.isubham.astra.tools.Endpoints;
 import io.github.isubham.astra.tools.Errors;
+<<<<<<< HEAD
 import io.github.isubham.astra.tools.Headers;
 
+=======
+>>>>>>> master
 
 public class AdminHomeScreen extends AppCompatActivity {
 
@@ -172,6 +175,7 @@ public class AdminHomeScreen extends AppCompatActivity {
         }
     }
 
+<<<<<<< HEAD
     private void getUserDetailsFromServerFor(final String userName) {
 
         parseResponseAndSendToVerify(userName);
@@ -232,6 +236,9 @@ public class AdminHomeScreen extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+=======
+    private void getUserDetailsFromServerFor(Editable userName) {
+>>>>>>> master
 
     private void apiRequestForCreateLog(JSONObject jsonObject) {
         showProgressBar();
@@ -252,7 +259,11 @@ public class AdminHomeScreen extends AppCompatActivity {
             @Override
             public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<>();
+<<<<<<< HEAD
                 headers.put(Headers.AUTHORIZATION, "Basic eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Mn0.1HCAwj7aXeFFAjUJXDATBBUYsWy2-8c01chWoISVPP4");
+=======
+                headers.put("Authorization", "Basic eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Mn0.1HCAwj7aXeFFAjUJXDATBBUYsWy2-8c01chWoISVPP4");
+>>>>>>> master
                 return headers;
             }
         };

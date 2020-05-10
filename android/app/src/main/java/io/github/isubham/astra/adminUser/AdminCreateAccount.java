@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -15,6 +16,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 import org.json.JSONObject;
 
@@ -23,9 +25,11 @@ import java.util.Map;
 import java.util.Objects;
 
 import io.github.isubham.astra.databinding.AdminCreateAccountBinding;
+import io.github.isubham.astra.model.ErrorResponse;
 import io.github.isubham.astra.model.User;
 import io.github.isubham.astra.tools.Constants;
 import io.github.isubham.astra.tools.LoginPersistance;
+import io.github.isubham.astra.tools.StatefulButton;
 import io.github.isubham.astra.tools.validators;
 
 public class AdminCreateAccount extends AppCompatActivity {
@@ -54,9 +58,8 @@ public class AdminCreateAccount extends AppCompatActivity {
 
         statefulButton = new StatefulButton(binding.adminCreateAccountSignupButtonActive,
                 binding.adminCreateAccountSignupButtonLoading,
-                binding.adminCreateAccountSignupButtonSuccess,
-                binding.adminCreateAccountSignupButtonDanger,
-                binding.adminCreateAccountSignupButtonGotoPanel);
+                binding.adminCreateAccountSignupButtonGotoPanel,
+                binding.adminCreateAccountSuccessMessage);
 
     }
 
@@ -70,7 +73,7 @@ public class AdminCreateAccount extends AppCompatActivity {
             statefulButton.setLoading();
 
             String url = "https://aastra-stag.herokuapp.com/auth/signup/";
-            HashMap<String, String> signupDetails = new HashMap<>();
+            final HashMap<String, String> signupDetails = new HashMap<>();
             signupDetails.put("email", getEmail());
             signupDetails.put("password", getPassword());
             signupDetails.put("license_key", getLicenseKey());
@@ -81,29 +84,30 @@ public class AdminCreateAccount extends AppCompatActivity {
                         @Override
                         public void onResponse(JSONObject response) {
 
-                            statefulButton.setSuccess();
-                            User createdUser = new Gson().fromJson(response.toString(), User.class);
-                            LoginPersistance.Save(getEmail(), createdUser.getToken(), AdminCreateAccount.this);
-                            // startActivity(new Intent(AdminCreateAccount.this, AdminHomeScreen.class));
-
-                            final Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    //Do something after 100ms
-                                    statefulButton.setNext();
+                            if(response.has("code")) {
+                                statefulButton.setActive();
+                                ErrorResponse error = new Gson().fromJson(response.toString(), ErrorResponse.class);
+                                if (error.code > 7 && error.code < 13) {
+                                    binding.adminCreateAccountLicenseText.setError(error.message);
                                 }
-                            }, 2000);
+                                if(error.code == 1) {
+                                    binding.adminCreateAccountEmail.setError(error.message);
+                                }
+                            }
+
+                            else{
+                                hideAllFields();
+                                User createdUser = new Gson().fromJson(response.toString(), User.class);
+                                LoginPersistance.Save(getEmail(), createdUser.getToken(), AdminCreateAccount.this);
+                                statefulButton.setNext("Welcome " + LoginPersistance.GetEmail(AdminCreateAccount.this));
+                            }
 
                         }
                     },
                     new Response.ErrorListener() {
                         @Override
-                        public void onErrorResponse(VolleyError error) {
-
-                            statefulButton.setFailure();
-
-
+                        public void onErrorResponse(VolleyError error)
+                        {
                         }
                     }) {
                 @Override
@@ -126,6 +130,20 @@ public class AdminCreateAccount extends AppCompatActivity {
 
     }
 
+    private void hideAllFields() {
+        binding.adminCreateAccountEmailLayout.setVisibility(View.GONE);
+        binding.adminCreateAccountPasswordLayout.setVisibility(View.GONE);
+        binding.adminCreateAccountConfirmPasswordLayout.setVisibility(View.GONE);
+        binding.adminCreateAccountLicenseTextLayout.setVisibility(View.GONE);
+
+        binding.adminCreateAccountEmail.setVisibility(View.GONE);
+        binding.adminCreateAccountPassword.setVisibility(View.GONE);
+        binding.adminCreateAccountConfirmPassword.setVisibility(View.GONE);
+        binding.adminCreateAccountLicenseText.setVisibility(View.GONE);
+
+        binding.adminCreateAccountSigninLink.setVisibility(View.GONE);
+    }
+
 
     public void gotoSignIn(View V) {
         startActivity(new Intent(AdminCreateAccount.this, AdminSignIn.class));
@@ -139,6 +157,7 @@ public class AdminCreateAccount extends AppCompatActivity {
                 if (!hasFocus) {
                     validateEmail();
                 }
+
             }
         });
 
@@ -241,63 +260,8 @@ public class AdminCreateAccount extends AppCompatActivity {
         return Objects.requireNonNull(binding.adminCreateAccountLicenseText).getText().toString().trim();
     }
 
-    public void showDisableToast(View view) {
-    }
-
     public void gotoPanel(View view) {
-
+        startActivity(new Intent(AdminCreateAccount.this, AdminHomeScreen.class));
     }
-
-    /* Button state based model
-     * */
-
-    class StatefulButton {
-        private Button active, loading, success, failure, next;
-
-        public StatefulButton(Button active, Button loading, Button success, Button failure, Button next) {
-            this.active = active;
-            this.loading = loading;
-            this.success = success;
-            this.failure = failure;
-            this.next = next;
-            setActive();
-        }
-
-        private void hideAll() {
-            active.setVisibility(View.GONE);
-            loading.setVisibility(View.GONE);
-            success.setVisibility(View.GONE);
-            failure.setVisibility(View.GONE);
-            next.setVisibility(View.GONE);
-        }
-
-
-        public void setActive() {
-            hideAll();
-            active.setVisibility(View.VISIBLE);
-        }
-
-        public void setLoading() {
-            hideAll();
-            loading.setVisibility(View.VISIBLE);
-        }
-
-        public void setSuccess() {
-            hideAll();
-            success.setVisibility(View.VISIBLE);
-        }
-
-        public void setFailure() {
-            hideAll();
-            failure.setVisibility(View.VISIBLE);
-        }
-
-        public void setNext() {
-            hideAll();
-            next.setVisibility(View.VISIBLE);
-        }
-
-    }
-
 
 }

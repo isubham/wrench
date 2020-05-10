@@ -34,6 +34,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/ActivityDialog"
             tools:ignore="LockedOrientationActivity" />
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
 
         <activity
             android:name=".adminUser.AdminHomeScreen"
@@ -44,14 +48,20 @@
             <!--                <action android:name="android.intent.action.MAIN" />-->
             <!--                <category android:name="android.intent.category.LAUNCHER" />-->
             <!--            </intent-filter>-->
-        </activity>
+<<<<<<< HEAD
+=======
 
+>>>>>>> master
+        </activity>
         <activity
             android:name=".generalUser.CreateGeneralUser"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity android:name=".adminUser.AdminSignIn">
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -67,7 +77,6 @@
 
         <activity android:name=".generalUser.GeneralUserHomeScreen" />
 
-        <activity android:name=".MainActivity" />
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="fullSensor"

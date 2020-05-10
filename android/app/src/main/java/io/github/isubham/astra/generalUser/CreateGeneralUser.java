@@ -9,7 +9,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -34,7 +33,6 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
@@ -306,6 +304,7 @@ public class CreateGeneralUser extends AppCompatActivity {
                 String.valueOf(binding.aadhar.getText()), String.valueOf(binding.address.getText()), String.valueOf(binding.pincode.getText()), CameraUtils.getBase64StringFromBitmap(bitmap_front_doc,
                 Constants.HIGH_QUALITY), CameraUtils.getBase64StringFromBitmap(bitmap_back_doc, Constants.HIGH_QUALITY), createdById);
 
+
         gson = new Gson();
         String generalUserJson = gson.toJson(generalUser);
         try {
@@ -317,6 +316,11 @@ public class CreateGeneralUser extends AppCompatActivity {
 
     private void apiRequestToSaveGeneralUser(JSONObject generalUserJson) {
         showProgressBar();
+
+        Log.e("request", generalUserJson.toString());
+        Toast.makeText(this, generalUserJson.toString(), Toast.LENGTH_SHORT).show();
+        binding.email.setText(generalUserJson.toString());
+
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, Endpoints.CREATE_GENERAL_USER, generalUserJson, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {

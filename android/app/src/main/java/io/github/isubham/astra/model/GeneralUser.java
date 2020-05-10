@@ -1,7 +1,5 @@
 package io.github.isubham.astra.model;
 
-import java.io.Serializable;
-
 public class GeneralUser {
 
     private String profile_pic;
@@ -18,6 +16,7 @@ public class GeneralUser {
     private String id_front;
     private String id_back;
     private String created_by;
+
     private String user_id;
     private String created;
 
@@ -37,6 +36,7 @@ public class GeneralUser {
         this.id_back = id_back;
         this.created_by = created_by;
     }
+
 
     public String getFirst_name() {
         return first_name;
