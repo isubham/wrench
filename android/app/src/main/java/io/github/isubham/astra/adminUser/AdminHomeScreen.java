@@ -45,7 +45,6 @@ import io.github.isubham.astra.tools.Errors;
 import io.github.isubham.astra.tools.Headers;
 import io.github.isubham.astra.tools.LoginPersistance;
 
-
 public class AdminHomeScreen extends AppCompatActivity {
 
     private String TAG = "AdminHomeScreen";
@@ -248,8 +247,6 @@ public class AdminHomeScreen extends AppCompatActivity {
         }
     }
 
-    private void getUserDetailsFromServerFor(Editable userName) {
-    }
 
     private void apiRequestForCreateLog(JSONObject jsonObject) {
         showProgressBar();
@@ -271,7 +268,6 @@ public class AdminHomeScreen extends AppCompatActivity {
             public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<>();
                 headers.put(Headers.AUTHORIZATION, "Basic eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Mn0.1HCAwj7aXeFFAjUJXDATBBUYsWy2-8c01chWoISVPP4");
-                headers.put("Authorization", "Basic eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Mn0.1HCAwj7aXeFFAjUJXDATBBUYsWy2-8c01chWoISVPP4");
                 return headers;
             }
         };

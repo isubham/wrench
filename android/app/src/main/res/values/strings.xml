@@ -12,12 +12,22 @@
     <string name="error_email_empty">Email cannot be empty</string>
     <string name="error_email_wrong_format">Wrong email format</string>
 
+    <!--validators-->
     <string name="error_password_empty">Password cannot be empty</string>
     <string name="error_password_length">Password should be atleast 8 letters</string>
     <string name="error_confirm_password_empty">Confirm Password cannot be empty</string>
     <string name="error_license_empty">License cannot be empty</string>
-
+    <string name="error_contact_empty">Contact cannot be empty</string>
+    <string name="error_aadhar_empty">Aadhar cannot be empty</string>
+    <string name="error_pincode_empty">Pincode cannot be empty</string>
+    <string name="invalid_contact">Invalid Contact</string>
+    <string name="contact_length_should_be_10">Contact length should be 10</string>
+    <string name="invalid_aadhar">Invalid Aadhar</string>
+    <string name="invalid_pincode">Invalid Pincode</string>
     <string name="dont_have_account_create_one">Dont\' have Account. Create One</string>
+    <string name="field_cannot_be_left_blank">Field can\'t be left blank</string>
+    <string name="error_dob_empty">Date can\'t be blank</string>
+    <string name="invalid_date">Invalid Date Format</string>
 
     <!--   admin home screen -->
     <string name="admin_home_switch_label_out">OUT</string>
@@ -35,8 +45,8 @@
     <string name="create_general_user_name">Full Name</string>
     <string name="create_general_fathers_name">Father Name</string>
     <string name="create_general_user_email_address">Email</string>
-    <string name="create_general_user_dob">Date Of Birth (DD/MM/YYYY)</string>
-    <string name="create_general_user_contact">Contact</string>
+    <string name="create_general_user_dob">Date Of Birth (DD-MM-YYYY)</string>
+    <string name="create_general_user_contact">Contact (10 digit)</string>
     <string name="create_general_user_address">Address</string>
     <string name="create_general_user_aadhar">Aadhar</string>
     <string name="create_general_user_pin_code">Pincode</string>
@@ -60,6 +70,7 @@
     <string name="signing_in">Signing In ...</string>
     <string name="sign_in">Sign In</string>
     <string name="save">Save</string>
+
 
 
 </resources>
