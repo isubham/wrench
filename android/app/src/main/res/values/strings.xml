@@ -32,7 +32,7 @@
     <!--   admin home screen -->
     <string name="admin_home_switch_label_out">OUT</string>
     <string name="press_to_scan_qr_here">QrScanner</string>
-    <string name="input_label">Enter Unique Id / User name</string>
+    <string name="admin_search_username_label">Enter Username</string>
     <string name="desc_of_send">SendDataButton</string>
     <string name="cd_scanner">TODO</string>
     <string name="click_here_to_scan">Click here to Scan</string>
@@ -69,6 +69,7 @@
     <string name="continue_to_panel">Continue</string>
     <string name="signing_in">Signing In ...</string>
     <string name="sign_in">Sign In</string>
+    <string name="save">Save</string>
 
 
 

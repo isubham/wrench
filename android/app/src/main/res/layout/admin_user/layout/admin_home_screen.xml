@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".adminUser.AdminHomeScreen">
 
-    <include layout="@layout/app_bar" />
+    <include layout="@layout/app_bar"  />
 
     <include layout="@layout/progress_bar" />
 
@@ -92,22 +92,22 @@
                 android:weightSum="1">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/admin_home_input_id"
+                    android:id="@+id/admin_home_input_username"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/admin_home_bottom_container_height"
-                    android:layout_weight="0.18"
+                    android:layout_weight="0.15"
                     android:gravity="bottom"
-                    android:hint="@string/input_label" />
+                    android:hint="@string/admin_search_username_label" />
 
                 <ImageButton
                     android:id="@+id/admin_home_search_user_button"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/admin_home_bottom_container_height"
-                    android:layout_weight="0.82"
+                    android:layout_weight="0.85"
                     android:background="@color/colorWhite"
                     android:contentDescription="@string/desc_of_send"
                     android:onClick="searchForUser"
-                    android:src="@mipmap/send" />
+                    android:src="@drawable/outline_search_black_18" />
 
             </LinearLayout>
         </LinearLayout>

@@ -2,6 +2,7 @@ package io.github.isubham.astra.generalUser;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,11 +20,15 @@ public class GeneralUserHomeScreen extends AppCompatActivity {
         register_user = (Button)findViewById(R.id.button_register_user);
     }
     public void ExistingUser(View view){
+        // switch to general user search page
+        Intent i = new Intent(GeneralUserHomeScreen.this, GeneralUserSearchUser.class);
+        startActivity(i);
 
     }
 
     public void RegisterUser(View view){
-
+        Intent i = new Intent(GeneralUserHomeScreen.this, GeneralUserSearchUser.class);
+        startActivity(i);
     }
 
 

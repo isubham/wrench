@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="io.github.isubham.astra">
     <!-- For Internet -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- For Scanner -->
     <!-- Storage Access for File Read And Save -->
@@ -16,9 +19,11 @@
     <uses-feature android:name="com.android.hardware.Camera.focus" />
     <uses-feature android:name="android.hardware.camera.flash" />
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <application
         android:name="io.github.isubham.astra.tools.ApplicationController"
-
         android:allowBackup="true"
         android:icon="@mipmap/app_logo"
         android:label="@string/app_name"
@@ -40,10 +45,10 @@
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity">
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <!--            <intent-filter>-->
+            <!--                <action android:name="android.intent.action.MAIN" />-->
+            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
+            <!--            </intent-filter>-->
 
         </activity>
         <activity
@@ -52,13 +57,13 @@
             tools:ignore="LockedOrientationActivity" />
         <activity android:name=".adminUser.AdminSignIn">
 
-            <!--            <intent-filter>-->
-            <!--                <action android:name="android.intent.action.MAIN" />-->
-            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-            <!--            </intent-filter>-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
         </activity>
         <activity android:name=".adminUser.AdminCreateAccount">
-
 
         </activity>
 
