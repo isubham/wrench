@@ -17,11 +17,13 @@ public class GeneralUser {
     private String id_back;
     private String created_by;
 
-    private String user_id;
+    private int user_id;
     private String created;
 
 
-    public GeneralUser(String profile_pic, String username, String name, String father_name, String email, String dob, String contact, String aadhar_id, String address, String pincode, String id_front, String id_back, String created_by) {
+    public GeneralUser(String profile_pic, String username, String name, String father_name, String email,
+                       String dob, String contact, String aadhar_id, String address, String pincode,
+                       String id_front, String id_back, String created_by) {
         this.profile_pic = profile_pic;
         this.username = username;
         this.name = name;
@@ -46,11 +48,11 @@ public class GeneralUser {
         this.first_name = first_name;
     }
 
-    public String getUser_id() {
+    public int getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(String user_id) {
+    public void setUser_id(int user_id) {
         this.user_id = user_id;
     }
 

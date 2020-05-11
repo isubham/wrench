@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,25 +36,20 @@ import io.github.isubham.astra.R;
 import io.github.isubham.astra.databinding.AdminHomeScreenBinding;
 import io.github.isubham.astra.generalUser.CreateGeneralUser;
 import io.github.isubham.astra.model.CreateLog;
+import io.github.isubham.astra.model.GeneralUser;
 import io.github.isubham.astra.tools.ApplicationController;
 import io.github.isubham.astra.tools.Constants;
 import io.github.isubham.astra.tools.CustomSnackbar;
 import io.github.isubham.astra.tools.Endpoints;
 import io.github.isubham.astra.tools.Errors;
-<<<<<<< HEAD
 import io.github.isubham.astra.tools.Headers;
+import io.github.isubham.astra.tools.LoginPersistance;
 
-<<<<<<< HEAD
-=======
-=======
->>>>>>> master
-
->>>>>>> 4931123659f52bf6559b678685a278d933d8e89f
 public class AdminHomeScreen extends AppCompatActivity {
 
     private String TAG = "AdminHomeScreen";
 
-    private AdminHomeScreenBinding adminHomeScreenBinding;
+    private AdminHomeScreenBinding binding;
     private ProgressBar progressBar;
     private boolean backPressedToExitOnce = false;
 
@@ -65,8 +61,8 @@ public class AdminHomeScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        adminHomeScreenBinding = AdminHomeScreenBinding.inflate(getLayoutInflater());
-        setContentView(adminHomeScreenBinding.getRoot());
+        binding = AdminHomeScreenBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         findViewByIds();
         toolbarSetup();
@@ -108,7 +104,7 @@ public class AdminHomeScreen extends AppCompatActivity {
                 // Log.d("SCAN_FORMAT_NAME", result.getFormatName().trim());
                 sendScannedDetailsToCreateLog(result.getContents().trim());
             } else {
-                new CustomSnackbar(this, getString(R.string.admin_home_screen_wrong_scan_text), getString(R.string.admin_home_screen_retry_action_text), adminHomeScreenBinding.layoutContainer) {
+                new CustomSnackbar(this, getString(R.string.admin_home_screen_wrong_scan_text), getString(R.string.admin_home_screen_retry_action_text), binding.layoutContainer) {
                     @Override
                     public void onActionClick(View view) {
                         scanCode(view);
@@ -172,55 +168,66 @@ public class AdminHomeScreen extends AppCompatActivity {
     }
 
     public void searchForUser(View view) {
-        if (!TextUtils.isEmpty(adminHomeScreenBinding.adminHomeInputId.getText())) {
+        if (!TextUtils.isEmpty(binding.adminHomeInputUsername.getText())) {
             hideKeyboard();
-            getUserDetailsFromServerFor(String.valueOf(adminHomeScreenBinding.adminHomeInputId.getText()));
+            getUserDetailsFromServerFor(String.valueOf(binding.adminHomeInputUsername.getText()));
         }
     }
 
-<<<<<<< HEAD
     private void getUserDetailsFromServerFor(final String userName) {
+        showProgressBar();
+        binding.adminHomeSearchUserButton.setEnabled(false);
 
-        parseResponseAndSendToVerify(userName);
-//
-//        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, Endpoints.SEARCH_BY_USER_NAME + userName, null, new Response.Listener<JSONObject>() {
-//            @Override
-//            public void onResponse(JSONObject response) {
-//                hideProgressBar();
-//                //parse Response
-//                if (!String.valueOf(response).equals(Constants.EMPTY_JSON)) {
-//                    adminHomeScreenBinding.adminHomeInputId.setText(null);
-//                    parseResponseAndSendToVerify(userName);
-//                } else {
-//                    invalidUserName();
-//                }
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                hideProgressBar();
-//                Errors.handleVolleyError(error, TAG, AdminHomeScreen.this);
-//            }
-//        }) {
-//            @Override
-//            public Map<String, String> getHeaders() {
-//                HashMap<String, String> headers = new HashMap<>();
-//                headers.put("Authorization", "Basic eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Mn0.1HCAwj7aXeFFAjUJXDATBBUYsWy2-8c01chWoISVPP4");
-//                return headers;
-//            }
-//        };
-//
-//        ApplicationController.getInstance().addToRequestQueue(request);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, Endpoints.SEARCH_BY_USER_NAME + userName, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                hideProgressBar();
+                binding.adminHomeSearchUserButton.setEnabled(true);
+                //parse Response
+                if (!String.valueOf(response).equals(Constants.EMPTY_JSON)) {
+                    binding.adminHomeInputUsername.setText(null);
+
+                    GeneralUser generalUser = new Gson().fromJson(response.toString(), GeneralUser.class);
+                    LoginPersistance.update(generalUser.getProfile_pic(), generalUser.getId_front(),
+                            generalUser.getId_back(), AdminHomeScreen.this);
+
+                    parseResponseAndSendToVerify(userName, generalUser.getName(), generalUser.getUser_id());
+                } else {
+                    binding.adminHomeInputUsername.setError("Invalid Username");
+                    // invalidUserName();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                hideProgressBar();
+                Errors.handleVolleyError(error, TAG, AdminHomeScreen.this);
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Basic " + LoginPersistance.GetToken(AdminHomeScreen.this));
+                return headers;
+            }
+        };
+
+        ApplicationController.getInstance().addToRequestQueue(request);
 
     }
 
-    private void parseResponseAndSendToVerify(String userName) {
+    private void parseResponseAndSendToVerify(String userName, String name, int userId) {
+        startActivity(new Intent(AdminHomeScreen.this, AdminVerifyDoc.class)
+                .putExtra(Constants.USER_NAME, userName)
+                .putExtra(Constants.NAME, name)
+                .putExtra(Constants.ID, userId)
 
-        startActivity(new Intent(AdminHomeScreen.this, AdminVerifyDoc.class).putExtra(Constants.USER_NAME, userName));
+
+        );
     }
 
     private void invalidUserName() {
-        new CustomSnackbar(this, Constants.INVALID_USERNAME, null, adminHomeScreenBinding.layoutContainer) {
+        new CustomSnackbar(this, Constants.INVALID_USERNAME, null, binding.layoutContainer) {
             @Override
             public void onActionClick(View view) {
             }
@@ -239,9 +246,9 @@ public class AdminHomeScreen extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-=======
+
     private void getUserDetailsFromServerFor(Editable userName) {
->>>>>>> master
+    }
 
     private void apiRequestForCreateLog(JSONObject jsonObject) {
         showProgressBar();
@@ -262,11 +269,8 @@ public class AdminHomeScreen extends AppCompatActivity {
             @Override
             public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<>();
-<<<<<<< HEAD
                 headers.put(Headers.AUTHORIZATION, "Basic eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Mn0.1HCAwj7aXeFFAjUJXDATBBUYsWy2-8c01chWoISVPP4");
-=======
                 headers.put("Authorization", "Basic eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Mn0.1HCAwj7aXeFFAjUJXDATBBUYsWy2-8c01chWoISVPP4");
->>>>>>> master
                 return headers;
             }
         };

@@ -5,6 +5,7 @@
     <dimen name="text_heading_one">40dp</dimen>
     <dimen name="text_heading_two">30dp</dimen>
     <dimen name="text_heading_three">20dp</dimen>
+    <dimen name="button_heading">30dp</dimen>
     <dimen name="app_padding">10dp</dimen>
     <dimen name="material_layout_padding">16dp</dimen>
     <dimen name="material_element_margin">4dp</dimen>

@@ -14,6 +14,7 @@ import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.ImageView;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
@@ -210,5 +211,8 @@ public class CameraUtils {
 
     /* TODO Image Conversion Stuff Over*/
 
+    public static void setImage(ImageView imageView, String encodedImage) {
+        imageView.setImageBitmap(getBitmapFromBase64ImageString(encodedImage));
+    }
 
 }
