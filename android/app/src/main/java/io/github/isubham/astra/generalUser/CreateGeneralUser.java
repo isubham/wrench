@@ -52,6 +52,8 @@ import io.github.isubham.astra.tools.CustomSnackbar;
 import io.github.isubham.astra.tools.Endpoints;
 import io.github.isubham.astra.tools.Errors;
 import io.github.isubham.astra.tools.Headers;
+import io.github.isubham.astra.tools.LoginPersistance;
+import io.github.isubham.astra.tools.ResponseCode;
 import io.github.isubham.astra.tools.validators;
 
 public class CreateGeneralUser extends AppCompatActivity implements CustomDatePickerFragment.TheListener {
@@ -70,6 +72,8 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
     private String createdById;
 
     private Gson gson;
+
+    private GeneralUser generalUser = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +96,10 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
         addFocusChangeListeners();
 
     }
+
+    /**
+     * TODO validation of Fields
+     **/
 
     private void addFocusChangeListeners() {
 
@@ -291,6 +299,8 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
     private String getEmail() {
         return Objects.requireNonNull(binding.email).getText().toString().trim();
     }
+
+    /**TODO validation of Fields End**/
 
 
     /**
@@ -517,7 +527,7 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
 
         if (!emptyChecksFailed()) {
             //bitmap_front_doc, bitmap_back_doc, bitmap_profile_pic  ,createdById  has the updated value for respective images in view
-            GeneralUser generalUser = new GeneralUser(CameraUtils.getBase64StringFromBitmap(bitmap_profile_pic, Constants.HIGH_QUALITY), String.valueOf(binding.userName.getText()), String.valueOf(binding.fullName.getText()),
+            generalUser = new GeneralUser(CameraUtils.getBase64StringFromBitmap(bitmap_profile_pic, Constants.HIGH_QUALITY), String.valueOf(binding.userName.getText()), String.valueOf(binding.fullName.getText()),
                     String.valueOf(binding.fatherName.getText()), String.valueOf(binding.email.getText()), String.valueOf(binding.dob.getText()), String.valueOf(binding.contact.getText()),
                     String.valueOf(binding.aadhar.getText()), String.valueOf(binding.address.getText()), String.valueOf(binding.pincode.getText()), CameraUtils.getBase64StringFromBitmap(bitmap_front_doc,
                     Constants.HIGH_QUALITY), CameraUtils.getBase64StringFromBitmap(bitmap_back_doc, Constants.HIGH_QUALITY), createdById);
@@ -526,7 +536,7 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
             gson = new Gson();
             String generalUserJson = gson.toJson(generalUser);
             try {
-                apiRequestToSaveGeneralUser(new JSONObject(generalUserJson));
+                apiRequestToSaveGeneralUser(generalUser, new JSONObject(generalUserJson));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -545,7 +555,7 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
         return Objects.requireNonNull(binding.userName.getText()).toString().equals(Constants.EMPTY_STRING) || Objects.requireNonNull(binding.fullName.getText()).toString().equals(Constants.EMPTY_STRING) || Objects.requireNonNull(binding.fatherName.getText()).toString().equals(Constants.EMPTY_STRING) || Objects.requireNonNull(binding.email.getText()).toString().equals(Constants.EMPTY_STRING) || Objects.requireNonNull(binding.dob.getText()).toString().equals(Constants.EMPTY_STRING) || Objects.requireNonNull(binding.contact.getText()).toString().equals(Constants.EMPTY_STRING) || Objects.requireNonNull(binding.aadhar.getText()).toString().equals(Constants.EMPTY_STRING) || Objects.requireNonNull(binding.address.getText()).toString().equals(Constants.EMPTY_STRING) || Objects.requireNonNull(binding.pincode.getText()).toString().equals(Constants.EMPTY_STRING) || bitmap_profile_pic == null || bitmap_back_doc == null || bitmap_front_doc == null;
     }
 
-    private void apiRequestToSaveGeneralUser(JSONObject generalUserJson) {
+    private void apiRequestToSaveGeneralUser(final GeneralUser generalUser, JSONObject generalUserJson) {
         showProgressBar();
 
 
@@ -553,8 +563,7 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
             @Override
             public void onResponse(JSONObject response) {
                 hideProgressBar();
-                Toast.makeText(CreateGeneralUser.this, "" + response.toString(), Toast.LENGTH_SHORT).show();
-                Log.e("response", response.toString());
+                parseResponse(response, generalUser);
 
             }
         }, new Response.ErrorListener() {
@@ -573,6 +582,43 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
         };
 
         ApplicationController.getInstance().addToRequestQueue(request);
+
+    }
+
+    private void parseResponse(JSONObject response, GeneralUser generalUser) {
+
+        if (!response.optString(Constants.TOKEN).equals(Constants.EMPTY_STRING)) {
+
+            LoginPersistance.update(generalUser.getProfile_pic(), generalUser.getId_front(), generalUser.getId_back(), this);
+            startActivity(new Intent(CreateGeneralUser.this, GeneralUserViewQr.class)
+                    .putExtra(Constants.USER_NAME, String.valueOf(binding.userName.getText())).putExtra(Constants.USER_TYPE, Constants.USER_TYPE_GENERAL));
+            finish();
+
+        } else if (response.optString(Constants.CODE).equals(ResponseCode.AADHAR_EXISTS)) {
+
+            new CustomSnackbar(this, "" + response.optString(Constants.MESSAGE), null, binding.layoutContainer) {
+                @Override
+                public void onActionClick(View view) {
+                }
+            }.show();
+
+        } else if (response.optString(Constants.CODE).equals(ResponseCode.USER_NAME_EXISTS)) {
+
+            new CustomSnackbar(this, "" + response.optString(Constants.MESSAGE), null, binding.layoutContainer) {
+                @Override
+                public void onActionClick(View view) {
+                }
+            }.show();
+
+        } else {
+            Toast.makeText(this, "" + response.optString(Constants.MESSAGE), Toast.LENGTH_SHORT).show();
+            new CustomSnackbar(this, Constants.UNPARSABLE_RESPONSE, null, binding.layoutContainer) {
+                @Override
+                public void onActionClick(View view) {
+                }
+            }.show();
+        }
+
 
     }
 

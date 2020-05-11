@@ -19,8 +19,6 @@ import io.github.isubham.astra.tools.LoginPersistance;
 
 public class GeneralUserViewQr extends AppCompatActivity {
     private GeneralUserViewQrBinding binding;
-    private String userName;
-    private String userType;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,9 +38,17 @@ public class GeneralUserViewQr extends AppCompatActivity {
 
     private void setBundleData() {
         if (getIntent().getExtras() != null) {
-            userName = getIntent().getExtras().getString(Constants.USER_NAME);
-            userType = getIntent().getExtras().getString(Constants.USER_TYPE);
+            String userName = getIntent().getExtras().getString(Constants.USER_NAME);
+            String userType = getIntent().getExtras().getString(Constants.USER_TYPE);
             formQrCode(userName);
+            assert userType != null;
+            showHideSaveButton(userType);
+        }
+    }
+
+    private void showHideSaveButton(String userType) {
+        if (userType.equals(Constants.USER_TYPE_GENERAL)) {
+            //   binding.buttonId.setVisibility(View.INVISIBLE);
         }
     }
 
