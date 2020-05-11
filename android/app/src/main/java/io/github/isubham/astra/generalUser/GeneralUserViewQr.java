@@ -20,6 +20,10 @@ import io.github.isubham.astra.tools.LoginPersistance;
 public class GeneralUserViewQr extends AppCompatActivity {
     private GeneralUserViewQrBinding binding;
 
+    private String userName;
+    private String userType;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +55,8 @@ public class GeneralUserViewQr extends AppCompatActivity {
             //   binding.buttonId.setVisibility(View.INVISIBLE);
         }
     }
+
+
 
     private void formQrCode(String userName) {
         qrGenerator(userName);
