@@ -116,6 +116,7 @@ public class AdminVerifyDoc extends AppCompatActivity {
 
     }
 
+
     private void parseResponseAndSetUi(String response) {
         gson = new Gson();
         GeneralUser generalUser = gson.fromJson(response, GeneralUser.class);
@@ -134,6 +135,7 @@ public class AdminVerifyDoc extends AppCompatActivity {
 
 
     }
+
 
 
     private void setupPagerAdapter() {
@@ -193,6 +195,7 @@ public class AdminVerifyDoc extends AppCompatActivity {
     public void showProgressBar() {
         progressBar.setVisibility(View.VISIBLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
 
     }
 

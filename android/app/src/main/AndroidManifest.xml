@@ -34,38 +34,28 @@
             android:screenOrientation="portrait"
             android:theme="@style/ActivityDialog"
             tools:ignore="LockedOrientationActivity" />
-<<<<<<< HEAD
-=======
-
->>>>>>> master
 
         <activity
             android:name=".adminUser.AdminHomeScreen"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity">
 
-            <!--            <intent-filter>-->
-            <!--                <action android:name="android.intent.action.MAIN" />-->
-            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-            <!--            </intent-filter>-->
-<<<<<<< HEAD
-=======
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
->>>>>>> master
         </activity>
         <activity
             android:name=".generalUser.CreateGeneralUser"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity android:name=".adminUser.AdminSignIn">
-<<<<<<< HEAD
 
-=======
->>>>>>> master
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <!--            <intent-filter>-->
+            <!--                <action android:name="android.intent.action.MAIN" />-->
+            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
+            <!--            </intent-filter>-->
         </activity>
         <activity android:name=".adminUser.AdminCreateAccount">
 
