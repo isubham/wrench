@@ -8,7 +8,7 @@
 
 
     <ImageView
-        android:id="@+id/general_user_view_qr_profile_pic"
+        android:id="@+id/profilePic"
         android:layout_width="500px"
         android:layout_height="500px"
         android:layout_alignParentLeft="true"
@@ -23,7 +23,7 @@
         app:layout_constraintVertical_bias="0.351" />
 
     <ImageView
-        android:id="@+id/general_user_view_qr_placeholder"
+        android:id="@+id/qr_code"
         android:layout_width="400dp"
         android:layout_height="400dp"
         android:layout_alignParentLeft="true"
