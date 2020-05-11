@@ -1,59 +1,66 @@
 package io.github.isubham.astra.generalUser;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Base64;
-import android.util.Log;
-import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-
-import io.github.isubham.astra.R;
+import io.github.isubham.astra.databinding.GeneralUserViewQrBinding;
+import io.github.isubham.astra.tools.CameraUtils;
+import io.github.isubham.astra.tools.Constants;
+import io.github.isubham.astra.tools.LoginPersistance;
 
 public class GeneralUserViewQr extends AppCompatActivity {
-    ImageView profilepic,qrcode;
+    private GeneralUserViewQrBinding binding;
+    private String userName;
+    private String userType;
 
-    public static final String MyPREFERENCES = "MyPrefs" ;
-    public static final String username = "user";
-//    public static final String name = "subham";
-//    public static final String dob = "03-03-1996";
-//    public static final String father_name = "emailKey";
-
-    SharedPreferences sharedpreferences;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout. activity_general_user_view_qr_code);
-        profilepic = findViewById(R.id.general_user_view_qr_profile_pic);
-        qrcode = findViewById(R.id.general_user_view_qr_placeholder);
+        binding = GeneralUserViewQrBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedpreferences.edit();
-        try {
-           final JSONObject res = new JSONObject(getIntent().getStringExtra("response"));
-
-            Log.e("item", "Example Item: " + res.getString("username"));
-            Log.e("profile_pic", "Example Item: " + res.getString("profile_pic"));
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }//        editor.putString(username, <>);
-
-        // code to show profile pic
-//        byte[] decodedString = Base64.decode(res.getString("profile_pic"),Base64.NO_WRAP);
-//        InputStream inputStream  = new ByteArrayInputStream(decodedString);
-//        Bitmap bitmap  = BitmapFactory.decodeStream(inputStream);
-//        profilepic.setImageBitmap(bitmap);
-        // code to show QR code
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        binding.profilePic.setImageBitmap(CameraUtils.getBitmapFromBase64ImageString(LoginPersistance.GetProfilePic(this)));
+        setBundleData();
+    }
+
+    private void setBundleData() {
+        if (getIntent().getExtras() != null) {
+            userName = getIntent().getExtras().getString(Constants.USER_NAME);
+            userType = getIntent().getExtras().getString(Constants.USER_TYPE);
+            formQrCode(userName);
+        }
+    }
+
+    private void formQrCode(String userName) {
+        qrGenerator(userName);
+    }
+
+    private void qrGenerator(String text) {
+        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+        try {
+            BitMatrix bitMatrix = multiFormatWriter.encode(text, BarcodeFormat.QR_CODE, 800, 800);
+            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+            Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+            binding.qrCode.setImageBitmap(bitmap);
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
