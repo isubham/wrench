@@ -50,7 +50,6 @@
             <!--                <action android:name="android.intent.action.MAIN" />-->
             <!--                <category android:name="android.intent.category.LAUNCHER" />-->
             <!--            </intent-filter>-->
-
         </activity>
         <activity
             android:name=".generalUser.CreateGeneralUser"
@@ -71,7 +70,13 @@
         <activity android:name=".generalUser.GeneralUserSearchUser" />
         <activity android:name=".generalUser.GeneralUserViewQr" />
 
-        <activity android:name=".generalUser.GeneralUserHomeScreen" />
+        <activity android:name=".generalUser.GeneralUserHomeScreen">
+            <!--            <intent-filter>-->
+            <!--                <action android:name="android.intent.action.MAIN" />-->
+            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
+            <!--            </intent-filter>-->
+
+        </activity>
 
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
