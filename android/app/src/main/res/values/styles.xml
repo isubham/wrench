@@ -1,3 +1,4 @@
+<!--suppress ALL -->
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
@@ -22,6 +23,7 @@
 
 
     </style>
+
 
     <!--Menu popup's background and text Color-->
     <style name="MyCustomPopupTheme" parent="ThemeOverlay.AppCompat.Light">
@@ -97,5 +99,59 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <!--    Custom TesxtInputLayout-->
+<!--    <style name="ErrorText" parent="TextAppearance.AppCompat">-->
+<!--        <item name="android:textColor">@color/red</item>-->
+<!--        <item name="android:textSize">16sp</item>-->
+<!--    </style>-->
 
+<!--    <style name="HintText" parent="TextAppearance.AppCompat">-->
+<!--        <item name="android:textColor">@color/white</item>-->
+<!--        <item name="android:textSize">14sp</item>-->
+<!--    </style>-->
+
+<!--    <style name="TextInputLayoutAppearance" parent="Widget.Design.TextInputLayout">-->
+<!--        &lt;!&ndash; reference our hint & error styles &ndash;&gt;-->
+<!--        <item name="hintTextAppearance">@style/HintText</item>-->
+<!--        <item name="errorTextAppearance">@style/ErrorText</item>-->
+<!--        <item name="android:textColor">@color/black</item>-->
+<!--        <item name="android:textColorHint">@color/bg_light_grey</item>-->
+<!--        <item name="colorControlNormal">@color/white</item>-->
+<!--        <item name="colorControlActivated">@color/blue</item>-->
+<!--        <item name="colorControlHighlight">@color/green</item>-->
+<!--    </style>-->
+    <style name="MyTextInputLayout" parent="Theme.MaterialComponents.DayNight">
+
+        <!-- Style attributes -->
+        <item name="boxCornerRadiusBottomStart">15dp</item>
+        <item name="boxCornerRadiusTopStart">15dp</item>
+        <item name="boxCornerRadiusTopEnd">15dp</item>
+        <item name="boxCornerRadiusBottomEnd">15dp</item>
+        <item name="boxBackgroundColor">#80ABCDEF</item>
+
+
+        <item name="hintTextAppearance">@style/HintText</item>
+        <item name="errorTextAppearance">@style/ErrorText</item>
+        <item name="counterTextAppearance">@style/HintText</item>
+
+
+        <!-- Theme attributes -->
+        <item name="android:textColorHint">#80000000</item>
+
+        <item name="colorControlNormal">#000</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
+
+    </style>
+
+
+    <style name="ErrorText" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@android:color/holo_red_light</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="HintText" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@android:color/holo_green_dark</item>
+        <item name="android:textSize">14sp</item>
+
+    </style>
 </resources>

@@ -16,6 +16,10 @@
     <dimen name="snackbar_textview_textSize">14sp</dimen>
     <dimen name="snackbar_button_textSize">14sp</dimen>
 
+    <!--TextInputLayout-->
+    <dimen name="textinputlayout_textSize">14sp</dimen>
+    <dimen name="textinputlayout_radius">5sp</dimen>
+
 
     <!--admin home attributes-->
     <dimen name="admin_home_switch_padding">5dp</dimen>

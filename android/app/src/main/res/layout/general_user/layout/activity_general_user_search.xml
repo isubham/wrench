@@ -8,12 +8,17 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/general_user_til_name"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:hintTextAppearance="@android:style/TextAppearance.Medium"
         app:layout_constraintBottom_toTopOf="@+id/general_user_til_dob"
         app:layout_constraintTop_toTopOf="parent"
-        android:padding="@dimen/app_padding">
+        android:padding="@dimen/app_padding"
+        android:background="@color/zxing_transparent"
+        android:layout_margin="@dimen/app_padding"
+        app:boxStrokeWidthFocused="@dimen/app_padding"
+        app:boxCornerRadiusTopStart="@dimen/app_padding"
+        app:boxCornerRadiusTopEnd="@dimen/app_padding">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/general_user_et_name"
