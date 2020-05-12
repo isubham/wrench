@@ -1,6 +1,7 @@
 package io.github.isubham.astra.generalUser;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -9,7 +10,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -19,6 +19,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.DialogFragment;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -34,11 +35,11 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import io.github.isubham.astra.R;
 import io.github.isubham.astra.databinding.CreateGeneralUserBinding;
@@ -46,11 +47,16 @@ import io.github.isubham.astra.model.GeneralUser;
 import io.github.isubham.astra.tools.ApplicationController;
 import io.github.isubham.astra.tools.CameraUtils;
 import io.github.isubham.astra.tools.Constants;
+import io.github.isubham.astra.tools.CustomDatePickerFragment;
+import io.github.isubham.astra.tools.CustomSnackbar;
 import io.github.isubham.astra.tools.Endpoints;
 import io.github.isubham.astra.tools.Errors;
 import io.github.isubham.astra.tools.Headers;
+import io.github.isubham.astra.tools.LoginPersistance;
+import io.github.isubham.astra.tools.ResponseCode;
+import io.github.isubham.astra.tools.validators;
 
-public class CreateGeneralUser extends AppCompatActivity {
+public class CreateGeneralUser extends AppCompatActivity implements CustomDatePickerFragment.TheListener {
 
     public static final String TAG = "CreateGeneralUser";
 
@@ -66,6 +72,8 @@ public class CreateGeneralUser extends AppCompatActivity {
     private String createdById;
 
     private Gson gson;
+
+    private GeneralUser generalUser = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,8 +93,215 @@ public class CreateGeneralUser extends AppCompatActivity {
 
 
         hideProgressBar();
+        addFocusChangeListeners();
 
     }
+
+    /**
+     * TODO validation of Fields
+     **/
+
+    private void addFocusChangeListeners() {
+
+
+        binding.userName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+                    validUserName();
+                }
+
+            }
+        });
+
+        binding.fullName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+                    validateName();
+                }
+            }
+        });
+
+        binding.fatherName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+                    validateFatherName();
+                }
+
+            }
+        });
+
+        binding.dob.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+                    validateDobName();
+                }
+            }
+        });
+
+        binding.address.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+                    validateAddress();
+                }
+            }
+        });
+
+        binding.email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+                    validateEmail();
+                }
+
+            }
+        });
+
+        binding.contact.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+                    validateContact();
+                }
+            }
+        });
+
+        binding.aadhar.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+                    validateAadhar();
+                }
+            }
+        });
+
+        binding.pincode.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+                    validatePincode();
+                }
+            }
+        });
+
+    }
+
+    private boolean validUserName() {
+        if (String.valueOf(binding.userName.getText()).equals(Constants.EMPTY_STRING)) {
+            binding.userName.setError(getString(R.string.field_cannot_be_left_blank));
+            return Constants.TRUE;
+        }
+        return Constants.FALSE;
+    }
+
+    private boolean validateDobName() {
+        String dobValidators =
+                validators.dateFormatErrors(CreateGeneralUser.this, getDate());
+        if (!dobValidators.equals(Constants.EMPTY_STRING)) {
+            binding.dob.setError(dobValidators);
+        }
+        return dobValidators.equals(Constants.EMPTY_STRING);
+
+
+    }
+
+    @SuppressLint("NewApi")
+    private String getDate() {
+        return Objects.requireNonNull(binding.dob).getText().toString().trim();
+    }
+
+
+    private boolean validateAddress() {
+        if (String.valueOf(binding.address.getText()).equals(Constants.EMPTY_STRING)) {
+            binding.address.setError(getString(R.string.field_cannot_be_left_blank));
+            return Constants.TRUE;
+        }
+        return Constants.FALSE;
+    }
+
+    private boolean validateFatherName() {
+        if (String.valueOf(binding.fatherName.getText()).equals(Constants.EMPTY_STRING)) {
+            binding.fatherName.setError(getString(R.string.field_cannot_be_left_blank));
+            return Constants.TRUE;
+        }
+        return Constants.FALSE;
+    }
+
+    private boolean validateName() {
+        if (String.valueOf(binding.fullName.getText()).equals(Constants.EMPTY_STRING)) {
+            binding.fullName.setError(getString(R.string.field_cannot_be_left_blank));
+            return Constants.TRUE;
+        }
+        return Constants.FALSE;
+    }
+
+    private boolean validatePincode() {
+        String pincodeValidators =
+                validators.pincodeHasErrors(CreateGeneralUser.this, getPincode());
+        if (!pincodeValidators.equals(Constants.EMPTY_STRING)) {
+            binding.pincode.setError(pincodeValidators);
+        }
+        return pincodeValidators.equals(Constants.EMPTY_STRING);
+    }
+
+    @SuppressLint("NewApi")
+    private String getPincode() {
+        return Objects.requireNonNull(binding.pincode).getText().toString().trim();
+    }
+
+
+    private boolean validateAadhar() {
+
+        String aadharValidators =
+                validators.aadharHasErrors(CreateGeneralUser.this, getAadhar());
+        if (!aadharValidators.equals(Constants.EMPTY_STRING)) {
+            binding.aadhar.setError(aadharValidators);
+        }
+        return aadharValidators.equals(Constants.EMPTY_STRING);
+
+    }
+
+    @SuppressLint("NewApi")
+    private String getAadhar() {
+        return Objects.requireNonNull(binding.aadhar).getText().toString().trim();
+    }
+
+    private boolean validateContact() {
+
+        String contactValidators =
+                validators.contactHasErrors(CreateGeneralUser.this, getContact());
+        if (!contactValidators.equals(Constants.EMPTY_STRING)) {
+            binding.contact.setError(contactValidators);
+        }
+        return contactValidators.equals(Constants.EMPTY_STRING);
+    }
+
+
+    @SuppressLint("NewApi")
+    private String getContact() {
+        return Objects.requireNonNull(binding.contact).getText().toString().trim();
+    }
+
+    private boolean validateEmail() {
+        String emailValidationErrors =
+                validators.emailHasErrors(CreateGeneralUser.this, getEmail());
+        if (!emailValidationErrors.equals(Constants.EMPTY_STRING)) {
+            binding.email.setError(emailValidationErrors);
+        }
+        return emailValidationErrors.equals(Constants.EMPTY_STRING);
+    }
+
+    @SuppressLint("NewApi")
+    private String getEmail() {
+        return Objects.requireNonNull(binding.email).getText().toString().trim();
+    }
+
+    /**TODO validation of Fields End**/
+
 
     /**
      * Requesting permissions using Dexter library
@@ -161,6 +376,16 @@ public class CreateGeneralUser extends AppCompatActivity {
             captureImage(Constants.BACK_DOC);
         else
             showPermissionsAlert();
+    }
+
+    public void selectDate(View view) {
+        DialogFragment fragment = new CustomDatePickerFragment();
+        fragment.show(getSupportFragmentManager(), "date picker");
+    }
+
+    @Override
+    public void returnDate(String date) {
+        binding.dob.setText(date);
     }
 
     /*TODO For Camera Stuff ***/
@@ -298,50 +523,47 @@ public class CreateGeneralUser extends AppCompatActivity {
 
     /* TODO Camera Stuff Over */
 
-    /* TODO Image Conversion Stuff*/
-    private String getStringFromBitmap(Bitmap bitmap, int quality) {
-        /* Bitmap Image is converted to byte Array  here   */
-
-        if (bitmap != null) {
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
-            byte[] imageBytes = outputStream.toByteArray();
-            return Base64.encodeToString(imageBytes, Base64.DEFAULT);
-        }
-        return Constants.EMPTY_STRING;
-    }
-    /* TODO Image Conversion Stuff Over*/
-
-
     public void saveGeneralUser(View view) {
 
-        //bitmap_front_doc, bitmap_back_doc, bitmap_profile_pic  ,createdById  has the updated value for respective images in view
-        GeneralUser generalUser = new GeneralUser(getStringFromBitmap(bitmap_profile_pic, Constants.HIGH_QUALITY), String.valueOf(binding.userName.getText()), String.valueOf(binding.fullName.getText()),
-                String.valueOf(binding.fatherName.getText()), String.valueOf(binding.email.getText()), String.valueOf(binding.dob.getText()), String.valueOf(binding.contact.getText()),
-                String.valueOf(binding.aadhar.getText()), String.valueOf(binding.address.getText()), String.valueOf(binding.pincode.getText()), getStringFromBitmap(bitmap_front_doc,
-                Constants.HIGH_QUALITY), getStringFromBitmap(bitmap_back_doc, Constants.HIGH_QUALITY), createdById);
+        if (!emptyChecksFailed()) {
+            //bitmap_front_doc, bitmap_back_doc, bitmap_profile_pic  ,createdById  has the updated value for respective images in view
+            generalUser = new GeneralUser(CameraUtils.getBase64StringFromBitmap(bitmap_profile_pic, Constants.HIGH_QUALITY), String.valueOf(binding.userName.getText()), String.valueOf(binding.fullName.getText()),
+                    String.valueOf(binding.fatherName.getText()), String.valueOf(binding.email.getText()), String.valueOf(binding.dob.getText()), String.valueOf(binding.contact.getText()),
+                    String.valueOf(binding.aadhar.getText()), String.valueOf(binding.address.getText()), String.valueOf(binding.pincode.getText()), CameraUtils.getBase64StringFromBitmap(bitmap_front_doc,
+                    Constants.HIGH_QUALITY), CameraUtils.getBase64StringFromBitmap(bitmap_back_doc, Constants.HIGH_QUALITY), createdById);
 
-        gson = new Gson();
-        String generalUserJson = gson.toJson(generalUser);
-        try {
-            apiRequestToSaveGeneralUser(new JSONObject(generalUserJson));
-        } catch (JSONException e) {
-            e.printStackTrace();
+
+            gson = new Gson();
+            String generalUserJson = gson.toJson(generalUser);
+            try {
+                apiRequestToSaveGeneralUser(generalUser, new JSONObject(generalUserJson));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            new CustomSnackbar(CreateGeneralUser.this, getString(R.string.field_cannot_be_left_blank), null, binding.layoutContainer) {
+                @Override
+                public void onActionClick(View view) {
+                }
+            }.show();
         }
     }
 
-    private void apiRequestToSaveGeneralUser(JSONObject generalUserJson) {
+    @SuppressLint("NewApi")
+    private boolean emptyChecksFailed() {
+        return Objects.requireNonNull(binding.userName.getText()).toString().equals(Constants.EMPTY_STRING) || Objects.requireNonNull(binding.fullName.getText()).toString().equals(Constants.EMPTY_STRING) || Objects.requireNonNull(binding.fatherName.getText()).toString().equals(Constants.EMPTY_STRING) || Objects.requireNonNull(binding.email.getText()).toString().equals(Constants.EMPTY_STRING) || Objects.requireNonNull(binding.dob.getText()).toString().equals(Constants.EMPTY_STRING) || Objects.requireNonNull(binding.contact.getText()).toString().equals(Constants.EMPTY_STRING) || Objects.requireNonNull(binding.aadhar.getText()).toString().equals(Constants.EMPTY_STRING) || Objects.requireNonNull(binding.address.getText()).toString().equals(Constants.EMPTY_STRING) || Objects.requireNonNull(binding.pincode.getText()).toString().equals(Constants.EMPTY_STRING) || bitmap_profile_pic == null || bitmap_back_doc == null || bitmap_front_doc == null;
+    }
+
+    private void apiRequestToSaveGeneralUser(final GeneralUser generalUser, JSONObject generalUserJson) {
         showProgressBar();
-        Log.e("request", generalUserJson.toString());
-        Toast.makeText(this, generalUserJson.toString(), Toast.LENGTH_SHORT).show();
-        binding.email.setText(generalUserJson.toString());
+
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, Endpoints.CREATE_GENERAL_USER, generalUserJson, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 hideProgressBar();
-                Toast.makeText(CreateGeneralUser.this, "" + response.toString(), Toast.LENGTH_SHORT).show();
-                Log.e("response", response.toString());
+                parseResponse(response, generalUser);
 
             }
         }, new Response.ErrorListener() {
@@ -360,6 +582,43 @@ public class CreateGeneralUser extends AppCompatActivity {
         };
 
         ApplicationController.getInstance().addToRequestQueue(request);
+
+    }
+
+    private void parseResponse(JSONObject response, GeneralUser generalUser) {
+
+        if (!response.optString(Constants.TOKEN).equals(Constants.EMPTY_STRING)) {
+
+            LoginPersistance.update(generalUser.getProfile_pic(), generalUser.getId_front(), generalUser.getId_back(), this);
+            startActivity(new Intent(CreateGeneralUser.this, GeneralUserViewQr.class)
+                    .putExtra(Constants.USER_NAME, String.valueOf(binding.userName.getText())).putExtra(Constants.USER_TYPE, Constants.USER_TYPE_GENERAL));
+            finish();
+
+        } else if (response.optString(Constants.CODE).equals(ResponseCode.AADHAR_EXISTS)) {
+
+            new CustomSnackbar(this, "" + response.optString(Constants.MESSAGE), null, binding.layoutContainer) {
+                @Override
+                public void onActionClick(View view) {
+                }
+            }.show();
+
+        } else if (response.optString(Constants.CODE).equals(ResponseCode.USER_NAME_EXISTS)) {
+
+            new CustomSnackbar(this, "" + response.optString(Constants.MESSAGE), null, binding.layoutContainer) {
+                @Override
+                public void onActionClick(View view) {
+                }
+            }.show();
+
+        } else {
+            Toast.makeText(this, "" + response.optString(Constants.MESSAGE), Toast.LENGTH_SHORT).show();
+            new CustomSnackbar(this, Constants.UNPARSABLE_RESPONSE, null, binding.layoutContainer) {
+                @Override
+                public void onActionClick(View view) {
+                }
+            }.show();
+        }
+
 
     }
 

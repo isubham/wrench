@@ -4,13 +4,14 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
-import com.bumptech.glide.Glide;
-
 import java.util.List;
+
+import io.github.isubham.astra.tools.CameraUtils;
 
 public class ViewPagerAdapter extends PagerAdapter {
 
@@ -36,7 +37,9 @@ public class ViewPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         ImageView imageView = new ImageView(ctx);
-        Glide.with(ctx).load(imageUrls.get(position)).centerCrop().into(imageView);
+        //Glide.with(ctx).load(imageUrls.get(position)).centerCrop().into(imageView);
+        imageView.setImageBitmap(CameraUtils.getBitmapFromBase64ImageString(imageUrls.get(position)));
+        Toast.makeText(ctx, "" + imageUrls.get(position), Toast.LENGTH_SHORT).show();
         container.addView(imageView);
         return imageView;
     }
@@ -46,5 +49,8 @@ public class ViewPagerAdapter extends PagerAdapter {
         container.removeView((View) object);
     }
 
-
+//    @Override
+//    public int getItemPosition(@NonNull Object object) {
+//        return POSITION_NONE;
+//    }
 }

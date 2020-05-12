@@ -29,7 +29,7 @@ def create_people_by_admin():
 
     people = People(user.id, people["name"], None, Utility.get_date(people["dob"]), people["profile_pic"],
                     people["id_front"], people["id_back"], people["father_name"], people["username"], people["created_by"],
-                    people['contact'], people['address'], people['pincode'], people['email'], people["aadhar_id"])
+                    people['contact'], people['pincode'], people['address'], people['email'], people["aadhar_id"])
     try:
         db.session.add(people)
         db.session.commit()
