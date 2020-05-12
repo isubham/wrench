@@ -69,7 +69,7 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
     private int powerOf2;
 
     //Data From Bundle
-    private String createdById;
+    private int createdById;
 
     private Gson gson;
 
@@ -337,7 +337,7 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
     private void setBundleData() {
         Bundle b = getIntent().getExtras();
         if (b != null) {
-            createdById = b.getString(Constants.USER_TYPE);
+            createdById = b.getInt(Constants.USER_TYPE);
         }
     }
 

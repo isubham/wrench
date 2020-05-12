@@ -204,5 +204,6 @@ public class AdminSignIn extends AppCompatActivity {
 
     public void gotoPanel(View view) {
         startActivity(new Intent(AdminSignIn.this,AdminHomeScreen.class));
+        finish();
     }
 }

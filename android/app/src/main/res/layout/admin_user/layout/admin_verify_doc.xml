@@ -124,7 +124,7 @@
         android:layout_margin="4dp"
         android:background="@drawable/save_button_bg"
         android:onClick="LogActivity"
-        android:text="@string/save"
+        android:text="@string/verify"
         android:textColor="@color/colorPrimary"
         android:textStyle="bold" />
 
