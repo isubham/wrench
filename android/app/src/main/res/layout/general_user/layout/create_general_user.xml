@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -45,9 +46,9 @@
                     android:id="@+id/userName"
                     android:layout_width="@dimen/create_general_user_textView"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:layout_below="@+id/profilePic"
-                    android:layout_centerHorizontal="true" />
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -96,20 +97,38 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
+            <LinearLayout
                 android:id="@+id/textContainer4"
                 style="@style/baseFulWidthElementWithSmallText"
                 android:layout_below="@+id/textContainer3"
-                android:hint="@string/create_general_user_dob"
-                android:textColorHint="@color/colorHint">
+                android:orientation="horizontal"
+                android:weightSum="1">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/dob"
+
+                <com.google.android.material.textfield.TextInputLayout
                     style="@style/baseFulWidthElementWithSmallText"
-                    android:imeOptions="actionNext"
-                    android:inputType="date" />
+                    android:hint="@string/create_general_user_dob"
+                    android:textColorHint="@color/colorHint"
+                    android:layout_weight="0.2">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/dob"
+                        style="@style/baseFulWidthElementWithSmallText"
+                        android:imeOptions="actionNext"
+                        android:inputType="date"
+                       />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/date_chooser"
+                    android:layout_weight="0.8"
+                    android:onClick="selectDate"
+                    android:src="@mipmap/date_chooser"/>
+
+            </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textContainer5"

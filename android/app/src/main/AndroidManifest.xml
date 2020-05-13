@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="io.github.isubham.astra">
     <!-- For Internet -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- For Scanner -->
     <!-- Storage Access for File Read And Save -->
@@ -16,8 +19,8 @@
     <uses-feature android:name="com.android.hardware.Camera.focus" />
     <uses-feature android:name="android.hardware.camera.flash" />
 
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:name="io.github.isubham.astra.tools.ApplicationController"
@@ -56,16 +59,22 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity android:name=".adminUser.AdminCreateAccount">
-
 
         </activity>
 
         <activity android:name=".generalUser.GeneralUserSearchUser" />
-        <activity android:name=".generalUser.GeneralUserViewQr"/>
+        <activity android:name=".generalUser.GeneralUserViewQr" />
 
-        <activity android:name=".generalUser.GeneralUserHomeScreen" />
+        <activity android:name=".generalUser.GeneralUserHomeScreen">
+            <!--            <intent-filter>-->
+            <!--                <action android:name="android.intent.action.MAIN" />-->
+            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
+            <!--            </intent-filter>-->
+
+        </activity>
 
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"

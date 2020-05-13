@@ -38,13 +38,19 @@ public class Constants {
     public static final String GENERAL_USER_CLASS_JSON_RESPONSE = "GENERAL_USER_JSON_RESPONSE" ;
 
 
-    /////////////////Network Request/////////////////
+
     public static final String WEAK_INTERNET = "com.android.volley.TimeoutError";
     public static final String NO_INTERNET = "com.android.volley.NoConnectionError";
 
     //////////////////////////////////////////////////
     public static final String RESPONSE = "Response";
+    public static final String TOKEN = "token";
+    public static final String CODE = "code";
+    public static final String MESSAGE = "message";
+    public static final String UNPARSABLE_RESPONSE = "UnParsable Response Code";
     public static String password_confirm_password_dont_match = "Password and Confirm password do not match";
 
+    public static final boolean TRUE = true;
+    public static final boolean FALSE = false;
 
 }

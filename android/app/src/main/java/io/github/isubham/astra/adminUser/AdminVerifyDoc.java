@@ -10,35 +10,28 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.viewpager.widget.ViewPager;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,39 +40,31 @@ import io.github.isubham.astra.R;
 import io.github.isubham.astra.adapters.ViewPagerAdapter;
 import io.github.isubham.astra.databinding.AdminVerifyDocBinding;
 import io.github.isubham.astra.model.Activity;
-import io.github.isubham.astra.model.ErrorResponse;
-import io.github.isubham.astra.model.GeneralUser;
-import io.github.isubham.astra.model.User;
-import io.github.isubham.astra.tools.ApplicationController;
 import io.github.isubham.astra.tools.CameraUtils;
 import io.github.isubham.astra.tools.Constants;
-import io.github.isubham.astra.tools.Endpoints;
-import io.github.isubham.astra.tools.Errors;
 import io.github.isubham.astra.tools.LoginPersistance;
 
 public class AdminVerifyDoc extends AppCompatActivity {
 
 
+    private static final int REQUEST_LOCATION = 1;
+    LocationManager locationManager;
+    String latitude, longitude;
+    int personId;
     private String TAG = "AdminVerifyDoc";
     private AdminVerifyDocBinding binding;
     private ViewPagerAdapter pagerAdapter;
+
+    //dataFromServer
     private List<String> imageUrls;
     private ProgressBar progressBar;
-
-
     // For Slider Dots
     private int dotsCount;
     private ImageView[] dotImages;
-
-    //dataFromServer
-
     //dataFromBundle
     private String userName;
     private String name;
-
-
     private Gson gson;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,10 +107,6 @@ public class AdminVerifyDoc extends AppCompatActivity {
         final AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
-
-    private static final int REQUEST_LOCATION = 1;
-    LocationManager locationManager;
-    String latitude, longitude;
 
     private void getLocation() {
         if (ActivityCompat.checkSelfPermission(
@@ -171,8 +152,6 @@ public class AdminVerifyDoc extends AppCompatActivity {
         binding.uniqueId.setText(userName);
     }
 
-    int personId;
-
     public void LogActivity(View view) throws JSONException {
         showProgressBar();
         String url = "https://aastra-stag.herokuapp.com/activity/";
@@ -181,7 +160,6 @@ public class AdminVerifyDoc extends AppCompatActivity {
         Activity newActivity = new Activity(personId, latitude + "," + longitude, 1);
 
         try {
-
 
             JsonObjectRequest signUpRequest = new JsonObjectRequest(url,
                     new JSONObject(new Gson().toJson(newActivity)),
@@ -214,7 +192,7 @@ public class AdminVerifyDoc extends AppCompatActivity {
             };
 
             Volley.newRequestQueue(AdminVerifyDoc.this).add(signUpRequest);
-        }catch (JsonSyntaxException e) {
+        } catch (JsonSyntaxException e) {
             Log.e("error", "json exception");
         }
     }
@@ -257,6 +235,7 @@ public class AdminVerifyDoc extends AppCompatActivity {
 
     }
 
+
     private void parseResponseAndSetUi(String response) {
         gson = new Gson();
         GeneralUser generalUser = gson.fromJson(response, GeneralUser.class);
@@ -266,7 +245,9 @@ public class AdminVerifyDoc extends AppCompatActivity {
         binding.uniqueId.setText(generalUser.getUsername());
         if (!TextUtils.isEmpty(generalUser.getProfile_pic())) {
             // Glide.with(this).load(generalUser.getProfile_pic()).centerCrop().into(adminVerifyDocBinding.profilePic);
+
             binding.profilePic.setImageBitmap(CameraUtils.getBitmapFromBase64ImageString(generalUser.getProfile_pic()));
+
         }
 
 
@@ -329,12 +310,12 @@ public class AdminVerifyDoc extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
+
     }
 
     public void hideProgressBar() {
         progressBar.setVisibility(View.INVISIBLE);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
-
 
 }
