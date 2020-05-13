@@ -154,6 +154,7 @@ public class AdminHomeScreen extends AppCompatActivity {
      * TODO - to send status flag for user Logout action
      */
     private void sendStatusForLogout() {
+        LoginPersistance.Delete(AdminHomeScreen.this);
     }
 
     public void scanCode(View view) {
