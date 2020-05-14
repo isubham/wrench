@@ -2,6 +2,7 @@ package io.github.isubham.astra.generalUser;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,32 +31,35 @@ public class GeneralUserViewQr extends AppCompatActivity {
         binding = GeneralUserViewQrBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
         binding.profilePic.setImageBitmap(CameraUtils.getBitmapFromBase64ImageString(LoginPersistance.GetProfilePic(this)));
         setBundleData();
+
     }
+//
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//
+//        binding.profilePic.setImageBitmap(CameraUtils.getBitmapFromBase64ImageString(LoginPersistance.GetProfilePic(this)));
+//        setBundleData();
+//    }
 
     private void setBundleData() {
         if (getIntent().getExtras() != null) {
+
             String userName = getIntent().getExtras().getString(Constants.USER_NAME);
-            String userType = getIntent().getExtras().getString(Constants.USER_TYPE);
+            int userType = getIntent().getExtras().getInt(Constants.USER_TYPE);
             formQrCode(userName);
-            assert userType != null;
             showHideSaveButton(userType);
         }
+
     }
 
-    private void showHideSaveButton(String userType) {
-        if (userType.equals(Constants.USER_TYPE_GENERAL)) {
+    private void showHideSaveButton(int userType) {
+        if (userType == (Constants.USER_TYPE_GENERAL)) {
             //   binding.buttonId.setVisibility(View.INVISIBLE);
         }
     }
-
 
 
     private void formQrCode(String userName) {

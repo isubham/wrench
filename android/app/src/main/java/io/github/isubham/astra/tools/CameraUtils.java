@@ -12,9 +12,9 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
-import android.widget.ImageView;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
@@ -205,14 +205,14 @@ public class CameraUtils {
 
     public static Bitmap getBitmapFromBase64ImageString(String base64Image) {
         /*Base64 String is converted to Bitmap Image here   */
-        byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        if (!TextUtils.isEmpty(base64Image)) {
+            byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        }
+        return null;
     }
 
     /* TODO Image Conversion Stuff Over*/
 
-    public static void setImage(ImageView imageView, String encodedImage) {
-        imageView.setImageBitmap(getBitmapFromBase64ImageString(encodedImage));
-    }
 
 }
