@@ -54,6 +54,7 @@ public class Constants {
     public static final String CODE = "code";
     public static final String MESSAGE = "message";
     public static final String UNPARSABLE_RESPONSE = "UnParsable Response Code";
+    public static final long DELAYED_CLOSE_FOR_RESULT = 2000;
     public static String password_confirm_password_dont_match = "Password and Confirm password do not match";
 
 
