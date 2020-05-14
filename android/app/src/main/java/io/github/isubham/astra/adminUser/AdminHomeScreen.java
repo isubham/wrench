@@ -86,7 +86,9 @@ public class AdminHomeScreen extends AppCompatActivity {
                 return true;
             case R.id.logout:
                 sendStatusForLogout();
-                startActivity(new Intent(this, AdminSignIn.class));
+                Intent toSignInWithoutHistory = new Intent(this, AdminSignIn.class);
+                startActivity(toSignInWithoutHistory);
+                finishAffinity();
                 return true;
 
             default:
@@ -153,6 +155,7 @@ public class AdminHomeScreen extends AppCompatActivity {
      * TODO - to send status flag for user Logout action
      */
     private void sendStatusForLogout() {
+        LoginPersistance.Delete(AdminHomeScreen.this);
     }
 
     public void scanCode(View view) {
