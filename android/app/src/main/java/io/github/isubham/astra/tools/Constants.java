@@ -32,11 +32,14 @@ public class Constants {
     public static final String ID_BACK_URL = "ID_BACK";
     public static final String PROFILE_PIC_URL = "PROFILE_PIC_URL";
     public static final String USER_TYPE = "USER_TYPE";
-    public static final String USER_TYPE_ADMIN = "1";
-    public static final String USER_TYPE_GENERAL = "2";
+    public static final int USER_TYPE_ADMIN = 1;
+    public static final int USER_TYPE_GENERAL = 2;
+    public static final String ACTION_IN_OUT = "ACTION_IN_OUT";
+    public static final int ACTION_IN = 1;
+    public static final int ACTION_OUT = 2;
 
-    public static final String GENERAL_USER_CLASS_JSON_RESPONSE = "GENERAL_USER_JSON_RESPONSE" ;
 
+    public static final String GENERAL_USER_CLASS_JSON_RESPONSE = "GENERAL_USER_JSON_RESPONSE";
 
 
     public static final String WEAK_INTERNET = "com.android.volley.TimeoutError";
@@ -45,12 +48,20 @@ public class Constants {
     //////////////////////////////////////////////////
     public static final String RESPONSE = "Response";
     public static final String TOKEN = "token";
+
+    public static final String TOKEN_INVALID = "token invalid";
+    public static final String TOKEN_EXPIRED = "Token Expired";
     public static final String CODE = "code";
     public static final String MESSAGE = "message";
     public static final String UNPARSABLE_RESPONSE = "UnParsable Response Code";
+    public static final long DELAYED_CLOSE_FOR_RESULT = 2000;
     public static String password_confirm_password_dont_match = "Password and Confirm password do not match";
+
+
 
     public static final boolean TRUE = true;
     public static final boolean FALSE = false;
+    public static final String VERIFICATION_SUCCESSFUL = "Verification Successful";
+    public static final String TRY_AGAIN = "Verification Unsuccessful !! Try Again ..";
 
 }

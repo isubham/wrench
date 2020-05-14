@@ -107,7 +107,7 @@
                     android:background="@color/colorWhite"
                     android:contentDescription="@string/desc_of_send"
                     android:onClick="searchForUser"
-                    android:src="@drawable/outline_search_black_18" />
+                    android:src="@mipmap/search" />
 
             </LinearLayout>
         </LinearLayout>

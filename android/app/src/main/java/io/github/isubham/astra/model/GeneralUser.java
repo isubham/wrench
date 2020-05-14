@@ -15,7 +15,7 @@ public class GeneralUser {
     private String pincode;
     private String id_front;
     private String id_back;
-    private String created_by;
+    private int created_by;
 
     private int user_id;
     private String created;
@@ -23,7 +23,7 @@ public class GeneralUser {
 
     public GeneralUser(String profile_pic, String username, String name, String father_name, String email,
                        String dob, String contact, String aadhar_id, String address, String pincode,
-                       String id_front, String id_back, String created_by) {
+                       String id_front, String id_back, int created_by) {
         this.profile_pic = profile_pic;
         this.username = username;
         this.name = name;
@@ -80,11 +80,11 @@ public class GeneralUser {
         this.pincode = pincode;
     }
 
-    public String getCreated_by() {
+    public int getCreated_by() {
         return created_by;
     }
 
-    public void setCreated_by(String created_by) {
+    public void setCreated_by(int created_by) {
         this.created_by = created_by;
     }
 
