@@ -1,12 +1,11 @@
 package io.github.isubham.astra.generalUser;
 
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.zxing.BarcodeFormat;
@@ -33,47 +32,34 @@ public class GeneralUserViewQr extends AppCompatActivity {
         binding = GeneralUserViewQrBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
         binding.profilePic.setImageBitmap(CameraUtils.getBitmapFromBase64ImageString(LoginPersistance.GetProfilePic(this)));
         setBundleData();
+
     }
+//
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//
+//        binding.profilePic.setImageBitmap(CameraUtils.getBitmapFromBase64ImageString(LoginPersistance.GetProfilePic(this)));
+//        setBundleData();
+//    }
 
     private void setBundleData() {
         if (getIntent().getExtras() != null) {
+
             String userName = getIntent().getExtras().getString(Constants.USER_NAME);
-            String userType = getIntent().getExtras().getString(Constants.USER_TYPE);
+            int userType = getIntent().getExtras().getInt(Constants.USER_TYPE);
             formQrCode(userName);
-            assert userType != null;
-//            showHideSaveButton(userType);
+            showHideSaveButton(userType);
         }
+
     }
 
-    private void showHideSaveButton(String userType) {
-        if (userType.equals(Constants.USER_TYPE_GENERAL)) {
+    private void showHideSaveButton(int userType) {
+        if (userType == (Constants.USER_TYPE_GENERAL)) {
                binding.saveqr.setVisibility(View.INVISIBLE);
         }
-    }
-    public void saveQR(View v){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Are you sure this is your QR You want to SAVE?")
-                .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-//                        LoginPersistance.update();
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
     }
 
 
