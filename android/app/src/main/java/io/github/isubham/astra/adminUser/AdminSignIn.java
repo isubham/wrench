@@ -48,6 +48,10 @@ public class AdminSignIn extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
+        if (LoginPersistance.GetToken(AdminSignIn.this) != null) {
+            startActivity(new Intent(AdminSignIn.this, AdminHomeScreen.class));
+        }
+
         // (Button active, Button loading, Button next, TextView successMessage) {
         statefulButton = new StatefulButton(
                 binding.adminSignInActiveButton,
