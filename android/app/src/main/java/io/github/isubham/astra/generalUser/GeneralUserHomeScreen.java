@@ -27,7 +27,7 @@ public class GeneralUserHomeScreen extends AppCompatActivity {
     }
 
     public void RegisterUser(View view){
-        Intent i = new Intent(GeneralUserHomeScreen.this, GeneralUserSearchUser.class);
+        Intent i = new Intent(GeneralUserHomeScreen.this, CreateGeneralUser.class);
         startActivity(i);
     }
 

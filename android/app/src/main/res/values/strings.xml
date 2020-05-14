@@ -71,6 +71,11 @@
     <string name="sign_in">Sign In</string>
     <string name="save">Save</string>
 
+    <!-- search general user -->
+    <string name="search_general_user">SEARCH USER</string>
+    <string name="saveqr">Save QR</string>
+
+
 
 
 </resources>

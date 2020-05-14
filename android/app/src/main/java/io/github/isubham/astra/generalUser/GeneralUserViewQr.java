@@ -1,9 +1,12 @@
 package io.github.isubham.astra.generalUser;
 
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.zxing.BarcodeFormat;
@@ -46,16 +49,32 @@ public class GeneralUserViewQr extends AppCompatActivity {
             String userType = getIntent().getExtras().getString(Constants.USER_TYPE);
             formQrCode(userName);
             assert userType != null;
-            showHideSaveButton(userType);
+//            showHideSaveButton(userType);
         }
     }
 
     private void showHideSaveButton(String userType) {
         if (userType.equals(Constants.USER_TYPE_GENERAL)) {
-            //   binding.buttonId.setVisibility(View.INVISIBLE);
+               binding.saveqr.setVisibility(View.INVISIBLE);
         }
     }
-
+    public void saveQR(View v){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure this is your QR You want to SAVE?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+//                        LoginPersistance.update();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
 
 
     private void formQrCode(String userName) {
