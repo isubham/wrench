@@ -28,6 +28,7 @@ import io.github.isubham.astra.model.ErrorResponse;
 import io.github.isubham.astra.model.User;
 import io.github.isubham.astra.tools.Constants;
 import io.github.isubham.astra.tools.Endpoints;
+import io.github.isubham.astra.tools.Errors;
 import io.github.isubham.astra.tools.Headers;
 import io.github.isubham.astra.tools.LoginPersistance;
 import io.github.isubham.astra.tools.ResponseCode;
@@ -101,7 +102,7 @@ public class AdminSignIn extends AppCompatActivity {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-
+                            Errors.handleVolleyError(error, "admin signin", AdminSignIn.this);
                         }
                     }) {
                 @Override

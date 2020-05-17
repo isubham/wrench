@@ -139,6 +139,11 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
                 if (!hasFocus) {
                     validateDobName();
                 }
+
+                else {
+                    selectDate(view);
+                }
+
             }
         });
 
@@ -213,7 +218,6 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
     private String getDate() {
         return Objects.requireNonNull(binding.dob).getText().toString().trim();
     }
-
 
     private boolean validateAddress() {
         if (String.valueOf(binding.address.getText()).equals(Constants.EMPTY_STRING)) {
