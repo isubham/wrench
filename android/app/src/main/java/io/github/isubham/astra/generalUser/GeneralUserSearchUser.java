@@ -46,6 +46,7 @@ public class GeneralUserSearchUser extends AppCompatActivity {
     private Gson gson;
     private GeneralUserSearchUserBinding binding;
 
+
     final Calendar myCalendar = Calendar.getInstance();
 
     @Override
@@ -54,6 +55,8 @@ public class GeneralUserSearchUser extends AppCompatActivity {
         binding = GeneralUserSearchUserBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+
+        
         //DatePicker
         binding.generalUserEtDob.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -63,6 +66,7 @@ public class GeneralUserSearchUser extends AppCompatActivity {
             }
         });
     }
+
 
     private void updateLabel(){
         Date maxDate = Calendar.getInstance().getTime();

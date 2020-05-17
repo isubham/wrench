@@ -57,7 +57,7 @@ public class GeneralUserViewQr extends AppCompatActivity {
     }
 
     private void showHideSaveButton(int userType) {
-        if (userType == (Constants.USER_TYPE_GENERAL)) {
+        if (userType == (Constants.USER_TYPE_ADMIN)) {
                binding.saveqr.setVisibility(View.INVISIBLE);
         }
     }
