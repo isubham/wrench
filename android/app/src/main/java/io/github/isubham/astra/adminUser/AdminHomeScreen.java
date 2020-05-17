@@ -213,7 +213,7 @@ public class AdminHomeScreen extends AppCompatActivity {
 
         GeneralUser generalUser = new Gson().fromJson(response, GeneralUser.class);
         //update SharedPref
-        LoginPersistance.update(generalUser.getToken(), generalUser.getProfile_pic(), generalUser.getId_front(),
+        LoginPersistance.update(generalUser.getUsername(),generalUser.getToken(), generalUser.getProfile_pic(), generalUser.getId_front(),
                 generalUser.getId_back(), AdminHomeScreen.this);
 
         sendToVerify(userName, generalUser.getName(), generalUser.getUser_id());
