@@ -26,6 +26,7 @@ public class Constants {
     public static final String USER_NAME = "USER_NAME";
     public static final String NAME = "NAME";
     public static final String ID = "id";
+    public static final String TOKEN = "token";
 
 
     public static final String ID_FRONT_URL = "ID_FRONT";
@@ -47,7 +48,6 @@ public class Constants {
 
     //////////////////////////////////////////////////
     public static final String RESPONSE = "Response";
-    public static final String TOKEN = "token";
 
     public static final String TOKEN_INVALID = "token invalid";
     public static final String TOKEN_EXPIRED = "Token Expired";
@@ -55,13 +55,10 @@ public class Constants {
     public static final String MESSAGE = "message";
     public static final String UNPARSABLE_RESPONSE = "UnParsable Response Code";
     public static final long DELAYED_CLOSE_FOR_RESULT = 2000;
-    public static String password_confirm_password_dont_match = "Password and Confirm password do not match";
-
-
-
     public static final boolean TRUE = true;
     public static final boolean FALSE = false;
     public static final String VERIFICATION_SUCCESSFUL = "Verification Successful";
     public static final String TRY_AGAIN = "Verification Unsuccessful !! Try Again ..";
+    public static String password_confirm_password_dont_match = "Password and Confirm password do not match";
 
 }
