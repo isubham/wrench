@@ -3,11 +3,16 @@ package io.github.isubham.astra.generalUser;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+
 import android.view.View;
+import android.util.Log;
+import android.view.WindowManager;
+import android.widget.ProgressBar;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
@@ -15,6 +20,7 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
+import io.github.isubham.astra.R;
 import io.github.isubham.astra.databinding.GeneralUserViewQrBinding;
 import io.github.isubham.astra.tools.CameraUtils;
 import io.github.isubham.astra.tools.Constants;
@@ -22,7 +28,7 @@ import io.github.isubham.astra.tools.LoginPersistance;
 
 public class GeneralUserViewQr extends AppCompatActivity {
     private GeneralUserViewQrBinding binding;
-
+    private ProgressBar progressBar;
     private String userName;
     private String userType;
 
@@ -32,29 +38,50 @@ public class GeneralUserViewQr extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = GeneralUserViewQrBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        findViewByIds();
+//        toolbarSetup();
+        if(LoginPersistance.GetProfilePic(this)!=null) {
+            binding.profilePic.setImageBitmap(CameraUtils.getBitmapFromBase64ImageString(LoginPersistance.GetProfilePic(this)));
 
-    }
+        }
+        else{
+            binding.profilePic.setImageBitmap(CameraUtils.getBitmapFromBase64ImageString(LoginPersistance.GetIGeneralProfilePic(this)));
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        binding.profilePic.setImageBitmap(CameraUtils.getBitmapFromBase64ImageString(LoginPersistance.GetProfilePic(this)));
+        }
         setBundleData();
+
     }
+
+
+
+//
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//
+//        binding.profilePic.setImageBitmap(CameraUtils.getBitmapFromBase64ImageString(LoginPersistance.GetProfilePic(this)));
+//        setBundleData();
+//    }
 
     private void setBundleData() {
         if (getIntent().getExtras() != null) {
+
             String userName = getIntent().getExtras().getString(Constants.USER_NAME);
-            String userType = getIntent().getExtras().getString(Constants.USER_TYPE);
-            formQrCode(userName);
-            assert userType != null;
-//            showHideSaveButton(userType);
+            int userType = getIntent().getExtras().getInt(Constants.USER_TYPE);
+            if(LoginPersistance.GetGeneralUserName(this)!=null) {
+                formQrCode(LoginPersistance.GetGeneralUserName(this));
+            }
+            else{
+                formQrCode(userName);
+            }
+            assert userType != Constants.USER_TYPE_GENERAL;
+            showHideSaveButton(userType);
         }
+
     }
 
-    private void showHideSaveButton(String userType) {
-        if (userType.equals(Constants.USER_TYPE_GENERAL)) {
+    private void showHideSaveButton(int userType) {
+        if (userType==Constants.USER_TYPE_ADMIN || LoginPersistance.GetGeneralUserName(this)!=null){
                binding.saveqr.setVisibility(View.INVISIBLE);
         }
     }
@@ -64,7 +91,8 @@ public class GeneralUserViewQr extends AppCompatActivity {
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-//                        LoginPersistance.update();
+                        LoginPersistance.update(LoginPersistance.GetIGeneralUserName(GeneralUserViewQr.this),LoginPersistance.GetIGeneralUserToken(GeneralUserViewQr.this),LoginPersistance.GetIGeneralProfilePic(GeneralUserViewQr.this),LoginPersistance.GetIdFront(GeneralUserViewQr.this),LoginPersistance.GetIdBack(GeneralUserViewQr.this),GeneralUserViewQr.this);
+                        binding.saveqr.setVisibility(View.INVISIBLE);
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -76,8 +104,8 @@ public class GeneralUserViewQr extends AppCompatActivity {
         alert.show();
     }
 
-
     private void formQrCode(String userName) {
+
         qrGenerator(userName);
     }
 
@@ -93,5 +121,27 @@ public class GeneralUserViewQr extends AppCompatActivity {
         }
     }
 
+    // app bar
 
+    private void toolbarSetup() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            toolbar.setTitleTextColor(getResources().getColor(R.color.colorPrimaryDark));
+        }
+    }
+    private void findViewByIds() {
+        progressBar = findViewById(R.id.progressBar);
+    }
+
+    public void showProgressBar() {
+        progressBar.setVisibility(View.VISIBLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+    }
+
+    public void hideProgressBar() {
+        progressBar.setVisibility(View.INVISIBLE);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
 }

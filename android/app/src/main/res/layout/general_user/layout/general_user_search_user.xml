@@ -6,18 +6,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include layout="@layout/app_bar"  />
+
+    <include layout="@layout/progress_bar" />
+
+
+<!--    <include-->
+<!--        android:id="@+id/include"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        layout="@layout/app_bar" />-->
+
+<!--    <include-->
+<!--        layout="@layout/progress_bar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/textView_search_user"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/include"-->
+<!--        app:layout_constraintVertical_bias="0.0"-->
+<!--        tools:layout_editor_absoluteX="10dp" />-->
+
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textView_search_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/app_padding"
+        android:layout_marginBottom="76dp"
         android:padding="@dimen/app_padding"
         android:text="@string/search_general_user"
         android:textSize="@dimen/text_heading_one"
         app:layout_constraintBottom_toTopOf="@+id/general_user_til_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.697">
 
     </TextView>
 
@@ -53,7 +75,7 @@
         android:padding="@dimen/app_padding"
         android:background="@color/lightGrey"
         android:layout_margin="@dimen/app_padding"
-        app:endIconDrawable="@drawable/outline_search_black_36"
+
        >
 
         <com.google.android.material.textfield.TextInputEditText
@@ -63,8 +85,7 @@
             android:hint="@string/create_general_user_dob"
             android:cursorVisible="false"
             android:clickable="true"
-            android:focusable="false"
-           />
+            android:focusable="false" />
     </com.google.android.material.textfield.TextInputLayout>
 
 

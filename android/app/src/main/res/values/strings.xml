@@ -50,6 +50,7 @@
     <string name="create_general_user_address">Address</string>
     <string name="create_general_user_aadhar">Aadhar</string>
     <string name="create_general_user_pin_code">Pincode</string>
+    <string name="please_correct_all_the_errors">Please correct all the errors</string>
 
 
     <string name="doc">Doc</string>
@@ -58,6 +59,7 @@
     <string name="back_doc">Back Doc</string>
     <string name="username">userName</string>
     <string name="ok">OK</string>
+    <string name="verify">Verify</string>
 
     <!--    Admin Verify Doc-->
     <string name="registered_doc">Registered Doc</string>
@@ -74,7 +76,7 @@
     <!-- search general user -->
     <string name="search_general_user">SEARCH USER</string>
     <string name="saveqr">Save QR</string>
-
+    <string name="myqr">MyQR</string>
 
 
 

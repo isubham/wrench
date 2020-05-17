@@ -101,32 +101,23 @@
                 android:id="@+id/textContainer4"
                 style="@style/baseFulWidthElementWithSmallText"
                 android:layout_below="@+id/textContainer3"
-                android:orientation="horizontal"
-                android:weightSum="1">
+                android:orientation="horizontal">
 
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/baseFulWidthElementWithSmallText"
                     android:hint="@string/create_general_user_dob"
-                    android:textColorHint="@color/colorHint"
-                    android:layout_weight="0.2">
+                    android:textColorHint="@color/colorHint">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/dob"
                         style="@style/baseFulWidthElementWithSmallText"
+                        android:drawableRight="@mipmap/date_chooser"
                         android:imeOptions="actionNext"
-                        android:inputType="date"
-                       />
+                        android:inputType="date" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/date_chooser"
-                    android:layout_weight="0.8"
-                    android:onClick="selectDate"
-                    android:src="@mipmap/date_chooser"/>
 
             </LinearLayout>
 

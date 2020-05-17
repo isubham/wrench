@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
@@ -39,10 +40,14 @@ import java.util.Map;
 import io.github.isubham.astra.R;
 import io.github.isubham.astra.adapters.ViewPagerAdapter;
 import io.github.isubham.astra.databinding.AdminVerifyDocBinding;
-import io.github.isubham.astra.model.Activity;
+import io.github.isubham.astra.model.CreateLog;
 import io.github.isubham.astra.tools.CameraUtils;
 import io.github.isubham.astra.tools.Constants;
+import io.github.isubham.astra.tools.Endpoints;
+import io.github.isubham.astra.tools.Errors;
+import io.github.isubham.astra.tools.Headers;
 import io.github.isubham.astra.tools.LoginPersistance;
+import io.github.isubham.astra.tools.ResponseCode;
 
 public class AdminVerifyDoc extends AppCompatActivity {
 
@@ -64,6 +69,8 @@ public class AdminVerifyDoc extends AppCompatActivity {
     //dataFromBundle
     private String userName;
     private String name;
+    private int action_in_out;
+
     private Gson gson;
 
     @Override
@@ -84,6 +91,7 @@ public class AdminVerifyDoc extends AppCompatActivity {
 
     private void setLocation() {
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        assert locationManager != null;
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             OnGPS();
         } else {
@@ -137,6 +145,8 @@ public class AdminVerifyDoc extends AppCompatActivity {
             userName = getIntent().getExtras().getString(Constants.USER_NAME);
             name = getIntent().getExtras().getString(Constants.NAME);
             personId = getIntent().getExtras().getInt(Constants.ID);
+            action_in_out = getIntent().getExtras().getInt(Constants.ACTION_IN_OUT);
+
             setUI();
 
             // fetchUserForUserName(userName);
@@ -145,60 +155,74 @@ public class AdminVerifyDoc extends AppCompatActivity {
     }
 
     private void setUI() {
-        CameraUtils.setImage(binding.adminVerifyDocBackDoc, LoginPersistance.GetIdBack(AdminVerifyDoc.this));
-        CameraUtils.setImage(binding.adminVerifyDocFrontDoc, LoginPersistance.GetIdFront(AdminVerifyDoc.this));
-        CameraUtils.setImage(binding.profilePic, LoginPersistance.GetProfilePic(AdminVerifyDoc.this));
+        binding.adminVerifyDocBackDoc.setImageBitmap(CameraUtils.getBitmapFromBase64ImageString(LoginPersistance.GetIdBack(AdminVerifyDoc.this)));
+        binding.adminVerifyDocFrontDoc.setImageBitmap(CameraUtils.getBitmapFromBase64ImageString(LoginPersistance.GetIdFront(AdminVerifyDoc.this)));
+        binding.profilePic.setImageBitmap(CameraUtils.getBitmapFromBase64ImageString(LoginPersistance.GetProfilePic(AdminVerifyDoc.this)));
+
         binding.userName.setText(name);
         binding.uniqueId.setText(userName);
     }
 
     public void LogActivity(View view) throws JSONException {
         showProgressBar();
-        String url = "https://aastra-stag.herokuapp.com/activity/";
-
-        // TODO handle the in out
-        Activity newActivity = new Activity(personId, latitude + "," + longitude, 1);
-
+        CreateLog newCreateLog = new CreateLog(personId, latitude + "," + longitude, action_in_out);
         try {
 
-            JsonObjectRequest signUpRequest = new JsonObjectRequest(url,
-                    new JSONObject(new Gson().toJson(newActivity)),
+            JsonObjectRequest createLogRequest = new JsonObjectRequest(Endpoints.CREATE_LOG,
+                    new JSONObject(new Gson().toJson(newCreateLog)),
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
                             hideProgressBar();
-                            Toast.makeText(AdminVerifyDoc.this, "Saved", Toast.LENGTH_SHORT).show();
-                            finish();
+
+                            if (response.optString(Constants.MESSAGE).equals(Constants.TOKEN_INVALID)) {
+                                Toast.makeText(AdminVerifyDoc.this, Constants.TOKEN_EXPIRED, Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                            parseCreateLogResponse(response);
+
                         }
                     },
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
+                            hideProgressBar();
+                            Errors.handleVolleyError(error, TAG, AdminVerifyDoc.this);
                         }
                     }) {
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    return super.getParams();
-                }
 
                 @Override
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     HashMap<String, String> headers = new HashMap<>();
-                    headers.put("Content-Type", "application/json");
-                    headers.put("Authorization", "Basic " + LoginPersistance.GetToken(AdminVerifyDoc.this));
+                    headers.put(Headers.CONTENT_TYPE, Headers.APPLICATION_JSON);
+                    headers.put(Headers.AUTHORIZATION, "Basic " + LoginPersistance.GetToken(AdminVerifyDoc.this));
                     return headers;
                 }
 
             };
 
-            Volley.newRequestQueue(AdminVerifyDoc.this).add(signUpRequest);
+            Volley.newRequestQueue(AdminVerifyDoc.this).add(createLogRequest);
         } catch (JsonSyntaxException e) {
             Log.e("error", "json exception");
         }
     }
 
-    public void closeActivity(View view) {
-        finish();
+    private void parseCreateLogResponse(JSONObject response) {
+
+        if (response.optString(Constants.CODE).equals(ResponseCode.CREATE_LOG_SUCCESS_CODE)) {
+            Toast.makeText(AdminVerifyDoc.this, Constants.VERIFICATION_SUCCESSFUL, Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, Constants.TRY_AGAIN, Toast.LENGTH_LONG).show();
+        }
+
+        //producing a delay of 2sec so that result is viewable
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                finish();
+            }
+        }, Constants.DELAYED_CLOSE_FOR_RESULT);
+
     }
 
 

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.Editable;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,7 +25,6 @@ import com.google.gson.Gson;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -35,27 +33,23 @@ import java.util.Map;
 import io.github.isubham.astra.R;
 import io.github.isubham.astra.databinding.AdminHomeScreenBinding;
 import io.github.isubham.astra.generalUser.CreateGeneralUser;
-import io.github.isubham.astra.model.CreateLog;
 import io.github.isubham.astra.model.GeneralUser;
 import io.github.isubham.astra.tools.ApplicationController;
 import io.github.isubham.astra.tools.Constants;
 import io.github.isubham.astra.tools.CustomSnackbar;
 import io.github.isubham.astra.tools.Endpoints;
 import io.github.isubham.astra.tools.Errors;
-import io.github.isubham.astra.tools.Headers;
 import io.github.isubham.astra.tools.LoginPersistance;
 
 public class AdminHomeScreen extends AppCompatActivity {
 
+    //BundleData
     private String TAG = "AdminHomeScreen";
-
     private AdminHomeScreenBinding binding;
     private ProgressBar progressBar;
     private boolean backPressedToExitOnce = false;
-
     //Activity use
     private Gson gson;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +61,7 @@ public class AdminHomeScreen extends AppCompatActivity {
         findViewByIds();
         toolbarSetup();
         //showProgressBar();
-        getBundleData();
+        setBundleData();
         hideProgressBar();
 
     }
@@ -86,7 +80,9 @@ public class AdminHomeScreen extends AppCompatActivity {
                 return true;
             case R.id.logout:
                 sendStatusForLogout();
-                startActivity(new Intent(this, AdminSignIn.class));
+                Intent toSignInWithoutHistory = new Intent(this, AdminSignIn.class);
+                startActivity(toSignInWithoutHistory);
+                finishAffinity();
                 return true;
 
             default:
@@ -100,8 +96,8 @@ public class AdminHomeScreen extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (result != null) {
-            if (result.getContents() != null && TextUtils.isEmpty(result.getContents())) {
-                // Log.d("SCAN_FORMAT_NAME", result.getFormatName().trim());
+
+            if (result.getContents() != null) {
                 sendScannedDetailsToCreateLog(result.getContents().trim());
             } else {
                 new CustomSnackbar(this, getString(R.string.admin_home_screen_wrong_scan_text), getString(R.string.admin_home_screen_retry_action_text), binding.layoutContainer) {
@@ -141,7 +137,8 @@ public class AdminHomeScreen extends AppCompatActivity {
         }
     }
 
-    private void getBundleData() {
+    private void setBundleData() {
+
     }
 
     private void findViewByIds() {
@@ -149,10 +146,9 @@ public class AdminHomeScreen extends AppCompatActivity {
     }
 
 
-    /**
-     * TODO - to send status flag for user Logout action
-     */
+    //TODO - to send status flag for user Logout action
     private void sendStatusForLogout() {
+        LoginPersistance.Delete(AdminHomeScreen.this);
     }
 
     public void scanCode(View view) {
@@ -176,25 +172,22 @@ public class AdminHomeScreen extends AppCompatActivity {
 
     private void getUserDetailsFromServerFor(final String userName) {
         showProgressBar();
-        binding.adminHomeSearchUserButton.setEnabled(false);
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, Endpoints.SEARCH_BY_USER_NAME + userName, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 hideProgressBar();
-                binding.adminHomeSearchUserButton.setEnabled(true);
-                //parse Response
+
+                if (response.optString(Constants.MESSAGE).equals(Constants.TOKEN_INVALID)) {
+                    customMessageSnackBar(Constants.TOKEN_EXPIRED);
+                    return;
+                }
+
                 if (!String.valueOf(response).equals(Constants.EMPTY_JSON)) {
                     binding.adminHomeInputUsername.setText(null);
-
-                    GeneralUser generalUser = new Gson().fromJson(response.toString(), GeneralUser.class);
-                    LoginPersistance.update(generalUser.getProfile_pic(), generalUser.getId_front(),
-                            generalUser.getId_back(), AdminHomeScreen.this);
-
-                    parseResponseAndSendToVerify(userName, generalUser.getName(), generalUser.getUser_id());
+                    parseResponse(String.valueOf(response), userName);
                 } else {
-                    binding.adminHomeInputUsername.setError("Invalid Username");
-                    // invalidUserName();
+                    customMessageSnackBar(Constants.INVALID_USERNAME);
                 }
             }
         }, new Response.ErrorListener() {
@@ -216,18 +209,28 @@ public class AdminHomeScreen extends AppCompatActivity {
 
     }
 
-    private void parseResponseAndSendToVerify(String userName, String name, int userId) {
+    private void parseResponse(String response, String userName) {
+
+        GeneralUser generalUser = new Gson().fromJson(response, GeneralUser.class);
+        //update SharedPref
+        LoginPersistance.update(generalUser.getUsername(),generalUser.getToken(), generalUser.getProfile_pic(), generalUser.getId_front(),
+                generalUser.getId_back(), AdminHomeScreen.this);
+
+        sendToVerify(userName, generalUser.getName(), generalUser.getUser_id());
+    }
+
+    private void sendToVerify(String userName, String name, int userId) {
         startActivity(new Intent(AdminHomeScreen.this, AdminVerifyDoc.class)
                 .putExtra(Constants.USER_NAME, userName)
                 .putExtra(Constants.NAME, name)
                 .putExtra(Constants.ID, userId)
-
+                .putExtra(Constants.ACTION_IN_OUT, binding.adminHomeSwitch.isChecked() ? Constants.ACTION_IN : Constants.ACTION_OUT)
 
         );
     }
 
-    private void invalidUserName() {
-        new CustomSnackbar(this, Constants.INVALID_USERNAME, null, binding.layoutContainer) {
+    private void customMessageSnackBar(String message) {
+        new CustomSnackbar(this, message, null, binding.layoutContainer) {
             @Override
             public void onActionClick(View view) {
             }
@@ -236,45 +239,10 @@ public class AdminHomeScreen extends AppCompatActivity {
 
 
     private void sendScannedDetailsToCreateLog(String scannedDetails) {
-        CreateLog createLog = new CreateLog(null, null, null);
-
-        gson = new Gson();
-        String createLogJson = gson.toJson(createLog);
-        try {
-            apiRequestForCreateLog(new JSONObject(createLogJson));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        if (!TextUtils.isEmpty(scannedDetails))
+            getUserDetailsFromServerFor(scannedDetails);
     }
 
-
-    private void apiRequestForCreateLog(JSONObject jsonObject) {
-        showProgressBar();
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, Endpoints.CREATE_LOG, jsonObject, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                hideProgressBar();
-                Toast.makeText(AdminHomeScreen.this, response.toString(), Toast.LENGTH_SHORT).show();
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                hideProgressBar();
-                Errors.handleVolleyError(error, TAG, AdminHomeScreen.this);
-            }
-        }) {
-            @Override
-            public Map<String, String> getHeaders() {
-                HashMap<String, String> headers = new HashMap<>();
-                headers.put(Headers.AUTHORIZATION, "Basic eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Mn0.1HCAwj7aXeFFAjUJXDATBBUYsWy2-8c01chWoISVPP4");
-                return headers;
-            }
-        };
-
-        ApplicationController.getInstance().addToRequestQueue(request);
-
-    }
 
     public void hideKeyboard() {
         InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);

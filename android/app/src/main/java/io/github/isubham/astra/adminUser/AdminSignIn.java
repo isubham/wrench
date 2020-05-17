@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.Header;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -25,17 +26,20 @@ import java.util.Objects;
 import io.github.isubham.astra.databinding.AdminSignInBinding;
 import io.github.isubham.astra.model.ErrorResponse;
 import io.github.isubham.astra.model.User;
-import io.github.isubham.astra.tools.ApplicationController;
+import io.github.isubham.astra.tools.Constants;
+import io.github.isubham.astra.tools.Endpoints;
+import io.github.isubham.astra.tools.Errors;
+import io.github.isubham.astra.tools.Headers;
 import io.github.isubham.astra.tools.LoginPersistance;
+import io.github.isubham.astra.tools.ResponseCode;
 import io.github.isubham.astra.tools.StatefulButton;
 import io.github.isubham.astra.tools.validators;
 
 public class AdminSignIn extends AppCompatActivity {
 
     AdminSignInBinding binding;
-    private boolean backPressedToExitOnce = false;
     StatefulButton statefulButton;
-
+    private boolean backPressedToExitOnce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,13 +49,17 @@ public class AdminSignIn extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
+        if (LoginPersistance.GetToken(AdminSignIn.this) != null) {
+            startActivity(new Intent(AdminSignIn.this, AdminHomeScreen.class));
+        }
+
         // (Button active, Button loading, Button next, TextView successMessage) {
         statefulButton = new StatefulButton(
                 binding.adminSignInActiveButton,
                 binding.adminSignInLoadingButton,
                 binding.adminSignInContinueButton,
                 binding.adminSignInSuccessMessage
-                );
+        );
 
         addFocusChangeListers();
 
@@ -64,29 +72,25 @@ public class AdminSignIn extends AppCompatActivity {
     public void signIn(View view) {
         if (!validateFields()) {
             Toast.makeText(this, "Please Correct Errors", Toast.LENGTH_SHORT).show();
-        }
-        else {
-
+        } else {
             statefulButton.setLoading();
 
-            String url = "https://aastra-stag.herokuapp.com/auth/signin/";
             HashMap<String, String> signInDetails = new HashMap<>();
             signInDetails.put("email", getEmail());
             signInDetails.put("password", getPassword());
 
 
-            JsonObjectRequest signInRequest = new JsonObjectRequest(url, new JSONObject(signInDetails),
+            JsonObjectRequest signInRequest = new JsonObjectRequest(Endpoints.SIGN_IN, new JSONObject(signInDetails),
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
 
-                            if(response.has("code")) {
+                            if (response.has(Constants.CODE)) {
                                 statefulButton.setActive();
                                 ErrorResponse error = new Gson().fromJson(response.toString(), ErrorResponse.class);
                                 binding.adminSignInEmail.setError(error.message);
                                 binding.adminSignInPassword.setError(error.message);
-                            }
-                            else{
+                            } else {
                                 hideAllFields();
                                 User createdUser = new Gson().fromJson(response.toString(), User.class);
                                 LoginPersistance.Save(getEmail(), createdUser.getToken(), AdminSignIn.this);
@@ -98,7 +102,7 @@ public class AdminSignIn extends AppCompatActivity {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-
+                            Errors.handleVolleyError(error, "admin signin", AdminSignIn.this);
                         }
                     }) {
                 @Override
@@ -109,7 +113,7 @@ public class AdminSignIn extends AppCompatActivity {
                 @Override
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     HashMap<String, String> headers = new HashMap<>();
-                    headers.put("Content-Type", "application/json");
+                    headers.put(Headers.CONTENT_TYPE,Headers.APPLICATION_JSON);
                     // headers.put("Authorization", "Basic " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODN9.YgHTISz_lJxtltFpBa1slcjcdxZoFS26b7T-QqbDMuc");
                     return headers;
                 }
@@ -120,8 +124,7 @@ public class AdminSignIn extends AppCompatActivity {
         }
     }
 
-    private void hideAllFields()
-    {
+    private void hideAllFields() {
         binding.adminSignInEmailLayout.setVisibility(View.GONE);
         binding.adminSignInPasswordLayout.setVisibility(View.GONE);
         binding.adminSignInEmail.setVisibility(View.GONE);
@@ -203,6 +206,7 @@ public class AdminSignIn extends AppCompatActivity {
     }
 
     public void gotoPanel(View view) {
-        startActivity(new Intent(AdminSignIn.this,AdminHomeScreen.class));
+        startActivity(new Intent(AdminSignIn.this, AdminHomeScreen.class));
+        finish();
     }
 }
