@@ -138,9 +138,7 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
                     validateDobName();
-                }
-
-                else {
+                } else {
                     selectDate(view);
                 }
 
@@ -531,7 +529,7 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
 
         if (validateFields()) {
             //bitmap_front_doc, bitmap_back_doc, bitmap_profile_pic  ,createdById  has the updated value for respective images in view
-            generalUser = new GeneralUser(null,CameraUtils.getBase64StringFromBitmap(bitmap_profile_pic, Constants.HIGH_QUALITY), String.valueOf(binding.userName.getText()), String.valueOf(binding.fullName.getText()),
+            generalUser = new GeneralUser(null, CameraUtils.getBase64StringFromBitmap(bitmap_profile_pic, Constants.HIGH_QUALITY), String.valueOf(binding.userName.getText()), String.valueOf(binding.fullName.getText()),
                     String.valueOf(binding.fatherName.getText()), String.valueOf(binding.email.getText()), String.valueOf(binding.dob.getText()), String.valueOf(binding.contact.getText()),
                     String.valueOf(binding.aadhar.getText()), String.valueOf(binding.address.getText()), String.valueOf(binding.pincode.getText()), CameraUtils.getBase64StringFromBitmap(bitmap_front_doc,
                     Constants.HIGH_QUALITY), CameraUtils.getBase64StringFromBitmap(bitmap_back_doc, Constants.HIGH_QUALITY), createdById);
@@ -592,7 +590,7 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
 
         if (!response.optString(Constants.TOKEN).equals(Constants.EMPTY_STRING)) {
 
-            LoginPersistance.update(generalUser.getToken(), generalUser.getProfile_pic(), generalUser.getId_front(), generalUser.getId_back(), this);
+            LoginPersistance.update(generalUser.getUsername(), generalUser.getToken(), generalUser.getProfile_pic(), generalUser.getId_front(), generalUser.getId_back(), this);
             startActivity(new Intent(CreateGeneralUser.this, GeneralUserViewQr.class)
                     .putExtra(Constants.USER_NAME, String.valueOf(binding.userName.getText())).putExtra(Constants.USER_TYPE, Constants.USER_TYPE_GENERAL));
             finish();
