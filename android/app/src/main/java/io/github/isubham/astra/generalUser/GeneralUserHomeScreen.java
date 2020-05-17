@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import io.github.isubham.astra.R;
+import io.github.isubham.astra.tools.Constants;
 
 public class GeneralUserHomeScreen extends AppCompatActivity {
 
@@ -28,6 +29,7 @@ public class GeneralUserHomeScreen extends AppCompatActivity {
 
     public void RegisterUser(View view){
         Intent i = new Intent(GeneralUserHomeScreen.this, CreateGeneralUser.class);
+        i.putExtra(Constants.USER_TYPE,Constants.USER_TYPE_GENERAL);
         startActivity(i);
     }
 

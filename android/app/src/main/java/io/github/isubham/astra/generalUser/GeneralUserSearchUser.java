@@ -41,7 +41,7 @@ import io.github.isubham.astra.tools.CustomDatePickerFragment;
 import io.github.isubham.astra.tools.Errors;
 import io.github.isubham.astra.tools.LoginPersistance;
 
-public class GeneralUserSearchUser extends AppCompatActivity {
+public class GeneralUserSearchUser extends AppCompatActivity implements CustomDatePickerFragment.TheListener {
     private String TAG = "GeneralUserSearchUser";
     private Gson gson;
     private GeneralUserSearchUserBinding binding;
@@ -174,21 +174,12 @@ public class GeneralUserSearchUser extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void selectDate(View view) {
-//        DialogFragment fragment = new CustomDatePickerFragment();
-//        fragment.show(getSupportFragmentManager(), "date picker");
-        binding.generalUserEtDob.setText("");
-        DatePickerDialog.OnDateSetListener mdob = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                myCalendar.set(Calendar.YEAR,year);
-                myCalendar.set(Calendar.MONTH,month);
-                myCalendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
-                updateLabel();
-            }
-        };
+        DialogFragment fragment = new CustomDatePickerFragment();
+        fragment.show(getSupportFragmentManager(), "date picker");
+ }
 
-//       else if()
-        new DatePickerDialog(GeneralUserSearchUser.this,mdob,myCalendar.get(Calendar.YEAR),
-                myCalendar.get(Calendar.MONTH),myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-  }
+    @Override
+    public void returnDate(String date) {
+        binding.generalUserEtDob.setText(date);
+    }
 }
