@@ -8,6 +8,7 @@ public class LoginPersistance {
     public static final String MyPREFERENCES = "MyPrefs";
     public static final String TOKEN = "token";
     public static final String GENERAL_USER_TOKEN = "general_user_token";
+    public static final String GENERAL_USER_USERNAME = "general_user_user_name";
     public static final String EMAIL = "email";
     public static final String PROFILE_PIC = "profilePic";
     public static final String ID_FRONT = "idFront";
@@ -29,13 +30,14 @@ public class LoginPersistance {
         editor.apply();
     }
 
-    public static void update(String generalUserToken , String profilePic, String idFront, String idBack, Context context) {
+    public static void update(String userName, String generalUserToken, String profilePic, String idFront, String idBack, Context context) {
         SharedPreferences sp = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(PROFILE_PIC, profilePic);
         editor.putString(ID_FRONT, idFront);
         editor.putString(ID_BACK, idBack);
-        editor.putString(GENERAL_USER_TOKEN,generalUserToken);
+        editor.putString(GENERAL_USER_USERNAME, userName);
+        editor.putString(GENERAL_USER_TOKEN, generalUserToken);
         editor.commit();
         editor.apply();
     }
@@ -68,6 +70,11 @@ public class LoginPersistance {
     public static String GetGeneralUserToken(Context context) {
         SharedPreferences sp = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         return sp.getString(GENERAL_USER_TOKEN, null);
+    }
+
+    public static String GetGeneralUserName(Context context) {
+        SharedPreferences sp = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        return sp.getString(GENERAL_USER_USERNAME, null);
     }
 
 

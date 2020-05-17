@@ -126,7 +126,7 @@ public class GeneralUserSearchUser extends AppCompatActivity {
         gson = new Gson();
         GeneralUser generalUser = gson.fromJson(response, GeneralUser.class);
 
-        LoginPersistance.update(generalUser.getProfile_pic(), generalUser.getId_front(), generalUser.getId_back(), this);
+        LoginPersistance.update(generalUser.getUsername(), generalUser.getToken(), generalUser.getProfile_pic(), generalUser.getId_front(), generalUser.getId_back(), this);
         startActivity(new Intent(GeneralUserSearchUser.this, GeneralUserViewQr.class)
                 .putExtra(Constants.USER_NAME, generalUser.getUsername()).putExtra(Constants.USER_TYPE, Constants.USER_TYPE_GENERAL));
 
