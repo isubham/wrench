@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -113,11 +114,10 @@ public class GeneralUserSearchUser extends AppCompatActivity implements CustomDa
     }
 
     public void searchUser(View view) {
-        hideKeyboard();
         showProgressBar();
-        final String username = binding.generalUserTilName.getEditText().getText().toString().trim();
+        final String username = binding.generalUserTilName.getEditText().getText().toString().toUpperCase().trim();
         final String userdob = binding.generalUserTilDob.getEditText().getText().toString().trim();
-        final String userfathername = binding.generalUserTilFatherName.getEditText().getText().toString().trim();
+        final String userfathername = binding.generalUserTilFatherName.getEditText().getText().toString().toUpperCase().trim();
 
         // string validation for username
         if (!validateString(username)) {
@@ -148,7 +148,7 @@ public class GeneralUserSearchUser extends AppCompatActivity implements CustomDa
         searchDetails.put("dob", userdob);
         searchDetails.put("father_name", userfathername);
 
-        JsonObjectRequest searchUserRequest = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(searchDetails), new Response.Listener<JSONObject>() {
+        final JsonObjectRequest searchUserRequest = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(searchDetails), new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 parseResponse(String.valueOf(response));
@@ -157,8 +157,8 @@ public class GeneralUserSearchUser extends AppCompatActivity implements CustomDa
             @Override
             public void onErrorResponse(VolleyError error) {
                 Errors.handleVolleyError(error, TAG, GeneralUserSearchUser.this);
-
             }
+
         }) {
 
             @Override
@@ -168,6 +168,11 @@ public class GeneralUserSearchUser extends AppCompatActivity implements CustomDa
                 return headers;
             }
         };
+        searchUserRequest.setRetryPolicy(new DefaultRetryPolicy(
+                10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+        ));
 
         ApplicationController.getInstance().addToRequestQueue(searchUserRequest);
 

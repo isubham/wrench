@@ -1,5 +1,8 @@
 package io.github.isubham.astra.generalUser;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -8,6 +11,8 @@ import android.view.View;
 import android.util.Log;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -73,9 +78,11 @@ public class GeneralUserViewQr extends AppCompatActivity {
 
             if(LoginPersistance.GetGeneralUserName(this)!=null) {
                 formQrCode(LoginPersistance.GetGeneralUserName(this));
+                binding.username.setText(LoginPersistance.GetGeneralUserName(this));
             }
             else{
                 formQrCode(userName);
+                binding.username.setText(userName);
             }
             assert userType != Constants.USER_TYPE_GENERAL;
 
@@ -89,6 +96,11 @@ public class GeneralUserViewQr extends AppCompatActivity {
 
         if (userType==Constants.USER_TYPE_ADMIN || LoginPersistance.GetGeneralUserName(this)!=null){
                binding.saveqr.setVisibility(View.INVISIBLE);
+
+        }
+        if (userType!=Constants.USER_TYPE_ADMIN) {
+
+            binding.usernameCopyBt.setVisibility(View.INVISIBLE);
         }
     }
     public void saveQR(View v){
@@ -151,5 +163,11 @@ public class GeneralUserViewQr extends AppCompatActivity {
     public void hideProgressBar() {
         progressBar.setVisibility(View.INVISIBLE);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+    public void copyText(View v){
+        ClipboardManager clipboard = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("TextView",binding.username.getText().toString());
+        clipboard.setPrimaryClip(clip);
+        Toast.makeText(this, "Copied username: "+binding.username.getText().toString(), Toast.LENGTH_SHORT).show();
     }
 }
