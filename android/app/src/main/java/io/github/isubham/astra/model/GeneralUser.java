@@ -2,6 +2,7 @@ package io.github.isubham.astra.model;
 
 public class GeneralUser {
 
+    private String token ;
     private String profile_pic;
     private String username;
     private String name;
@@ -21,9 +22,10 @@ public class GeneralUser {
     private String created;
 
 
-    public GeneralUser(String profile_pic, String username, String name, String father_name, String email,
+    public GeneralUser(String token ,String profile_pic, String username, String name, String father_name, String email,
                        String dob, String contact, String aadhar_id, String address, String pincode,
                        String id_front, String id_back, int created_by) {
+        this.token = token;
         this.profile_pic = profile_pic;
         this.username = username;
         this.name = name;
@@ -39,6 +41,13 @@ public class GeneralUser {
         this.created_by = created_by;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     public String getFirst_name() {
         return first_name;

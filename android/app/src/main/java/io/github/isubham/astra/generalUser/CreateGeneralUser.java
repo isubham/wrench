@@ -138,9 +138,7 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
                     validateDobName();
-                }
-
-                else {
+                } else {
                     selectDate(view);
                 }
 
@@ -341,7 +339,7 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
     private void setBundleData() {
         Bundle b = getIntent().getExtras();
         if (b != null) {
-            createdById = b.getInt(Constants.USER_TYPE);
+            createdById = b.getInt(Constants.ID);
         }
     }
 
@@ -488,16 +486,16 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
 
         if (bitmap != null) {
             if (fileUri.toString().contains(Constants.FRONT_DOC)) {
-               // binding.frontDoc.setRotation(90);
+                // binding.frontDoc.setRotation(90);
                 binding.frontDoc.setImageBitmap(bitmap);
                 bitmap_front_doc = bitmap;
             } else if (fileUri.toString().contains(Constants.BACK_DOC)) {
-               // binding.backDoc.setRotation(90);
+                // binding.backDoc.setRotation(90);
                 binding.backDoc.setImageBitmap(bitmap);
                 bitmap_back_doc = bitmap;
             } else {
                 // for ProfilePic
-               // binding.profilePic.setRotation(-90);
+                // binding.profilePic.setRotation(-90);
                 binding.profilePic.setImageBitmap(bitmap);
                 bitmap_profile_pic = bitmap;
             }
@@ -531,7 +529,7 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
 
         if (validateFields()) {
             //bitmap_front_doc, bitmap_back_doc, bitmap_profile_pic  ,createdById  has the updated value for respective images in view
-            generalUser = new GeneralUser(CameraUtils.getBase64StringFromBitmap(bitmap_profile_pic, Constants.HIGH_QUALITY), String.valueOf(binding.userName.getText()), String.valueOf(binding.fullName.getText()),
+            generalUser = new GeneralUser(null, CameraUtils.getBase64StringFromBitmap(bitmap_profile_pic, Constants.HIGH_QUALITY), String.valueOf(binding.userName.getText()), String.valueOf(binding.fullName.getText()),
                     String.valueOf(binding.fatherName.getText()), String.valueOf(binding.email.getText()), String.valueOf(binding.dob.getText()), String.valueOf(binding.contact.getText()),
                     String.valueOf(binding.aadhar.getText()), String.valueOf(binding.address.getText()), String.valueOf(binding.pincode.getText()), CameraUtils.getBase64StringFromBitmap(bitmap_front_doc,
                     Constants.HIGH_QUALITY), CameraUtils.getBase64StringFromBitmap(bitmap_back_doc, Constants.HIGH_QUALITY), createdById);
@@ -579,6 +577,7 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
             public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<>();
                 headers.put(Headers.CONTENT_TYPE, Headers.APPLICATION_JSON);
+                headers.put(Headers.AUTHORIZATION, "Basic " + LoginPersistance.GetToken(CreateGeneralUser.this));
                 return headers;
             }
         };
@@ -591,7 +590,7 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
 
         if (!response.optString(Constants.TOKEN).equals(Constants.EMPTY_STRING)) {
 
-            LoginPersistance.update(generalUser.getProfile_pic(), generalUser.getId_front(), generalUser.getId_back(), this);
+            LoginPersistance.update(generalUser.getUsername(), generalUser.getToken(), generalUser.getProfile_pic(), generalUser.getId_front(), generalUser.getId_back(), this);
             startActivity(new Intent(CreateGeneralUser.this, GeneralUserViewQr.class)
                     .putExtra(Constants.USER_NAME, String.valueOf(binding.userName.getText())).putExtra(Constants.USER_TYPE, Constants.USER_TYPE_GENERAL));
             finish();
