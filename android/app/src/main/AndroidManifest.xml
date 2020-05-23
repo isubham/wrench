@@ -32,7 +32,6 @@
         android:theme="@style/AppTheme"
         tools:targetApi="n">
 
-
         <activity
             android:name=".adminUser.AdminVerifyDoc"
             android:noHistory="true"
@@ -43,12 +42,14 @@
         <activity
             android:name=".adminUser.AdminHomeScreen"
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"/>
+
+            tools:ignore="LockedOrientationActivity" />
 
         <activity
             android:name=".generalUser.CreateGeneralUser"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
+
         <activity android:name=".adminUser.AdminSignIn" android:noHistory="true">
 <!--            <intent-filter>-->
 <!--                <action android:name="android.intent.action.MAIN" />-->
@@ -69,6 +70,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
 
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"

@@ -7,13 +7,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 
 import com.android.volley.Request;
@@ -41,11 +44,12 @@ import io.github.isubham.astra.tools.CustomDatePickerFragment;
 import io.github.isubham.astra.tools.Errors;
 import io.github.isubham.astra.tools.LoginPersistance;
 
-public class GeneralUserSearchUser extends AppCompatActivity {
+public class GeneralUserSearchUser extends AppCompatActivity implements CustomDatePickerFragment.TheListener {
     private String TAG = "GeneralUserSearchUser";
     private Gson gson;
     private GeneralUserSearchUserBinding binding;
 
+    private ProgressBar progressBar;
 
     final Calendar myCalendar = Calendar.getInstance();
 
@@ -55,8 +59,10 @@ public class GeneralUserSearchUser extends AppCompatActivity {
         binding = GeneralUserSearchUserBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        findViewByIds();
+//        toolbarSetup();
 
-        
+
         //DatePicker
         binding.generalUserEtDob.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -108,6 +114,7 @@ public class GeneralUserSearchUser extends AppCompatActivity {
 
     public void searchUser(View view) {
         hideKeyboard();
+        showProgressBar();
         final String username = binding.generalUserTilName.getEditText().getText().toString().trim();
         final String userdob = binding.generalUserTilDob.getEditText().getText().toString().trim();
         final String userfathername = binding.generalUserTilFatherName.getEditText().getText().toString().trim();
@@ -170,7 +177,8 @@ public class GeneralUserSearchUser extends AppCompatActivity {
         gson = new Gson();
         GeneralUser generalUser = gson.fromJson(response, GeneralUser.class);
 
-        LoginPersistance.update(generalUser.getProfile_pic(), generalUser.getId_front(), generalUser.getId_back(), this);
+        hideProgressBar();
+        LoginPersistance.Iupdate(generalUser.getUsername(), generalUser.getToken(), generalUser.getProfile_pic(), generalUser.getId_front(), generalUser.getId_back(), this);
         startActivity(new Intent(GeneralUserSearchUser.this, GeneralUserViewQr.class)
                 .putExtra(Constants.USER_NAME, generalUser.getUsername()).putExtra(Constants.USER_TYPE, Constants.USER_TYPE_GENERAL));
 
@@ -178,21 +186,39 @@ public class GeneralUserSearchUser extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void selectDate(View view) {
-//        DialogFragment fragment = new CustomDatePickerFragment();
-//        fragment.show(getSupportFragmentManager(), "date picker");
-        binding.generalUserEtDob.setText("");
-        DatePickerDialog.OnDateSetListener mdob = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                myCalendar.set(Calendar.YEAR,year);
-                myCalendar.set(Calendar.MONTH,month);
-                myCalendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
-                updateLabel();
-            }
-        };
+        DialogFragment fragment = new CustomDatePickerFragment();
+        fragment.show(getSupportFragmentManager(), "date picker");
+ }
 
-//       else if()
-        new DatePickerDialog(GeneralUserSearchUser.this,mdob,myCalendar.get(Calendar.YEAR),
-                myCalendar.get(Calendar.MONTH),myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-  }
+    @Override
+    public void returnDate(String date) {
+        binding.generalUserEtDob.setText(date);
+    }
+
+
+    // app bar
+
+    private void toolbarSetup() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            toolbar.setTitleTextColor(getResources().getColor(R.color.colorPrimaryDark));
+        }
+    }
+    private void findViewByIds() {
+        progressBar = findViewById(R.id.progressBar);
+    }
+
+    public void showProgressBar() {
+        progressBar.setVisibility(View.VISIBLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+    }
+
+    public void hideProgressBar() {
+        progressBar.setVisibility(View.INVISIBLE);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+
 }
