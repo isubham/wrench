@@ -1,6 +1,8 @@
 package io.github.isubham.astra.tools;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.widget.TextView;
 
 import java.util.regex.Pattern;
 
@@ -70,6 +72,18 @@ public class validators {
 
     private static boolean correctDateFormatPattern(String dob) {
         return Pattern.compile("\\d{2}-\\d{2}-\\d{4}").matcher(dob).matches();
+    }
+
+
+    public static boolean validatePics(Bitmap imgResource, TextView errorTextView, String errorImageResource) {
+        if(imgResource == null) {
+            errorTextView.setText(errorImageResource);
+            return false;
+        }
+        else{
+            errorTextView.setText("");
+            return true;
+        }
     }
 
 }

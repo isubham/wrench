@@ -2,6 +2,7 @@ package io.github.isubham.astra.generalUser;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -10,9 +11,12 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -97,6 +101,17 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
 
     }
 
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
     /**
      * TODO validation of Fields
      **/
@@ -137,11 +152,25 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
-                    validateDobName();
-                } else {
-                    selectDate(view);
+                    validateDateOfBirth();
                 }
+            }
+        });
 
+        binding.dob.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                validateDateOfBirth();
             }
         });
 
@@ -201,15 +230,15 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
         return Constants.TRUE;
     }
 
-    private boolean validateDobName() {
-        String dobValidators =
+    private boolean validateDateOfBirth() {
+        String dateFormatErrors =
                 validators.dateFormatErrors(CreateGeneralUser.this, getDate());
-        if (!dobValidators.equals(Constants.EMPTY_STRING)) {
-            binding.dob.setError(dobValidators);
+        if (!dateFormatErrors.equals(Constants.EMPTY_STRING)) {
+            binding.dob.setError(dateFormatErrors);
+            return false;
         }
-        return dobValidators.equals(Constants.EMPTY_STRING);
-
-
+        binding.dob.setError(null);
+        return true;
     }
 
     @SuppressLint("NewApi")
@@ -388,6 +417,7 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
     @Override
     public void returnDate(String date) {
         binding.dob.setText(date);
+        validateDateOfBirth();
     }
 
     /*TODO For Camera Stuff ***/
@@ -552,7 +582,29 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
     }
 
     private boolean validateFields() {
-        return validateUserName() && validateName() && validateFatherName() && validateDobName() && validateAadhar() && validateAddress() && validateContact() && validatePincode() && bitmap_profile_pic != null && bitmap_back_doc != null && bitmap_front_doc != null;
+        boolean usernameValid = validateUserName();
+        boolean nameValid = validateName();
+        boolean fatherNameValid = validateFatherName();
+        boolean dobValid = validateDateOfBirth();
+        boolean aadharValid = validateAadhar();
+        boolean addressValid = validateAddress();
+        boolean contactValid = validateContact();
+        boolean pincodeValid = validatePincode();
+        boolean emailValid = validateEmail();
+
+        boolean profilePicValid = validators.validatePics(
+                bitmap_profile_pic, binding.createGeneralUserProfilePicErrrorMessage, "Pic Cannot be empty");
+
+
+        boolean docBackValid = validators.validatePics(
+                bitmap_back_doc, binding.createGeneralUserDocBackErrrorMessage, "Cannot be empty");
+
+
+        boolean docFrontValid = validators.validatePics(
+                bitmap_front_doc, binding.createGeneralUserDocFrontErrrorMessage, "Cannot be empty");
+
+        return usernameValid && nameValid && fatherNameValid && dobValid && aadharValid &&
+                addressValid && contactValid && pincodeValid && profilePicValid && docBackValid && docFrontValid && emailValid;
     }
 
     private void apiRequestToSaveGeneralUser(final GeneralUser generalUser, JSONObject generalUserJson) {

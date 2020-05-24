@@ -35,11 +35,6 @@ import io.github.isubham.astra.tools.validators;
 
 public class AdminCreateAccount extends AppCompatActivity {
 
-    /* TODO
-        - [x] on lose focus of any element
-        - [x] check if password and confirm password match
-        - [ ] button states of [disable, active, in progress, green, red]
-     */
     AdminCreateAccountBinding binding;
     StatefulButton statefulButton;
     User user;

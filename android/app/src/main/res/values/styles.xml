@@ -45,8 +45,12 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginBottom">@dimen/material_element_margin</item>
         <item name="textAllCaps">false</item>
+
     </style>
 
+    <style name="baseFullWidthErrorTextView" parent="baseFulWidthElement">
+        <item name="android:textColor">@color/danger</item>
+    </style>
 
     <style name="ActivityDialog" parent="Theme.AppCompat.Light.Dialog.MinWidth" />
 
