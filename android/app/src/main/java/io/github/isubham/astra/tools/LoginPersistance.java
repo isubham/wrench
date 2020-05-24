@@ -13,6 +13,14 @@ public class LoginPersistance {
     public static final String PROFILE_PIC = "profilePic";
     public static final String ID_FRONT = "idFront";
     public static final String ID_BACK = "idBack";
+    // intermediate
+
+    public static final String I_PROFILE_PIC = "i_profilePic";
+    public static final String I_ID_FRONT = "i_idFront";
+    public static final String I_ID_BACK = "i_idBack";
+    public static final String I_GENERAL_USER_TOKEN = "i_general_user_token";
+    public static final String I_GENERAL_USER_USERNAME = "i_general_user_user_name";
+
 
     public static void Save(String email, String token, Context context) {
         SharedPreferences sp = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
@@ -38,6 +46,17 @@ public class LoginPersistance {
         editor.putString(ID_BACK, idBack);
         editor.putString(GENERAL_USER_USERNAME, userName);
         editor.putString(GENERAL_USER_TOKEN, generalUserToken);
+        editor.commit();
+        editor.apply();
+    }
+    public  static void Iupdate(String userName, String generalUserToken, String profilePic, String idFront, String idBack, Context context) {
+        SharedPreferences sp = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(I_PROFILE_PIC, profilePic);
+        editor.putString(I_ID_FRONT, idFront);
+        editor.putString(I_ID_BACK, idBack);
+        editor.putString(I_GENERAL_USER_USERNAME, userName);
+        editor.putString(I_GENERAL_USER_TOKEN, generalUserToken);
         editor.commit();
         editor.apply();
     }
@@ -75,6 +94,31 @@ public class LoginPersistance {
     public static String GetGeneralUserName(Context context) {
         SharedPreferences sp = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         return sp.getString(GENERAL_USER_USERNAME, null);
+    }
+
+    public static String GetIGeneralUserName(Context context) {
+        SharedPreferences sp = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        return sp.getString(I_GENERAL_USER_USERNAME, null);
+    }
+
+    public static String GetIGeneralProfilePic(Context context) {
+        SharedPreferences sp = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        return sp.getString(I_PROFILE_PIC, null);
+    }
+
+    public static String GetIIdFront(Context context) {
+        SharedPreferences sp = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        return sp.getString(I_ID_FRONT, null);
+    }
+
+    public static String GetIIdBack(Context context) {
+        SharedPreferences sp = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        return sp.getString(I_ID_BACK, null);
+    }
+
+    public static String GetIGeneralUserToken(Context context) {
+        SharedPreferences sp = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        return sp.getString(I_GENERAL_USER_TOKEN, null);
     }
 
 
