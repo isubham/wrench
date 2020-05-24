@@ -8,8 +8,8 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/logout"
-        android:title="@string/LOGOUT"
+        android:id="@+id/removemyqr"
+        android:title="@string/RemoveQR"
         app:showAsAction="never" />
 
 

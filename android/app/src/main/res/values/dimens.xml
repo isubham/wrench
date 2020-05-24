@@ -47,6 +47,8 @@
 
     <dimen name="txt_big">20sp</dimen>
 
+    <!--general user view qr-->
+    <dimen name="view_profile_pic_general_user">140dp</dimen>
 
 
 </resources>

@@ -75,32 +75,6 @@ public class GeneralUserSearchUser extends AppCompatActivity implements CustomDa
     }
 
 
-    private void updateLabel(){
-        Date maxDate = Calendar.getInstance().getTime();
-        Calendar c2 = Calendar.getInstance();
-        c2.set(Calendar.YEAR,1920);
-        c2.set(Calendar.MONTH,01);
-        c2.set(Calendar.DATE,01);
-        Date minDate = c2.getTime();
-        Log.d("maxDate",maxDate.toString());
-        Log.d("maxDate",minDate.toString());
-        Log.d("selectedDate",myCalendar.getTime().toString());
-        if(myCalendar.getTime().compareTo(maxDate)>= 0)
-        {
-            binding.generalUserTilDob.setError("Date can't be of future or todays date");
-
-        }
-        else if(myCalendar.getTime().compareTo(minDate)<= 0)
-        {
-            binding.generalUserTilDob.setError("Date can't be after 1900");
-        }
-        else {
-            String myFormat = "MM-dd-yyyy";
-            SimpleDateFormat sdf = new SimpleDateFormat(myFormat);
-            binding.generalUserEtDob.setText(sdf.format(myCalendar.getTime()));
-        }
-    }
-
     private void hideKeyboard() {
         View view = getCurrentFocus();
         if (view != null) {
@@ -114,7 +88,8 @@ public class GeneralUserSearchUser extends AppCompatActivity implements CustomDa
     }
 
     public void searchUser(View view) {
-        showProgressBar();
+//        showProgressBar();
+
         final String username = binding.generalUserTilName.getEditText().getText().toString().toUpperCase().trim();
         final String userdob = binding.generalUserTilDob.getEditText().getText().toString().trim();
         final String userfathername = binding.generalUserTilFatherName.getEditText().getText().toString().toUpperCase().trim();
@@ -140,42 +115,45 @@ public class GeneralUserSearchUser extends AppCompatActivity implements CustomDa
             binding.generalUserTilFatherName.setErrorEnabled(false);
         }
 
-        Toast.makeText(getApplicationContext(), username + ' ' + userdob + ' ' + userfathername, Toast.LENGTH_SHORT).show();
+        if (username != null && userdob != null && userfathername != null) {
 
-        String url = "https://aastra-stag.herokuapp.com/person/fuzzy/";
-        HashMap<String, String> searchDetails = new HashMap<>();
-        searchDetails.put("name", username);
-        searchDetails.put("dob", userdob);
-        searchDetails.put("father_name", userfathername);
+            Toast.makeText(getApplicationContext(), username + ' ' + userdob + ' ' + userfathername, Toast.LENGTH_SHORT).show();
 
-        final JsonObjectRequest searchUserRequest = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(searchDetails), new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                parseResponse(String.valueOf(response));
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Errors.handleVolleyError(error, TAG, GeneralUserSearchUser.this);
-            }
+            String url = "https://aastra-stag.herokuapp.com/person/fuzzy/";
+            HashMap<String, String> searchDetails = new HashMap<>();
+            searchDetails.put("name", username);
+            searchDetails.put("dob", userdob);
+            searchDetails.put("father_name", userfathername);
 
-        }) {
+            final JsonObjectRequest searchUserRequest = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(searchDetails), new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    parseResponse(String.valueOf(response));
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Errors.handleVolleyError(error, TAG, GeneralUserSearchUser.this);
+                }
 
-            @Override
-            public Map<String, String> getHeaders() {
-                HashMap<String, String> headers = new HashMap<>();
-                headers.put("Content-Type", "application/json");
-                return headers;
-            }
-        };
-        searchUserRequest.setRetryPolicy(new DefaultRetryPolicy(
-                10000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
-        ));
+            }) {
 
-        ApplicationController.getInstance().addToRequestQueue(searchUserRequest);
+                @Override
+                public Map<String, String> getHeaders() {
+                    HashMap<String, String> headers = new HashMap<>();
+                    headers.put("Content-Type", "application/json");
+                    return headers;
+                }
+            };
+            searchUserRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    10000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+            ));
 
+            ApplicationController.getInstance().addToRequestQueue(searchUserRequest);
+
+        }
     }
 
     private void parseResponse(String response) {
@@ -186,7 +164,7 @@ public class GeneralUserSearchUser extends AppCompatActivity implements CustomDa
         LoginPersistance.Iupdate(generalUser.getUsername(), generalUser.getToken(), generalUser.getProfile_pic(), generalUser.getId_front(), generalUser.getId_back(), this);
         startActivity(new Intent(GeneralUserSearchUser.this, GeneralUserViewQr.class)
                 .putExtra(Constants.USER_NAME, generalUser.getUsername()).putExtra(Constants.USER_TYPE, Constants.USER_TYPE_GENERAL));
-
+        finish();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

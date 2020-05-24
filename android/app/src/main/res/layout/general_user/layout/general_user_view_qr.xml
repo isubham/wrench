@@ -26,19 +26,25 @@
 <!--        app:layout_constraintVertical_bias="0.0"-->
 <!--        tools:layout_editor_absoluteX="10dp" />-->
 
-    <ImageView
+
+
+    <com.mikhaellopez.circularimageview.CircularImageView
         android:id="@+id/profilePic"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="@dimen/view_profile_pic_general_user"
+        android:layout_height="@dimen/view_profile_pic_general_user"
+        android:layout_centerHorizontal="true"
+        android:onClick="getUserPic"
+        android:src="@mipmap/user"
+        app:civ_border_color="@color/colorHint"
+        app:civ_border_width="0.75dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_marginTop="80dp"
-        android:src="@drawable/ic_launcher_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/username"
@@ -51,19 +57,21 @@
         app:layout_constraintBottom_toTopOf="@+id/qr_code"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profilePic"></TextView>
+        app:layout_constraintTop_toBottomOf="@+id/profilePic"/>
 
     <Button
         android:id="@+id/username_copy_bt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="copyText"
-        android:text="Copy"
+        android:text="@string/copy"
+        android:padding="3dp"
+        android:background="@drawable/button_copy_border"
         app:layout_constraintBottom_toBottomOf="@+id/username"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.16"
         app:layout_constraintStart_toEndOf="@+id/username"
-        app:layout_constraintTop_toTopOf="@+id/username"></Button>
+        app:layout_constraintTop_toTopOf="@+id/username"/>
 
     <ImageView
         android:id="@+id/qr_code"

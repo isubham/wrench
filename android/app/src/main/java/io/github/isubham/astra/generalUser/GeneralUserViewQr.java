@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.util.Log;
 import android.view.WindowManager;
@@ -79,6 +81,7 @@ public class GeneralUserViewQr extends AppCompatActivity {
             if(LoginPersistance.GetGeneralUserName(this)!=null) {
                 formQrCode(LoginPersistance.GetGeneralUserName(this));
                 binding.username.setText(LoginPersistance.GetGeneralUserName(this));
+
             }
             else{
                 formQrCode(userName);
@@ -91,17 +94,17 @@ public class GeneralUserViewQr extends AppCompatActivity {
 
     }
 
+
     private void showHideSaveButton(int userType) {
 
 
         if (userType==Constants.USER_TYPE_ADMIN || LoginPersistance.GetGeneralUserName(this)!=null){
                binding.saveqr.setVisibility(View.INVISIBLE);
-
+            if (userType==Constants.USER_TYPE_ADMIN) {
+                binding.usernameCopyBt.setVisibility(View.INVISIBLE);
+            }
         }
-        if (userType!=Constants.USER_TYPE_ADMIN) {
 
-            binding.usernameCopyBt.setVisibility(View.INVISIBLE);
-        }
     }
     public void saveQR(View v){
 

@@ -38,7 +38,17 @@ public class GeneralUserHomeScreen extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.general_user_home_screen_menu, menu);
+        if(LoginPersistance.GetGeneralUserName(this)==null){
+            menu.findItem(R.id.removemyqr).setVisible(false);
+        }
         return true;
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        finish();
+        startActivity(getIntent());
     }
 
     @Override
@@ -53,12 +63,16 @@ public class GeneralUserHomeScreen extends AppCompatActivity {
                     Toast.makeText(this, "Please Save your QR Code by searching through existing user", Toast.LENGTH_LONG).show();
                     return true;
                 }
-            case R.id.logout:
+            case R.id.removemyqr:
                 LoginPersistance.update(null,null,null,null,null,this);
+                Toast.makeText(this, "MyQR sucessfully removed", Toast.LENGTH_LONG).show();
+
 //                sendStatusForLogout();
 //                Intent toSignInWithoutHistory = new Intent(this, AdminSignIn.class);
 //                startActivity(toSignInWithoutHistory);
 //                finishAffinity();
+                item.setVisible(false);
+//                this.onCreate(null);
                 return true;
 
             default:
