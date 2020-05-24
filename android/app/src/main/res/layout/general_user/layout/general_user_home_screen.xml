@@ -6,17 +6,38 @@
     android:layout_height="match_parent"
     tools:context=".generalUser.GeneralUserHomeScreen">
 
+    <include layout="@layout/app_bar"  />
+
+    <include layout="@layout/progress_bar" />
+<!--    <include-->
+<!--        android:id="@+id/include"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        layout="@layout/app_bar" />-->
+
+<!--    <include-->
+<!--        layout="@layout/progress_bar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/textView"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/include"-->
+<!--        app:layout_constraintVertical_bias="0.0"-->
+<!--        tools:layout_editor_absoluteX="10dp" />-->
+
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="176dp"
         android:fontFamily="sans-serif-condensed"
         android:text="@string/app_name"
         android:textSize="@dimen/text_heading_one"
         app:layout_constraintBottom_toTopOf="@+id/button_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.49"
-        tools:layout_editor_absoluteX="151dp" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <RelativeLayout
         android:id="@+id/button_layout"
@@ -39,11 +60,13 @@
             android:layout_height="200dp"
             android:layout_alignRight="@id/strut"
             android:layout_alignParentLeft="true"
-            android:background="@color/colorPrimaryDark"
+            android:background="@drawable/button_existing_user"
             android:onClick="ExistingUser"
             android:text="Existing user"
-            android:textSize="@dimen/text_heading_one"
-            android:textColor="@color/colorWhite"/>
+            android:textSize="@dimen/text_heading_two"
+            android:textColor="@color/colorWhite"
+            android:padding="@dimen/app_padding"
+            android:layout_margin="@dimen/padding_userhomepage"/>
 
         <Button
             android:id="@+id/button_register_user"
@@ -54,7 +77,9 @@
             android:background="@drawable/button_register_user"
             android:onClick="RegisterUser"
             android:text="Register User"
-            android:textSize="@dimen/text_heading_one"
-            android:textColor="@color/colorWhite" />
+            android:textSize="@dimen/text_heading_two"
+            android:textColor="@color/colorWhite"
+            android:padding="@dimen/app_padding"
+            android:layout_margin="@dimen/padding_userhomepage"/>
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
