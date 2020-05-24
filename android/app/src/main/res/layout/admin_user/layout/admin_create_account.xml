@@ -18,6 +18,7 @@
             android:layout_margin="@dimen/material_element_margin"
             android:src="@mipmap/app_logo" />
 
+
         <!--    email-->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/admin_create_account_email_layout"
