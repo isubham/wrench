@@ -7,13 +7,7 @@ assignees: ''
 
 ---
 
-## title
+## Acceptance Criteria
 
-description
-
-
-## task steps
-
-- [  ] boil milk
-- [  ] add tea leaves
-- [  ] serve
+- [ ] step1
+- [ ] step2
