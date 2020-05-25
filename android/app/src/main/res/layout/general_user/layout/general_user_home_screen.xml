@@ -6,23 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".generalUser.GeneralUserHomeScreen">
 
-    <include layout="@layout/app_bar"  />
+    <include layout="@layout/app_bar" />
 
     <include layout="@layout/progress_bar" />
-<!--    <include-->
-<!--        android:id="@+id/include"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        layout="@layout/app_bar" />-->
-
-<!--    <include-->
-<!--        layout="@layout/progress_bar"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintBottom_toTopOf="@+id/textView"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/include"-->
-<!--        app:layout_constraintVertical_bias="0.0"-->
-<!--        tools:layout_editor_absoluteX="10dp" />-->
 
 
     <TextView
@@ -60,13 +46,13 @@
             android:layout_height="200dp"
             android:layout_alignRight="@id/strut"
             android:layout_alignParentLeft="true"
+            android:layout_margin="@dimen/padding_userhomepage"
             android:background="@drawable/button_existing_user"
             android:onClick="ExistingUser"
-            android:text="Existing user"
-            android:textSize="@dimen/text_heading_two"
-            android:textColor="@color/colorWhite"
             android:padding="@dimen/app_padding"
-            android:layout_margin="@dimen/padding_userhomepage"/>
+            android:text="Existing user"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/text_heading_two" />
 
         <Button
             android:id="@+id/button_register_user"
@@ -74,12 +60,12 @@
             android:layout_height="200dp"
             android:layout_alignLeft="@id/strut"
             android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/padding_userhomepage"
             android:background="@drawable/button_register_user"
             android:onClick="RegisterUser"
-            android:text="Register User"
-            android:textSize="@dimen/text_heading_two"
-            android:textColor="@color/colorWhite"
             android:padding="@dimen/app_padding"
-            android:layout_margin="@dimen/padding_userhomepage"/>
+            android:text="Register User"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/text_heading_two" />
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

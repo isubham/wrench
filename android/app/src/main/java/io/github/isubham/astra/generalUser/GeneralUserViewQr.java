@@ -6,14 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.util.Log;
-import android.view.WindowManager;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -35,7 +28,6 @@ import io.github.isubham.astra.tools.LoginPersistance;
 
 public class GeneralUserViewQr extends AppCompatActivity {
     private GeneralUserViewQrBinding binding;
-    private ProgressBar progressBar;
     private String userName;
     private String userType;
 
@@ -45,20 +37,17 @@ public class GeneralUserViewQr extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = GeneralUserViewQrBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        findViewByIds();
-//        toolbarSetup();
-        if(LoginPersistance.GetProfilePic(this)!=null) {
+        toolbarSetup();
+        if (LoginPersistance.GetProfilePic(this) != null) {
             binding.profilePic.setImageBitmap(CameraUtils.getBitmapFromBase64ImageString(LoginPersistance.GetProfilePic(this)));
 
-        }
-        else{
+        } else {
             binding.profilePic.setImageBitmap(CameraUtils.getBitmapFromBase64ImageString(LoginPersistance.GetIGeneralProfilePic(this)));
 
         }
         setBundleData();
 
     }
-
 
 
 //
@@ -78,12 +67,11 @@ public class GeneralUserViewQr extends AppCompatActivity {
 
 //            formQrCode(userName);
 
-            if(LoginPersistance.GetGeneralUserName(this)!=null) {
+            if (LoginPersistance.GetGeneralUserName(this) != null) {
                 formQrCode(LoginPersistance.GetGeneralUserName(this));
                 binding.username.setText(LoginPersistance.GetGeneralUserName(this));
 
-            }
-            else{
+            } else {
                 formQrCode(userName);
                 binding.username.setText(userName);
             }
@@ -98,22 +86,23 @@ public class GeneralUserViewQr extends AppCompatActivity {
     private void showHideSaveButton(int userType) {
 
 
-        if (userType==Constants.USER_TYPE_ADMIN || LoginPersistance.GetGeneralUserName(this)!=null){
-               binding.saveqr.setVisibility(View.INVISIBLE);
-            if (userType==Constants.USER_TYPE_ADMIN) {
+        if (userType == Constants.USER_TYPE_ADMIN || LoginPersistance.GetGeneralUserName(this) != null) {
+            binding.saveqr.setVisibility(View.INVISIBLE);
+            if (userType == Constants.USER_TYPE_ADMIN) {
                 binding.usernameCopyBt.setVisibility(View.INVISIBLE);
             }
         }
 
     }
-    public void saveQR(View v){
+
+    public void saveQR(View v) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Are you sure this is your QR You want to SAVE?")
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        LoginPersistance.update(LoginPersistance.GetIGeneralUserName(GeneralUserViewQr.this),LoginPersistance.GetIGeneralUserToken(GeneralUserViewQr.this),LoginPersistance.GetIGeneralProfilePic(GeneralUserViewQr.this),LoginPersistance.GetIdFront(GeneralUserViewQr.this),LoginPersistance.GetIdBack(GeneralUserViewQr.this),GeneralUserViewQr.this);
+                        LoginPersistance.update(LoginPersistance.GetIGeneralUserName(GeneralUserViewQr.this), LoginPersistance.GetIGeneralUserToken(GeneralUserViewQr.this), LoginPersistance.GetIGeneralProfilePic(GeneralUserViewQr.this), LoginPersistance.GetIdFront(GeneralUserViewQr.this), LoginPersistance.GetIdBack(GeneralUserViewQr.this), GeneralUserViewQr.this);
                         binding.saveqr.setVisibility(View.INVISIBLE);
                     }
                 })
@@ -152,25 +141,12 @@ public class GeneralUserViewQr extends AppCompatActivity {
             toolbar.setTitleTextColor(getResources().getColor(R.color.colorPrimaryDark));
         }
     }
-    private void findViewByIds() {
-        progressBar = findViewById(R.id.progressBar);
-    }
 
 
-    public void showProgressBar() {
-        progressBar.setVisibility(View.VISIBLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-
-    }
-
-    public void hideProgressBar() {
-        progressBar.setVisibility(View.INVISIBLE);
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-    }
-    public void copyText(View v){
-        ClipboardManager clipboard = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clip = ClipData.newPlainText("TextView",binding.username.getText().toString());
+    public void copyText(View v) {
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("TextView", binding.username.getText().toString());
         clipboard.setPrimaryClip(clip);
-        Toast.makeText(this, "Copied username: "+binding.username.getText().toString(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Copied username: " + binding.username.getText().toString(), Toast.LENGTH_SHORT).show();
     }
 }
