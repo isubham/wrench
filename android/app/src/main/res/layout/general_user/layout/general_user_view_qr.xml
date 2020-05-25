@@ -1,110 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    style="@style/baseFulWidthElement"
+    android:orientation="vertical">
 
-    <include
-        layout="@layout/app_bar" />
+    <include layout="@layout/app_bar" />
 
-    <include
-        layout="@layout/progress_bar" />
-<!--    <include-->
-<!--        android:id="@+id/include"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        layout="@layout/app_bar" />-->
-
-<!--    <include-->
-<!--        layout="@layout/progress_bar"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintBottom_toTopOf="@+id/profilePic"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/include"-->
-<!--        app:layout_constraintVertical_bias="0.0"-->
-<!--        tools:layout_editor_absoluteX="10dp" />-->
-
-
-
-    <com.mikhaellopez.circularimageview.CircularImageView
-        android:id="@+id/profilePic"
-        android:layout_width="@dimen/view_profile_pic_general_user"
-        android:layout_height="@dimen/view_profile_pic_general_user"
-        android:layout_centerHorizontal="true"
-        android:onClick="getUserPic"
-        android:src="@mipmap/user"
-        app:civ_border_color="@color/colorHint"
-        app:civ_border_width="0.75dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="80dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <TextView
-        android:id="@+id/username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="17dp"
-        android:layout_marginBottom="18dp"
-        android:text="Username"
-        android:textSize="@dimen/text_heading_two"
-        app:layout_constraintBottom_toTopOf="@+id/qr_code"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profilePic"/>
-
-    <Button
-        android:id="@+id/username_copy_bt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="copyText"
-        android:text="@string/copy"
-        android:padding="3dp"
-        android:background="@drawable/button_copy_border"
-        app:layout_constraintBottom_toBottomOf="@+id/username"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.16"
-        app:layout_constraintStart_toEndOf="@+id/username"
-        app:layout_constraintTop_toTopOf="@+id/username"/>
-
-    <ImageView
-        android:id="@+id/qr_code"
-        android:layout_width="350dp"
-        android:layout_height="350dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:src="@drawable/qr"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profilePic"
-        app:layout_constraintVertical_bias="0.419" />
-
-    <Button
-        android:id="@+id/saveqr"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_alignParentLeft="true"
-        android:layout_margin="@dimen/app_padding"
-        android:background="@color/colorPrimaryDark"
-        android:onClick="saveQR"
-        android:padding="@dimen/app_padding"
-        android:text="@string/saveqr"
-        android:textColor="@color/colorWhite"
-        android:textSize="@dimen/button_heading"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/qr_code"
-        app:layout_constraintVertical_bias="0.746" />
+        android:layout_height="match_parent"
+        android:padding="@dimen/app_padding">
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/profilePic"
+            android:layout_width="@dimen/view_profile_pic_general_user"
+            android:layout_height="@dimen/view_profile_pic_general_user"
+            android:layout_centerHorizontal="true"
+            android:onClick="getUserPic"
+            android:src="@mipmap/user"
+            app:civ_border_color="@color/colorHint"
+            app:civ_border_width="0.75dp" />
+
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/profilePic"
+            android:layout_centerHorizontal="true"
+            android:text="Username"
+            android:textSize="@dimen/text_heading_two" />
+
+        <ImageView
+            android:id="@+id/username_copy_bt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/profilePic"
+            android:layout_marginLeft="15dp"
+            android:layout_toEndOf="@+id/username"
+            android:layout_toRightOf="@+id/username"
+            android:onClick="copyText"
+            android:src="@mipmap/copy" />
+
+        <ImageView
+            android:id="@+id/qr_code"
+            android:layout_width="350dp"
+            android:layout_height="350dp"
+            android:layout_below="@+id/username"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/qr" />
+
+        <Button
+            android:id="@+id/saveqr"
+            style="@style/baseFulWidthElement"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorPrimaryDark"
+            android:onClick="saveQR"
+            android:text="@string/saveqr"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/snackbar_textview_textSize" />
+
+    </RelativeLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
