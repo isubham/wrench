@@ -47,7 +47,13 @@ public class GeneralUserViewQr extends AppCompatActivity {
         setContentView(binding.getRoot());
         findViewByIds();
 //        toolbarSetup();
-        if(LoginPersistance.GetProfilePic(this)!=null) {
+
+        setBundleData();
+        setProfilepic();
+
+    }
+    private void setProfilepic(){
+        if(LoginPersistance.GetProfilePic(this)!=null && LoginPersistance.GetGeneralUserName(this).equals(userName)) {
             binding.profilePic.setImageBitmap(CameraUtils.getBitmapFromBase64ImageString(LoginPersistance.GetProfilePic(this)));
 
         }
@@ -55,21 +61,9 @@ public class GeneralUserViewQr extends AppCompatActivity {
             binding.profilePic.setImageBitmap(CameraUtils.getBitmapFromBase64ImageString(LoginPersistance.GetIGeneralProfilePic(this)));
 
         }
-        setBundleData();
-
     }
 
-
-
-//
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//
-//        binding.profilePic.setImageBitmap(CameraUtils.getBitmapFromBase64ImageString(LoginPersistance.GetProfilePic(this)));
-//        setBundleData();
-//    }
-
+    public void setQ(){}
     private void setBundleData() {
         if (getIntent().getExtras() != null) {
 
@@ -78,7 +72,7 @@ public class GeneralUserViewQr extends AppCompatActivity {
 
 //            formQrCode(userName);
 
-            if(LoginPersistance.GetGeneralUserName(this)!=null) {
+            if(LoginPersistance.GetGeneralUserName(this)!=null && LoginPersistance.GetGeneralUserName(this).equals(userName)) {
                 formQrCode(LoginPersistance.GetGeneralUserName(this));
                 binding.username.setText(LoginPersistance.GetGeneralUserName(this));
 

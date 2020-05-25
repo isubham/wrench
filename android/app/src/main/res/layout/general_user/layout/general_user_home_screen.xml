@@ -9,6 +9,7 @@
     <include layout="@layout/app_bar"  />
 
     <include layout="@layout/progress_bar" />
+
 <!--    <include-->
 <!--        android:id="@+id/include"-->
 <!--        android:layout_width="match_parent"-->
@@ -50,19 +51,19 @@
 
         <View
             android:id="@+id/strut"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="@dimen/zero_dp"
+            android:layout_height="@dimen/zero_dp"
             android:layout_centerHorizontal="true" />
 
         <Button
             android:id="@+id/button_existing_user"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/zero_dp"
             android:layout_height="200dp"
             android:layout_alignRight="@id/strut"
             android:layout_alignParentLeft="true"
             android:background="@drawable/button_existing_user"
             android:onClick="ExistingUser"
-            android:text="Existing user"
+            android:text="@string/existing_user"
             android:textSize="@dimen/text_heading_two"
             android:textColor="@color/colorWhite"
             android:padding="@dimen/app_padding"
@@ -70,13 +71,13 @@
 
         <Button
             android:id="@+id/button_register_user"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/zero_dp"
             android:layout_height="200dp"
             android:layout_alignLeft="@id/strut"
             android:layout_alignParentRight="true"
             android:background="@drawable/button_register_user"
             android:onClick="RegisterUser"
-            android:text="Register User"
+            android:text="@string/register_user"
             android:textSize="@dimen/text_heading_two"
             android:textColor="@color/colorWhite"
             android:padding="@dimen/app_padding"

@@ -37,36 +37,39 @@ import java.util.Locale;
 import java.util.Map;
 
 import io.github.isubham.astra.R;
+import io.github.isubham.astra.adminUser.AdminSignIn;
 import io.github.isubham.astra.databinding.GeneralUserSearchUserBinding;
+import io.github.isubham.astra.model.ErrorResponse;
 import io.github.isubham.astra.model.GeneralUser;
+import io.github.isubham.astra.model.User;
 import io.github.isubham.astra.tools.ApplicationController;
 import io.github.isubham.astra.tools.Constants;
 import io.github.isubham.astra.tools.CustomDatePickerFragment;
+import io.github.isubham.astra.tools.CustomSnackbar;
+import io.github.isubham.astra.tools.Endpoints;
 import io.github.isubham.astra.tools.Errors;
 import io.github.isubham.astra.tools.LoginPersistance;
+
+import static io.github.isubham.astra.tools.validators.isNullOrEmpty;
 
 public class GeneralUserSearchUser extends AppCompatActivity implements CustomDatePickerFragment.TheListener {
     private String TAG = "GeneralUserSearchUser";
     private Gson gson;
     private GeneralUserSearchUserBinding binding;
-
+    static String username;
+    static String userdob;
+    static String userfathername;
     private ProgressBar progressBar;
-
-    final Calendar myCalendar = Calendar.getInstance();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = GeneralUserSearchUserBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
         findViewByIds();
 //        toolbarSetup();
-
-
         //DatePicker
         binding.generalUserEtDob.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
                 selectDate(v);
@@ -83,57 +86,76 @@ public class GeneralUserSearchUser extends AppCompatActivity implements CustomDa
         }
     }
 
-    public boolean validateString(String s) {
-        return s.length() > 2;
-    }
-
-    public void searchUser(View view) {
-//        showProgressBar();
-
-        final String username = binding.generalUserTilName.getEditText().getText().toString().toUpperCase().trim();
-        final String userdob = binding.generalUserTilDob.getEditText().getText().toString().trim();
-        final String userfathername = binding.generalUserTilFatherName.getEditText().getText().toString().toUpperCase().trim();
+    private void hasAllFields() {
 
         // string validation for username
-        if (!validateString(username)) {
+        if (isNullOrEmpty(username)) {
             binding.generalUserTilName.setError("Please enter full name as your ID!");
         } else {
             binding.generalUserTilName.setErrorEnabled(false);
         }
 
         // string validation for dob
-        if (!validateString(userdob)) {
+        if (isNullOrEmpty(userdob)) {
             binding.generalUserTilDob.setError("Please enter DOB as your ID!");
         } else {
             binding.generalUserTilDob.setErrorEnabled(false);
         }
 
         // string validation for username
-        if (!validateString(userfathername)) {
+        if (isNullOrEmpty(userfathername)) {
             binding.generalUserTilFatherName.setError("Please enter father name as your ID!");
         } else {
             binding.generalUserTilFatherName.setErrorEnabled(false);
         }
 
-        if (username != null && userdob != null && userfathername != null) {
+    }
 
-            Toast.makeText(getApplicationContext(), username + ' ' + userdob + ' ' + userfathername, Toast.LENGTH_SHORT).show();
+    public void getAllFields(){
+        username = binding.generalUserTilName.getEditText().getText().toString().toUpperCase().trim();
+        userdob = binding.generalUserTilDob.getEditText().getText().toString().trim();
+        userfathername = binding.generalUserTilFatherName.getEditText().getText().toString().toUpperCase().trim();
+    }
 
-            String url = "https://aastra-stag.herokuapp.com/person/fuzzy/";
+    public void searchUser(View view) {
+//        showProgressBar();
+        getAllFields();
+
+        Toast.makeText(getApplicationContext(), username + ' ' + userdob + ' ' + userfathername, Toast.LENGTH_SHORT).show();
+
+        hasAllFields();
+        if (!isNullOrEmpty(username) && !isNullOrEmpty(userdob) && !isNullOrEmpty(userfathername)) {
             HashMap<String, String> searchDetails = new HashMap<>();
             searchDetails.put("name", username);
             searchDetails.put("dob", userdob);
             searchDetails.put("father_name", userfathername);
 
-            final JsonObjectRequest searchUserRequest = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(searchDetails), new Response.Listener<JSONObject>() {
+            final JsonObjectRequest searchUserRequest = new JsonObjectRequest(Request.Method.POST, Endpoints.SEARCH_USER, new JSONObject(searchDetails), new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
-                    parseResponse(String.valueOf(response));
+
+                    if (response.has(Constants.CODE)) {
+                        ErrorResponse error = new Gson().fromJson(response.toString(), ErrorResponse.class);
+//                        Toast.makeText(getApplicationContext(), error.message+". Please fill correct details", Toast.LENGTH_SHORT).show();
+
+                        new CustomSnackbar(GeneralUserSearchUser.this, error.message+". Please fill correct details", null, binding.layoutContainer) {
+                            @Override
+                            public void onActionClick(View view) {
+                            }
+                        }.show();
+                    } else {
+
+                        parseResponse(String.valueOf(response));
+
+                    }
+
+
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Errors.handleVolleyError(error, TAG, GeneralUserSearchUser.this);
+
                 }
 
             }) {
@@ -154,6 +176,16 @@ public class GeneralUserSearchUser extends AppCompatActivity implements CustomDa
             ApplicationController.getInstance().addToRequestQueue(searchUserRequest);
 
         }
+        else
+        {
+//            Toast.makeText(getApplicationContext(), "Please fill all the details", Toast.LENGTH_SHORT).show();
+
+            new CustomSnackbar(GeneralUserSearchUser.this, "Please fill all the details", null, binding.layoutContainer) {
+                @Override
+                public void onActionClick(View view) {
+                }
+            }.show();
+        }
     }
 
     private void parseResponse(String response) {
@@ -167,7 +199,7 @@ public class GeneralUserSearchUser extends AppCompatActivity implements CustomDa
         finish();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+
     public void selectDate(View view) {
         DialogFragment fragment = new CustomDatePickerFragment();
         fragment.show(getSupportFragmentManager(), "date picker");

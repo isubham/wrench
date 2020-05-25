@@ -73,12 +73,21 @@
     <string name="sign_in">Sign In</string>
     <string name="save">Save</string>
 
+
+
     <!-- search general user -->
     <string name="search_general_user">SEARCH USER</string>
     <string name="saveqr">Save QR</string>
-    <string name="myqr">MyQR</string>
     <string name="copy">Copy</string>
+    <string name="search_user">Search user</string>
+
+
+    <!-- general userhome -->
     <string name="RemoveQR">RemoveQR</string>
+    <string name="myqr">MyQR</string>
+    <string name="existing_user">Existing user</string>
+    <string name="register_user">Register User</string>
+    <string name="username_view_qr">Username</string>
 
 
 </resources>

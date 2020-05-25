@@ -39,6 +39,7 @@
 
     <!--general user homepage-->
     <dimen name="padding_userhomepage">2dp</dimen>
+    <dimen name="zero_dp">0dp</dimen>
 
     <!--admin Verify doc-->
     <dimen name="view_pager_dot_dimension">8dp</dimen>
