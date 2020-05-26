@@ -2,17 +2,15 @@
 <resources>
     <!--Common Attributes -->
     <dimen name="basic_button_elevation">20dp</dimen>
-    <dimen name="text_heading_one">40dp</dimen>
-    <dimen name="text_heading_two">30dp</dimen>
+    <dimen name="text_heading_one">40sp</dimen>
+    <dimen name="text_heading_two">25dp</dimen>
     <dimen name="text_heading_three">20dp</dimen>
-    <dimen name="button_heading">30dp</dimen>
+    <dimen name="button_heading">30sp</dimen>
     <dimen name="app_padding">10dp</dimen>
     <dimen name="material_layout_padding">16dp</dimen>
     <dimen name="material_element_margin">8dp</dimen>
     <dimen name="general_margin">20dp</dimen>
     <dimen name="space">16dp</dimen>
-
-
 
 
     <!--Snack Bar Designs-->
@@ -49,6 +47,7 @@
 
     <!--general user view qr-->
     <dimen name="view_profile_pic_general_user">140dp</dimen>
+    <dimen name="general_user_search_component_padding">5dp</dimen>
 
 
 </resources>
