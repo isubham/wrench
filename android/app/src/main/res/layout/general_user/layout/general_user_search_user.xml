@@ -1,132 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <include layout="@layout/app_bar"  />
+    <include layout="@layout/app_bar" />
 
     <include layout="@layout/progress_bar" />
 
-
-<!--    <include-->
-<!--        android:id="@+id/include"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        layout="@layout/app_bar" />-->
-
-<!--    <include-->
-<!--        layout="@layout/progress_bar"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintBottom_toTopOf="@+id/textView_search_user"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/include"-->
-<!--        app:layout_constraintVertical_bias="0.0"-->
-<!--        tools:layout_editor_absoluteX="10dp" />-->
-
-    <TextView
-        android:id="@+id/textView_search_user"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/app_padding"
-        android:layout_marginBottom="76dp"
-        android:padding="@dimen/app_padding"
-        android:text="@string/search_general_user"
-        android:textSize="@dimen/text_heading_one"
-        app:layout_constraintBottom_toTopOf="@+id/general_user_til_name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.697">
-
-    </TextView>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/general_user_til_name"
+    <RelativeLayout
+        android:id="@+id/body_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/app_padding"
-        android:background="@color/lightGrey"
-        android:padding="@dimen/app_padding"
-        app:layout_constraintBottom_toTopOf="@+id/general_user_til_dob"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        tools:layout_editor_absoluteX="10dp">
+        android:layout_height="match_parent"
+        android:padding="@dimen/app_padding">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/general_user_et_name"
+        <TextView
+            android:id="@+id/textView_search_user"
+            style="@style/baseFulWidthElement"
+            android:gravity="center"
+            android:padding="@dimen/app_padding"
+            android:text="@string/search_general_user"
+            android:textSize="@dimen/text_heading_one">
+
+        </TextView>
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/create_general_user_name"
-            android:inputType="text" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_centerVertical="true">
 
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/general_user_til_dob"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="56dp"
-        app:hintTextAppearance="@android:style/TextAppearance.Medium"
-        app:layout_constraintBottom_toTopOf="@+id/general_user_til_father_name"
-        tools:layout_editor_absoluteX="0dp"
-        android:padding="@dimen/app_padding"
-        android:background="@color/lightGrey"
-        android:layout_margin="@dimen/app_padding"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/general_user_til_name"
+                style="@style/baseFulWidthElement"
+                android:padding="@dimen/general_user_search_component_padding">
 
-       >
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/general_user_et_dob"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/create_general_user_dob"
-            android:cursorVisible="false"
-            android:clickable="true"
-            android:focusable="false"
-           />
-    </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/general_user_et_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/create_general_user_name"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
 
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/general_user_til_father_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/app_padding"
-        android:background="@color/lightGrey"
-        android:padding="@dimen/app_padding"
-        app:hintTextAppearance="@android:style/TextAppearance.Medium"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.709"
-        tools:layout_editor_absoluteX="4dp">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/general_user_til_dob"
+                style="@style/baseFulWidthElement"
+                android:layout_below="@+id/general_user_til_name"
+                android:padding="@dimen/general_user_search_component_padding">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/general_user_et_father_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/create_general_fathers_name" />
-    </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/general_user_et_dob"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:hint="@string/create_general_user_dob" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/genera_uset_bt_search_user"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_alignParentLeft="true"
-        android:layout_margin="@dimen/app_padding"
-        android:background="@color/colorPrimaryDark"
-        android:onClick="searchUser"
-        android:padding="@dimen/app_padding"
-        android:drawableLeft="@drawable/outline_search_black_36"
-        android:drawableTint="@color/colorWhite"
-        android:text="Search user"
-        android:textColor="@color/colorWhite"
-        android:textSize="@dimen/button_heading"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/general_user_til_father_name"
-        app:layout_constraintVertical_bias="0.0"
-        tools:layout_editor_absoluteX="10dp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/general_user_til_father_name"
+                style="@style/baseFulWidthElement"
+
+                android:layout_below="@+id/general_user_til_dob"
+                android:padding="@dimen/general_user_search_component_padding"
+                app:hintTextAppearance="@android:style/TextAppearance.Medium">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/general_user_et_father_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/create_general_fathers_name" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/genera_uset_bt_search_user"
+            style="@style/baseFulWidthElementWithSmallText"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorPrimaryDark"
+            android:drawableTint="@color/colorWhite"
+            android:onClick="searchUser"
+            android:padding="5dp"
+            android:text="Search"
+            android:textColor="@color/colorOffWhite"
+            android:textSize="20sp"
+
+            />
+    </RelativeLayout>
+
+</LinearLayout>
