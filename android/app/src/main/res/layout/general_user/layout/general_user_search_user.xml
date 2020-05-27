@@ -47,12 +47,9 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/general_user_til_dob"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/baseFulWidthElement"
                 android:layout_below="@+id/general_user_til_name"
-                android:padding="@dimen/general_user_search_component_padding"
-
-                >
+                android:padding="@dimen/general_user_search_component_padding">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/general_user_et_dob"
@@ -67,8 +64,8 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/general_user_til_father_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/baseFulWidthElement"
+
                 android:layout_below="@+id/general_user_til_dob"
                 android:padding="@dimen/general_user_search_component_padding"
                 app:hintTextAppearance="@android:style/TextAppearance.Medium">
