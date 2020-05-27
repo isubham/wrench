@@ -84,8 +84,9 @@ class People(db.Model):
     pin_code = db.Column(db.String())
     address = db.Column(db.String())
     email = db.Column(db.String())
-    user_id = db.Column(db.Integer, db.ForeignKey('User.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('User.id'), unique=True)
     User = relationship("User", back_populates="People")
+    Activity = relationship("Activity", back_populates="People")
 
     def __init__(self, user_id, first_name, last_name, dob, profile_pic, id_front,
                  id_back, father_name, username, created_by, contact, pin_code, address, email, aadhar_id=None):
@@ -125,24 +126,27 @@ people_schema = PersonSchema(many=True)
 class Activity(db.Model):
     __tablename__ = 'Activity'
     id = db.Column(db.Integer, primary_key=True)
-    person_id = db.Column(db.Integer)
+    person_id = db.Column(db.Integer, db.ForeignKey("People.user_id"))
     when = db.Column(db.DateTime)
     type = db.Column(db.Integer)
     location = db.Column(db.String())
+    purpose = db.Column(db.String())
     user_id = db.Column(db.Integer, db.ForeignKey("User.id"))
     User = relationship("User", back_populates="Activity")
+    People = relationship("People", back_populates="Activity")
 
-    def __init__(self, user_id, person_id, location, type):
+    def __init__(self, user_id, person_id, location, type, purpose):
         self.user_id = user_id
         self.person_id = person_id
         self.type = type
         self.location = location
         self.when = datetime.now()
+        self.purpose = purpose
 
 
 class ActivitySchema(mb.Schema):
     class Meta:
-        fields = ('id', 'user_id', 'person_id', 'type', 'location', 'when')
+        fields = ('id', 'user_id', 'person_id', 'type', 'location', 'when', 'purpose')
 
 
 activity_schema = ActivitySchema()
