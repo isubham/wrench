@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,15 +43,13 @@ import io.github.isubham.astra.tools.LoginPersistance;
 
 public class AdminHomeScreen extends AppCompatActivity {
 
+    //BundleData
     private String TAG = "AdminHomeScreen";
-
     private AdminHomeScreenBinding binding;
     private ProgressBar progressBar;
     private boolean backPressedToExitOnce = false;
-
     //Activity use
     private Gson gson;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +61,7 @@ public class AdminHomeScreen extends AppCompatActivity {
         findViewByIds();
         toolbarSetup();
         //showProgressBar();
-        getBundleData();
+        setBundleData();
         hideProgressBar();
 
     }
@@ -78,14 +75,17 @@ public class AdminHomeScreen extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.register_user:
-                startActivity(new Intent(this, CreateGeneralUser.class).putExtra(Constants.USER_TYPE, Constants.USER_TYPE_ADMIN));
-                return true;
+
             case R.id.logout:
                 sendStatusForLogout();
                 Intent toSignInWithoutHistory = new Intent(this, AdminSignIn.class);
                 startActivity(toSignInWithoutHistory);
                 finishAffinity();
+                return true;
+
+            case R.id.downloadReport:
+                //startActivity(new Intent(this, AdminReportDashboard.class));
+                startActivity(new Intent(this, AdminViewReportDialog.class));
                 return true;
 
             default:
@@ -140,7 +140,8 @@ public class AdminHomeScreen extends AppCompatActivity {
         }
     }
 
-    private void getBundleData() {
+    private void setBundleData() {
+
     }
 
     private void findViewByIds() {
@@ -215,7 +216,7 @@ public class AdminHomeScreen extends AppCompatActivity {
 
         GeneralUser generalUser = new Gson().fromJson(response, GeneralUser.class);
         //update SharedPref
-        LoginPersistance.update(generalUser.getProfile_pic(), generalUser.getId_front(),
+        LoginPersistance.update(generalUser.getUsername(), generalUser.getToken(), generalUser.getProfile_pic(), generalUser.getId_front(),
                 generalUser.getId_back(), AdminHomeScreen.this);
 
         sendToVerify(userName, generalUser.getName(), generalUser.getUser_id());
@@ -261,5 +262,9 @@ public class AdminHomeScreen extends AppCompatActivity {
     public void hideProgressBar() {
         progressBar.setVisibility(View.INVISIBLE);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+    public void registerNewUser(View view) {
+        startActivity(new Intent(this, CreateGeneralUser.class).putExtra(Constants.USER_TYPE, Constants.USER_TYPE_ADMIN));
     }
 }

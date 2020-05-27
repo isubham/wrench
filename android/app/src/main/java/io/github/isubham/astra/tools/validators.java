@@ -1,7 +1,11 @@
 package io.github.isubham.astra.tools;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.widget.TextView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.regex.Pattern;
 
 import io.github.isubham.astra.R;
@@ -62,14 +66,37 @@ public class validators {
 
     public static String dateFormatErrors(Context ctx, String dob) {
         if (isNullOrEmpty(dob)) return ctx.getString(R.string.error_dob_empty);
-        else if (!correctDateFormatPattern(dob)) {
+        else if (!isValidDate(dob)) {
             return ctx.getString(R.string.invalid_date);
         }
         return Constants.EMPTY_STRING;
     }
 
+    public static boolean isValidDate(String inDate) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        dateFormat.setLenient(false);
+        try {
+            dateFormat.parse(inDate.trim());
+        } catch (ParseException pe) {
+            return false;
+        }
+        return true;
+    }
+
     private static boolean correctDateFormatPattern(String dob) {
         return Pattern.compile("\\d{2}-\\d{2}-\\d{4}").matcher(dob).matches();
+    }
+
+
+    public static boolean validatePics(Bitmap imgResource, TextView errorTextView, String errorImageResource) {
+        if(imgResource == null) {
+            errorTextView.setText(errorImageResource);
+            return false;
+        }
+        else{
+            errorTextView.setText("");
+            return true;
+        }
     }
 
 }

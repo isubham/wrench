@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name"> ASTRA </string>
     <string name="LOGOUT">Logout</string>
-    <string name="REGISTER_USER">REGISTER USER</string>
+    <string name="REGISTER_USER">REGISTER NEW USER</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
@@ -72,6 +72,19 @@
     <string name="signing_in">Signing In ...</string>
     <string name="sign_in">Sign In</string>
     <string name="save">Save</string>
+
+    <!-- search general user -->
+    <string name="search_general_user">SEARCH USER</string>
+    <string name="saveqr">Save QR</string>
+    <string name="myqr">MyQR</string>
+    <string name="copy">Copy</string>
+    <string name="RemoveQR">RemoveQR</string>
+
+    <!--    admin view report-->
+    <string name="DOWNLOAD_REPORT">Download Report</string>
+    <string name="DURATION">Duration</string>
+    <string name="ERROR_INVALID_DATE_RANGE">Invalid Date Range !!</string>
+    <string name="PLEASE_SELECT_THE_DATES">Please select the dates !!</string>
 
 
 </resources>

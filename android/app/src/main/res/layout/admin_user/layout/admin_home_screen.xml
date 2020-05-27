@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".adminUser.AdminHomeScreen">
 
-    <include layout="@layout/app_bar"  />
+    <include layout="@layout/app_bar" />
 
     <include layout="@layout/progress_bar" />
 
@@ -88,6 +88,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
+                android:orientation="horizontal"
                 android:padding="5dp"
                 android:weightSum="1">
 
@@ -110,7 +111,21 @@
                     android:src="@mipmap/search" />
 
             </LinearLayout>
+
+
         </LinearLayout>
+
+        <TextView
+            style="@style/baseWrapWidthElementWithSmallText"
+            android:gravity="center"
+            android:text="@string/REGISTER_USER"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            android:padding="@dimen/app_padding"
+            android:layout_alignParentBottom="true"
+            android:onClick="registerNewUser"
+            />
+
 
     </RelativeLayout>
 

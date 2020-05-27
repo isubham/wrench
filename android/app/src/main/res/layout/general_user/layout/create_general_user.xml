@@ -33,11 +33,19 @@
                 app:civ_border_color="@color/colorHint"
                 app:civ_border_width="0.75dp" />
 
+            <TextView
+                android:id="@+id/create_general_user_profile_pic_errror_message"
+                style="@style/baseFullWidthErrorTextView"
+                android:gravity="center_horizontal"
+                android:layout_below="@+id/profilePic"
+                />
+
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textContainer0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/profilePic"
+                android:layout_below="@+id/create_general_user_profile_pic_errror_message"
                 android:layout_centerHorizontal="true"
                 android:hint="@string/username"
                 android:textColorHint="@color/colorHint">
@@ -101,32 +109,32 @@
                 android:id="@+id/textContainer4"
                 style="@style/baseFulWidthElementWithSmallText"
                 android:layout_below="@+id/textContainer3"
-                android:orientation="horizontal"
-                android:weightSum="1">
+                android:orientation="horizontal">
 
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:layout_weight="0.2"
                     style="@style/baseFulWidthElementWithSmallText"
                     android:hint="@string/create_general_user_dob"
-                    android:textColorHint="@color/colorHint"
-                    android:layout_weight="0.2">
+                    android:textColorHint="@color/colorHint">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/dob"
                         style="@style/baseFulWidthElementWithSmallText"
                         android:imeOptions="actionNext"
-                        android:inputType="date"
-                       />
+                         />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/date_chooser"
-                    android:layout_weight="0.8"
+                <ImageButton
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@mipmap/date_chooser"
                     android:onClick="selectDate"
-                    android:src="@mipmap/date_chooser"/>
+                    ></ImageButton>
+
+
 
             </LinearLayout>
 
@@ -215,7 +223,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/create_gen_user_doc_holder_height"
                     android:layout_weight="0.30"
-                    android:background="@drawable/create_gen_user_doc_image_holder_bg"
+                    android:src="@mipmap/id_icon"
                     android:contentDescription="@string/front_doc"
                     android:onClick="frontDocScan"
                     android:padding="@dimen/create_gen_user_doc_holder_padding" />
@@ -227,18 +235,41 @@
                     android:layout_marginStart="5dp"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="0.30"
-                    android:background="@drawable/create_gen_user_doc_image_holder_bg"
+                    android:src="@mipmap/id_icon"
                     android:contentDescription="@string/back_doc"
                     android:onClick="backDocScan"
                     android:padding="@dimen/create_gen_user_doc_holder_padding" />
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_below="@id/docContainer"
+                android:id="@+id/docErrorContainer"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_weight="0.5"
+                    android:id="@+id/create_general_user_doc_front_errror_message"
+                    style="@style/baseFullWidthErrorTextView"
+                    android:gravity="center_horizontal"
+                    />
+
+                <TextView
+                    android:layout_weight="0.5"
+                    android:id="@+id/create_general_user_doc_back_errror_message"
+                    style="@style/baseFullWidthErrorTextView"
+                    android:gravity="center_horizontal"
+                    />
+
+            </LinearLayout>
+
+
             <Button
                 android:id="@+id/SaveUser"
                 android:layout_width="400dp"
                 android:layout_height="40dp"
-                android:layout_below="@+id/docContainer"
+                android:layout_below="@id/docErrorContainer"
                 android:layout_centerHorizontal="true"
                 android:layout_margin="4dp"
                 android:background="@drawable/save_button_bg"

@@ -2,6 +2,7 @@ package io.github.isubham.astra.generalUser;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -10,9 +11,12 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -97,6 +101,17 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
 
     }
 
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
     /**
      * TODO validation of Fields
      **/
@@ -137,8 +152,25 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
-                    validateDobName();
+                    validateDateOfBirth();
                 }
+            }
+        });
+
+        binding.dob.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                validateDateOfBirth();
             }
         });
 
@@ -198,22 +230,21 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
         return Constants.TRUE;
     }
 
-    private boolean validateDobName() {
-        String dobValidators =
+    private boolean validateDateOfBirth() {
+        String dateFormatErrors =
                 validators.dateFormatErrors(CreateGeneralUser.this, getDate());
-        if (!dobValidators.equals(Constants.EMPTY_STRING)) {
-            binding.dob.setError(dobValidators);
+        if (!dateFormatErrors.equals(Constants.EMPTY_STRING)) {
+            binding.dob.setError(dateFormatErrors);
+            return false;
         }
-        return dobValidators.equals(Constants.EMPTY_STRING);
-
-
+        binding.dob.setError(null);
+        return true;
     }
 
     @SuppressLint("NewApi")
     private String getDate() {
         return Objects.requireNonNull(binding.dob).getText().toString().trim();
     }
-
 
     private boolean validateAddress() {
         if (String.valueOf(binding.address.getText()).equals(Constants.EMPTY_STRING)) {
@@ -337,7 +368,7 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
     private void setBundleData() {
         Bundle b = getIntent().getExtras();
         if (b != null) {
-            createdById = b.getInt(Constants.USER_TYPE);
+            createdById = b.getInt(Constants.ID);
         }
     }
 
@@ -386,6 +417,7 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
     @Override
     public void returnDate(String date) {
         binding.dob.setText(date);
+        validateDateOfBirth();
     }
 
     /*TODO For Camera Stuff ***/
@@ -484,16 +516,16 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
 
         if (bitmap != null) {
             if (fileUri.toString().contains(Constants.FRONT_DOC)) {
-               // binding.frontDoc.setRotation(90);
+                // binding.frontDoc.setRotation(90);
                 binding.frontDoc.setImageBitmap(bitmap);
                 bitmap_front_doc = bitmap;
             } else if (fileUri.toString().contains(Constants.BACK_DOC)) {
-               // binding.backDoc.setRotation(90);
+                // binding.backDoc.setRotation(90);
                 binding.backDoc.setImageBitmap(bitmap);
                 bitmap_back_doc = bitmap;
             } else {
                 // for ProfilePic
-               // binding.profilePic.setRotation(-90);
+                // binding.profilePic.setRotation(-90);
                 binding.profilePic.setImageBitmap(bitmap);
                 bitmap_profile_pic = bitmap;
             }
@@ -527,7 +559,7 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
 
         if (validateFields()) {
             //bitmap_front_doc, bitmap_back_doc, bitmap_profile_pic  ,createdById  has the updated value for respective images in view
-            generalUser = new GeneralUser(CameraUtils.getBase64StringFromBitmap(bitmap_profile_pic, Constants.HIGH_QUALITY), String.valueOf(binding.userName.getText()), String.valueOf(binding.fullName.getText()),
+            generalUser = new GeneralUser(null, CameraUtils.getBase64StringFromBitmap(bitmap_profile_pic, Constants.HIGH_QUALITY), String.valueOf(binding.userName.getText()), String.valueOf(binding.fullName.getText()),
                     String.valueOf(binding.fatherName.getText()), String.valueOf(binding.email.getText()), String.valueOf(binding.dob.getText()), String.valueOf(binding.contact.getText()),
                     String.valueOf(binding.aadhar.getText()), String.valueOf(binding.address.getText()), String.valueOf(binding.pincode.getText()), CameraUtils.getBase64StringFromBitmap(bitmap_front_doc,
                     Constants.HIGH_QUALITY), CameraUtils.getBase64StringFromBitmap(bitmap_back_doc, Constants.HIGH_QUALITY), createdById);
@@ -550,7 +582,29 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
     }
 
     private boolean validateFields() {
-        return validateUserName() && validateName() && validateFatherName() && validateDobName() && validateAadhar() && validateAddress() && validateContact() && validatePincode() && bitmap_profile_pic != null && bitmap_back_doc != null && bitmap_front_doc != null;
+        boolean usernameValid = validateUserName();
+        boolean nameValid = validateName();
+        boolean fatherNameValid = validateFatherName();
+        boolean dobValid = validateDateOfBirth();
+        boolean aadharValid = validateAadhar();
+        boolean addressValid = validateAddress();
+        boolean contactValid = validateContact();
+        boolean pincodeValid = validatePincode();
+        boolean emailValid = validateEmail();
+
+        boolean profilePicValid = validators.validatePics(
+                bitmap_profile_pic, binding.createGeneralUserProfilePicErrrorMessage, "Pic Cannot be empty");
+
+
+        boolean docBackValid = validators.validatePics(
+                bitmap_back_doc, binding.createGeneralUserDocBackErrrorMessage, "Cannot be empty");
+
+
+        boolean docFrontValid = validators.validatePics(
+                bitmap_front_doc, binding.createGeneralUserDocFrontErrrorMessage, "Cannot be empty");
+
+        return usernameValid && nameValid && fatherNameValid && dobValid && aadharValid &&
+                addressValid && contactValid && pincodeValid && profilePicValid && docBackValid && docFrontValid && emailValid;
     }
 
     private void apiRequestToSaveGeneralUser(final GeneralUser generalUser, JSONObject generalUserJson) {
@@ -575,6 +629,7 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
             public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<>();
                 headers.put(Headers.CONTENT_TYPE, Headers.APPLICATION_JSON);
+                headers.put(Headers.AUTHORIZATION, "Basic " + LoginPersistance.GetToken(CreateGeneralUser.this));
                 return headers;
             }
         };
@@ -587,7 +642,7 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
 
         if (!response.optString(Constants.TOKEN).equals(Constants.EMPTY_STRING)) {
 
-            LoginPersistance.update(generalUser.getProfile_pic(), generalUser.getId_front(), generalUser.getId_back(), this);
+            LoginPersistance.update(generalUser.getUsername(), generalUser.getToken(), generalUser.getProfile_pic(), generalUser.getId_front(), generalUser.getId_back(), this);
             startActivity(new Intent(CreateGeneralUser.this, GeneralUserViewQr.class)
                     .putExtra(Constants.USER_NAME, String.valueOf(binding.userName.getText())).putExtra(Constants.USER_TYPE, Constants.USER_TYPE_GENERAL));
             finish();

@@ -28,17 +28,13 @@ import io.github.isubham.astra.databinding.AdminCreateAccountBinding;
 import io.github.isubham.astra.model.ErrorResponse;
 import io.github.isubham.astra.model.User;
 import io.github.isubham.astra.tools.Constants;
+import io.github.isubham.astra.tools.Errors;
 import io.github.isubham.astra.tools.LoginPersistance;
 import io.github.isubham.astra.tools.StatefulButton;
 import io.github.isubham.astra.tools.validators;
 
 public class AdminCreateAccount extends AppCompatActivity {
 
-    /* TODO
-        - [x] on lose focus of any element
-        - [x] check if password and confirm password match
-        - [ ] button states of [disable, active, in progress, green, red]
-     */
     AdminCreateAccountBinding binding;
     StatefulButton statefulButton;
     User user;
@@ -108,6 +104,7 @@ public class AdminCreateAccount extends AppCompatActivity {
                         @Override
                         public void onErrorResponse(VolleyError error)
                         {
+                            Errors.handleVolleyError(error, "admin_c_account", AdminCreateAccount.this);
                         }
                     }) {
                 @Override
