@@ -20,7 +20,7 @@ import io.github.isubham.astra.tools.DateUtils;
 public class AdminViewReportDialog extends AppCompatActivity implements CustomDatePickerFragment.TheListener {
 
     //Dates
-    private String currentDate, firstDateOfCurrentMonth, firstDateOfLast3rdMonth, firstDateOfLast9thMonth;
+    private String currentDate, firstDateOfCurrentMonth, firstDateOfLast3rdMonth, firstDateOfLast6thMonth;
 
     private AdminViewReportDialogBinding binding;
     private boolean settingFromDate = true;
@@ -68,13 +68,13 @@ public class AdminViewReportDialog extends AppCompatActivity implements CustomDa
         currentDate = DateUtils.getDate();
         firstDateOfCurrentMonth = DateUtils.getFirstDateOfMonth(0);
         firstDateOfLast3rdMonth = DateUtils.getFirstDateOfMonth(-2);
-        firstDateOfLast9thMonth = DateUtils.getFirstDateOfMonth(-5);
+        firstDateOfLast6thMonth = DateUtils.getFirstDateOfMonth(-5);
 
 
         durationList.add("Today  " + "(" + currentDate + ")");
         durationList.add("Current Month  " + "(" + firstDateOfCurrentMonth + " - " + currentDate + ")");
         durationList.add("Last 3 Month  " + "(" + firstDateOfLast3rdMonth + " - " + currentDate + ")");
-        durationList.add("Last 6 Month  " + "(" + firstDateOfLast9thMonth + " - " + currentDate + ")");
+        durationList.add("Last 6 Month  " + "(" + firstDateOfLast6thMonth + " - " + currentDate + ")");
         durationList.add("Select a date Range  ");
         return durationList;
     }
@@ -101,6 +101,42 @@ public class AdminViewReportDialog extends AppCompatActivity implements CustomDa
         fragment.show(getSupportFragmentManager(), "date picker");
     }
 
+    /**
+     * currentDate, firstDateOfCurrentMonth, firstDateOfLast3rdMonth, firstDateOfLast6thMonth;
+     **/
+    private List<String> getDatesForSelectedDuration(int spinnerPosSelected) {
+
+        List<String> dates = new ArrayList<>();
+
+        switch (spinnerPosSelected) {
+
+            case 0:
+                dates.add(currentDate);
+                dates.add(currentDate);
+                break;
+            case 1:
+                dates.add(firstDateOfCurrentMonth);
+                dates.add(currentDate);
+                break;
+            case 2:
+                dates.add(firstDateOfLast3rdMonth);
+                dates.add(currentDate);
+                break;
+            case 3:
+                dates.add(firstDateOfLast6thMonth);
+                dates.add(currentDate);
+                break;
+            case 4:
+                dates.add(binding.reportStartDate.getText().toString().trim());
+                dates.add(binding.reportEndDate.getText().toString().trim());
+                break;
+
+        }
+
+        return dates;
+    }
+
+
     public void downloadReport(View view) {
         if (spinnerPosSelected == 4) {
             if (TextUtils.isEmpty(binding.reportStartDate.getText()) || TextUtils.isEmpty(binding.reportEndDate.getText())) {
@@ -116,9 +152,13 @@ public class AdminViewReportDialog extends AppCompatActivity implements CustomDa
             }
         }
 
-        //TODO Write Code for Download Here (Use below date fields )
-        // currentDate, firstDateOfCurrentMonth, firstDateOfLast3rdMonth, firstDateOfLast9thMonth;
+        List<String> dates = getDatesForSelectedDuration(spinnerPosSelected);
+
+        //TODO Write Code for Download Here (Use the list above to get the dates )
+
+
 
 
     }
+
 }
