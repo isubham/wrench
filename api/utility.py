@@ -51,6 +51,11 @@ class Utility:
         return found_data
 
 
+    @staticmethod
+    def get_datetime(date_string):
+        _date, _month, _year = list(map(int, date_string.split("-")))
+        date =  datetime(day=_date, month=_month, year=_year)
+        return date
 
 
 
