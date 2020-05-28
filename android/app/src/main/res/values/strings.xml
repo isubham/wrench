@@ -85,6 +85,9 @@
     <string name="DURATION">Duration</string>
     <string name="ERROR_INVALID_DATE_RANGE">Invalid Date Range !!</string>
     <string name="PLEASE_SELECT_THE_DATES">Please select the dates !!</string>
+    <string name="excel_mime_type">application/vnd.openxmlformats-officedocument.spreadsheetml.sheet</string>
+    <string name="download_template">astra-</string>
+    <string name="download_title">Astra</string>
 
 
 </resources>
