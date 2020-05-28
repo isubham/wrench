@@ -50,6 +50,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/ActivityDialog"
             tools:ignore="LockedOrientationActivity" />
+
         <activity
             android:name=".adminUser.AdminHomeScreen"
             android:screenOrientation="portrait"
