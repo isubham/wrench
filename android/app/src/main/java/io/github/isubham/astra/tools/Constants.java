@@ -15,13 +15,10 @@ public class Constants {
     public static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
     public static final int HIGH_QUALITY = 100;
     public static final int MID_QUALITY = 80;
-    // Base App URL
-    public static final String LOCAL_URL = "";
-    public static final String HEROKU_URL = "https://aastra-stag.herokuapp.com/";
-    public static final String SERVER_URL = HEROKU_URL;
+
+    // Parse Constants
     public static final String EMPTY_STRING = "";
     public static final String EMPTY_JSON = "{}";
-    public static final String DOWNLOAD_REPORT = SERVER_URL + "activity/%1$s/%2$s/";
 
     //AdminHomeScreen
     public static final String INVALID_USERNAME = "Invalid UserName";
@@ -47,6 +44,7 @@ public class Constants {
 
     public static final String WEAK_INTERNET = "com.android.volley.TimeoutError";
     public static final String NO_INTERNET = "com.android.volley.NoConnectionError";
+    public static final String SERVER_ERROR = "com.android.volley.ServerError";
 
     //////////////////////////////////////////////////
     public static final String RESPONSE = "Response";

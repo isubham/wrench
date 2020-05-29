@@ -11,6 +11,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -205,7 +206,7 @@ public class AdminVerifyDoc extends AppCompatActivity {
         getLocation();
 
         showProgressBar();
-        CreateLog newCreateLog = new CreateLog(personId, latitude + "," + longitude, action_in_out);
+        CreateLog newCreateLog = new CreateLog(personId, latitude + "," + longitude, action_in_out, !TextUtils.isEmpty(binding.purpose.getText()) ? binding.purpose.getText().toString() : Constants.EMPTY_STRING);
         try {
 
             JsonObjectRequest createLogRequest = new JsonObjectRequest(Endpoints.CREATE_LOG,

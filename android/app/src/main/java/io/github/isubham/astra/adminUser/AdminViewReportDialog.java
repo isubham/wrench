@@ -27,20 +27,33 @@ import java.util.List;
 
 import io.github.isubham.astra.R;
 import io.github.isubham.astra.databinding.AdminViewReportDialogBinding;
-import io.github.isubham.astra.tools.Constants;
 import io.github.isubham.astra.tools.CustomDatePickerFragment;
 import io.github.isubham.astra.tools.DateUtils;
+import io.github.isubham.astra.tools.Endpoints;
 import io.github.isubham.astra.tools.LoginPersistance;
 
 public class AdminViewReportDialog extends AppCompatActivity implements CustomDatePickerFragment.TheListener {
 
+    BroadcastReceiver onComplete = new BroadcastReceiver() {
+        public void onReceive(Context ctxt, Intent intent) {
+            // TODO action on complete
+            Toast.makeText(ctxt, "Report Downloaded", Toast.LENGTH_SHORT).show();
+        }
+    };
+    BroadcastReceiver onNotificationClick = new BroadcastReceiver() {
+        public void onReceive(Context ctxt, Intent intent) {
+            // TODO action on notification click
+        }
+    };
     //Dates
     private String currentDate, firstDateOfCurrentMonth, firstDateOfLast3rdMonth, firstDateOfLast6thMonth;
-
     private AdminViewReportDialogBinding binding;
     private boolean settingFromDate = true;
     private ArrayAdapter<String> adapter;
     private int spinnerPosSelected = 0;
+    private String TAG = "AdminViewReport";
+    private DownloadManager downloadManager;
+    private long lastDownload = -1L;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,27 +166,23 @@ public class AdminViewReportDialog extends AppCompatActivity implements CustomDa
         return dates;
     }
 
-    private String TAG = "AdminViewReport";
-
-    public  boolean isWriteStoragePermissionGranted() {
+    public boolean isWriteStoragePermissionGranted() {
         if (Build.VERSION.SDK_INT >= 23) {
             if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     == PackageManager.PERMISSION_GRANTED) {
-                Log.v(TAG,"Permission is granted2");
+                Log.v(TAG, "Permission is granted2");
                 return true;
             } else {
 
-                Log.v(TAG,"Permission is revoked2");
+                Log.v(TAG, "Permission is revoked2");
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
                 return false;
             }
-        }
-        else { //permission is automatically granted on sdk<23 upon installation
-            Log.v(TAG,"Permission is granted2");
+        } else { //permission is automatically granted on sdk<23 upon installation
+            Log.v(TAG, "Permission is granted2");
             return true;
         }
     }
-
 
     public void downloadReport(View view) {
 
@@ -195,10 +204,6 @@ public class AdminViewReportDialog extends AppCompatActivity implements CustomDa
         startDownload(dates.get(0), dates.get(1));
     }
 
-    DownloadManager downloadManager;
-    private long lastDownload=-1L;
-
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -210,30 +215,16 @@ public class AdminViewReportDialog extends AppCompatActivity implements CustomDa
     private void registerDownloadActions() {
 
         downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-        downloadManager=(DownloadManager)getSystemService(DOWNLOAD_SERVICE);
+        downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
         registerReceiver(onComplete,
                 new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
         registerReceiver(onNotificationClick,
                 new IntentFilter(DownloadManager.ACTION_NOTIFICATION_CLICKED));
     }
 
-    BroadcastReceiver onComplete=new BroadcastReceiver() {
-        public void onReceive(Context ctxt, Intent intent) {
-            // TODO action on complete
-            Toast.makeText(ctxt, "Report Downloaded", Toast.LENGTH_SHORT).show();
-        }
-    };
-
-    BroadcastReceiver onNotificationClick=new BroadcastReceiver() {
-        public void onReceive(Context ctxt, Intent intent) {
-            // TODO action on notification click
-        }
-    };
-
-
     private void startDownload(String startDate, String endDate) {
-        String url = String.format(Constants.DOWNLOAD_REPORT, startDate, endDate);
-        Uri uri= Uri.parse(url);
+        String url = String.format(Endpoints.DOWNLOAD_REPORT, startDate, endDate);
+        Uri uri = Uri.parse(url);
 
         DownloadManager.Request request = new DownloadManager.Request(uri);
         request.addRequestHeader("Authorization", "Basic " + LoginPersistance.GetToken(AdminViewReportDialog.this));
@@ -247,16 +238,15 @@ public class AdminViewReportDialog extends AppCompatActivity implements CustomDa
 
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
                 getString(R.string.download_template)
-                    .concat(startDate)
-                    .concat("-")
-                    .concat(endDate)
-                    .concat(".xlsx"));
+                        .concat(startDate)
+                        .concat("-")
+                        .concat(endDate)
+                        .concat(".xlsx"));
         request.setMimeType(getString(R.string.excel_mime_type));
         assert downloadManager != null;
         lastDownload = downloadManager.enqueue(request);
-        Toast.makeText(this, "Report downloading. Check Notification area", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "File downloading. Check Notification area", Toast.LENGTH_SHORT).show();
     }
-
 
 
 }
