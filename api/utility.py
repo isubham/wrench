@@ -58,5 +58,9 @@ class Utility:
         return date
 
 
-
-
+    @staticmethod
+    def make_directory(path, directory_name):
+        directory_path = os.path.join(path, directory_name)
+        if not os.path.exists(directory_path):
+            os.mkdir(directory_path)
+        
