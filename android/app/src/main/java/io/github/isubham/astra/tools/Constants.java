@@ -21,6 +21,8 @@ public class Constants {
     public static final String SERVER_URL = HEROKU_URL;
     public static final String EMPTY_STRING = "";
     public static final String EMPTY_JSON = "{}";
+    public static final String DOWNLOAD_REPORT = SERVER_URL + "activity/%1$s/%2$s/";
+
     //AdminHomeScreen
     public static final String INVALID_USERNAME = "Invalid UserName";
     public static final String USER_NAME = "USER_NAME";
