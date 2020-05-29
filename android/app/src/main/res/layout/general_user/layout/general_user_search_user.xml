@@ -87,7 +87,7 @@
             android:drawableTint="@color/colorWhite"
             android:onClick="searchUser"
             android:padding="5dp"
-            android:text="Search"
+            android:text="@string/search"
             android:textColor="@color/colorOffWhite"
             android:textSize="20sp"
 

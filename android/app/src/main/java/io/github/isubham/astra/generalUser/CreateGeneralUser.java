@@ -25,6 +25,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -100,6 +101,7 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
         addFocusChangeListeners();
 
     }
+
 
     public static void hideKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
@@ -607,7 +609,7 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
                 addressValid && contactValid && pincodeValid && profilePicValid && docBackValid && docFrontValid && emailValid;
     }
 
-    private void apiRequestToSaveGeneralUser(final GeneralUser generalUser, JSONObject generalUserJson) {
+    private void apiRequestToSaveGeneralUser(final GeneralUser generalUser, final JSONObject generalUserJson) {
         showProgressBar();
 
 
@@ -633,6 +635,12 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
                 return headers;
             }
         };
+
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+        ));
 
         ApplicationController.getInstance().addToRequestQueue(request);
 

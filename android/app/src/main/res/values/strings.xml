@@ -89,6 +89,7 @@
     <string name="download_template">astra-</string>
     <string name="download_title">Astra</string>
     <string name="purpose">Purpose</string>
+    <string name="search">Search</string>
 
 
 </resources>

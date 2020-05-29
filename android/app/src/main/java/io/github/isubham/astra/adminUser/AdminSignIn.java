@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Header;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -120,6 +121,11 @@ public class AdminSignIn extends AppCompatActivity {
 
             };
 
+            signInRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    10000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+            ));
             Volley.newRequestQueue(AdminSignIn.this).add(signInRequest);
         }
     }

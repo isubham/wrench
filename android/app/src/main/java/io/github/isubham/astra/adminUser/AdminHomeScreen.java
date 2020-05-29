@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -33,6 +34,7 @@ import java.util.Map;
 import io.github.isubham.astra.R;
 import io.github.isubham.astra.databinding.AdminHomeScreenBinding;
 import io.github.isubham.astra.generalUser.CreateGeneralUser;
+import io.github.isubham.astra.generalUser.GeneralUserHomeScreen;
 import io.github.isubham.astra.model.GeneralUser;
 import io.github.isubham.astra.tools.ApplicationController;
 import io.github.isubham.astra.tools.Constants;
@@ -40,6 +42,7 @@ import io.github.isubham.astra.tools.CustomSnackbar;
 import io.github.isubham.astra.tools.Endpoints;
 import io.github.isubham.astra.tools.Errors;
 import io.github.isubham.astra.tools.LoginPersistance;
+
 
 public class AdminHomeScreen extends AppCompatActivity {
 
@@ -64,6 +67,7 @@ public class AdminHomeScreen extends AppCompatActivity {
         setBundleData();
         hideProgressBar();
 
+        addRegisterUserLongPressAction();
     }
 
     @Override
@@ -173,6 +177,8 @@ public class AdminHomeScreen extends AppCompatActivity {
         }
     }
 
+
+
     private void getUserDetailsFromServerFor(final String userName) {
         showProgressBar();
 
@@ -207,6 +213,12 @@ public class AdminHomeScreen extends AppCompatActivity {
                 return headers;
             }
         };
+
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+        ));
 
         ApplicationController.getInstance().addToRequestQueue(request);
 
@@ -266,5 +278,16 @@ public class AdminHomeScreen extends AppCompatActivity {
 
     public void registerNewUser(View view) {
         startActivity(new Intent(this, CreateGeneralUser.class).putExtra(Constants.USER_TYPE, Constants.USER_TYPE_ADMIN));
+    }
+
+
+    private void addRegisterUserLongPressAction() {
+        binding.adminHomeScreenRegisterUser.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                startActivity(new Intent(AdminHomeScreen.this, GeneralUserHomeScreen.class));
+                return false;
+            }
+        });
     }
 }

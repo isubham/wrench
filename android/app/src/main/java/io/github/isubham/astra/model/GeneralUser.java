@@ -21,8 +21,10 @@ public class GeneralUser {
     private int user_id;
     private String created;
 
+    public GeneralUser() {
+    }
 
-    public GeneralUser(String token ,String profile_pic, String username, String name, String father_name, String email,
+    public GeneralUser(String token , String profile_pic, String username, String name, String father_name, String email,
                        String dob, String contact, String aadhar_id, String address, String pincode,
                        String id_front, String id_back, int created_by) {
         this.token = token;

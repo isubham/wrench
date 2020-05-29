@@ -22,10 +22,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import io.github.isubham.astra.R;
 import io.github.isubham.astra.databinding.GeneralUserSearchUserBinding;
@@ -66,62 +68,64 @@ public class GeneralUserSearchUser extends AppCompatActivity implements CustomDa
 
 
     public boolean validateString(String s) {
-        return s.length() > 2;
+        return s.length() > 0;
     }
 
-    public void searchUser(View view) {
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private String getUserName() {
+        return Objects.requireNonNull(binding.generalUserTilName.getEditText()).getText().toString().toUpperCase().trim();
+    }
 
-        final String username = binding.generalUserTilName.getEditText().getText().toString().toUpperCase().trim();
-        final String userdob = binding.generalUserTilDob.getEditText().getText().toString().trim();
-        final String userfathername = binding.generalUserTilFatherName.getEditText().getText().toString().toUpperCase().trim();
+    private void resetErrors() {
+        binding.generalUserTilDob.setErrorEnabled(false);
+        binding.generalUserTilFatherName.setErrorEnabled(false);
+        binding.generalUserTilName.setErrorEnabled(false);
+    }
 
+    private void populateServerErrors() {
+        binding.generalUserTilDob.setError("Incorrect Details");
+        binding.generalUserTilFatherName.setError("Incorrect Details");
+        binding.generalUserTilName.setError("Incorrect Details");
+    }
 
-        // string validation for username
-        if (!validateString(username)) {
-            binding.generalUserTilName.setError("Please enter full name as your ID!");
-        } else {
-            binding.generalUserTilName.setErrorEnabled(false);
-        }
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void searchUser(View view) throws JSONException {
+        resetErrors();
+        boolean allFieldsValidated = validateFields(getUserName(), getDob(), getFatherName());
 
-        // string validation for dob
-        if (!validateString(userdob)) {
-            binding.generalUserTilDob.setError("Please enter DOB as your ID!");
-        } else {
-            binding.generalUserTilDob.setErrorEnabled(false);
-        }
+        if (allFieldsValidated) {
 
-        // string validation for username
-        if (!validateString(userfathername)) {
-            binding.generalUserTilFatherName.setError("Please enter father name as your ID!");
-        } else {
-            binding.generalUserTilFatherName.setErrorEnabled(false);
-        }
-
-
-        if (!TextUtils.isEmpty(username) && !TextUtils.isEmpty(userdob) && !TextUtils.isEmpty(userfathername)) {
-
-            Log.i("variables : ", username + ' ' + userdob + ' ' + userfathername);
             showProgressBar();
 
-            HashMap<String, String> searchDetails = new HashMap<>();
-            searchDetails.put("name", username);
-            searchDetails.put("dob", userdob);
-            searchDetails.put("father_name", userfathername);
+            GeneralUser generalUser = new GeneralUser();
+            generalUser.setName(getUserName());
+            generalUser.setDob(getDob());
+            generalUser.setFather_name(getFatherName());
 
-            final JsonObjectRequest searchUserRequest = new JsonObjectRequest(Request.Method.POST, Endpoints.SEARCH_EXISTING_USER, new JSONObject(searchDetails), new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    hideProgressBar();
-                    parseResponse(String.valueOf(response));
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    hideProgressBar();
-                    Errors.handleVolleyError(error, TAG, GeneralUserSearchUser.this);
-                }
+            final JsonObjectRequest searchUserRequest = new JsonObjectRequest(Request.Method.POST,
+                    Endpoints.SEARCH_EXISTING_USER, new JSONObject(new Gson().toJson(generalUser)),
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            hideProgressBar();
 
-            }) {
+                            if(response.has(Constants.CODE)) {
+                                populateServerErrors();
+                            }
+
+                            else{
+                                parseResponse(String.valueOf(response));
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            hideProgressBar();
+                            Errors.handleVolleyError(error, TAG, GeneralUserSearchUser.this);
+                        }
+
+                    }) {
 
                 @Override
                 public Map<String, String> getHeaders() {
@@ -138,6 +142,54 @@ public class GeneralUserSearchUser extends AppCompatActivity implements CustomDa
 
             ApplicationController.getInstance().addToRequestQueue(searchUserRequest);
 
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private String getFatherName() {
+        return Objects.requireNonNull(binding.generalUserTilFatherName.getEditText()).getText().toString().toUpperCase().trim();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private String getDob() {
+        return Objects.requireNonNull(binding.generalUserTilDob.getEditText()).getText().toString().trim();
+    }
+
+    private boolean validateFields(String username, String userdob, String userfathername) {
+
+        boolean usernameValidated = validateUsername(username);
+        boolean dobValidated = validateDob(userdob);
+        boolean fatherNameValidated = validateFatherName(userfathername);
+        return usernameValidated && dobValidated && fatherNameValidated;
+    }
+
+    private boolean validateFatherName(String userfathername) {
+        if (!validateString(userfathername)) {
+            binding.generalUserTilFatherName.setError("Please enter father name as your ID!");
+            return false;
+        } else {
+            binding.generalUserTilFatherName.setErrorEnabled(false);
+            return true;
+        }
+    }
+
+    private boolean validateDob(String userdob) {
+        if (!validateString(userdob)) {
+            binding.generalUserTilDob.setError("Please enter DOB as your ID!");
+            return false;
+        } else {
+            binding.generalUserTilDob.setErrorEnabled(false);
+            return true;
+        }
+    }
+
+    private boolean validateUsername(String username) {
+        if (!validateString(username)) {
+            binding.generalUserTilName.setError("Please enter full name as your ID!");
+            return false;
+        } else {
+            binding.generalUserTilName.setErrorEnabled(false);
+            return true;
         }
     }
 
