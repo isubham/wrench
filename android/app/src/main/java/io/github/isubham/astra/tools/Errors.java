@@ -16,6 +16,8 @@ public class Errors {
             Toast.makeText(context, "Weak Internet Connection", android.widget.Toast.LENGTH_SHORT).show();
         if (error.toString().contains(Constants.NO_INTERNET))
             Toast.makeText(context, "No Internet Connection", Toast.LENGTH_SHORT).show();
+        if (error.toString().contains(Constants.SERVER_ERROR))
+            Toast.makeText(context, "Internal Server Error", Toast.LENGTH_SHORT).show();
 
 
     }

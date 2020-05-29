@@ -103,7 +103,7 @@ public class CameraUtils {
         // External sdcard location
         File mediaStorageDir = new File(
                 Environment
-                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                        .getExternalStoragePublicDirectory(Environment.getExternalStorageState()),
                 Constants.GALLERY_DIRECTORY_NAME);
 
         // Create the storage directory if it does not exist
