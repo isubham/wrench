@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="@dimen/material_layout_padding"
-        tools:context="io.github.isubham.astra.adminUser.AdminVerifyDoc">
+        tools:context="io.github.isubham.astra_client.adminUser.AdminVerifyDoc">
 
         <include layout="@layout/progress_bar" />
 

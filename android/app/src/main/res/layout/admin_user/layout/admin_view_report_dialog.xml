@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context="io.github.isubham.astra.adminUser.AdminViewReportDialog">
+    tools:context="io.github.isubham.astra_client.adminUser.AdminViewReportDialog">
 
     <RelativeLayout
         style="@style/baseDialog"

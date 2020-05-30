@@ -282,6 +282,7 @@ public class AdminHomeScreen extends AppCompatActivity {
 
 
     private void addRegisterUserLongPressAction() {
+        /*
         binding.adminHomeScreenRegisterUser.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -289,5 +290,7 @@ public class AdminHomeScreen extends AppCompatActivity {
                 return false;
             }
         });
+
+         */
     }
 }

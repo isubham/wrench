@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/baseFulWidthElement"
+    android:orientation="vertical">
+
+    <include layout="@layout/app_bar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/app_padding">
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/profilePic"
+            android:layout_width="@dimen/view_profile_pic_general_user"
+            android:layout_height="@dimen/view_profile_pic_general_user"
+            android:layout_centerHorizontal="true"
+            android:onClick="getUserPic"
+            android:src="@mipmap/user"
+            app:civ_border_color="@color/colorHint"
+            app:civ_border_width="0.75dp" />
+
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/profilePic"
+            android:layout_centerHorizontal="true"
+            android:text="Username"
+            android:textSize="@dimen/text_heading_two" />
+
+        <ImageView
+            android:id="@+id/username_copy_bt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/profilePic"
+            android:layout_marginLeft="15dp"
+            android:layout_toEndOf="@+id/username"
+            android:layout_toRightOf="@+id/username"
+            android:onClick="copyText"
+            android:src="@mipmap/copy" />
+
+        <ImageView
+            android:id="@+id/qr_code"
+            android:layout_width="350dp"
+            android:layout_height="350dp"
+            android:layout_below="@+id/username"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/qr" />
+
+        <Button
+            android:id="@+id/saveqr"
+            style="@style/baseFulWidthElement"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorPrimaryDark"
+            android:onClick="saveQR"
+            android:text="@string/saveqr"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/snackbar_textview_textSize" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>
