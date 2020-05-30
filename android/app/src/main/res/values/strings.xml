@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Asta</string>
+    <string name="app_name">Astra</string>
     <string name="LOGOUT">Logout</string>
     <string name="REGISTER_USER">REGISTER NEW USER</string>
     <string name="email">Email</string>
