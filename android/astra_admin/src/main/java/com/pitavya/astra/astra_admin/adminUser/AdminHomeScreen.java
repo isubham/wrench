@@ -42,7 +42,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-
 public class AdminHomeScreen extends AppCompatActivity {
 
     //BundleData
@@ -175,7 +174,6 @@ public class AdminHomeScreen extends AppCompatActivity {
             getUserDetailsFromServerFor(String.valueOf(binding.adminHomeInputUsername.getText()));
         }
     }
-
 
 
     private void getUserDetailsFromServerFor(final String userName) {

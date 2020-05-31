@@ -34,7 +34,6 @@ import java.util.Map;
 import java.util.Objects;
 
 
-
 public class AdminSignIn extends AppCompatActivity {
 
     AdminSignInBinding binding;

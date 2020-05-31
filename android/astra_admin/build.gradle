@@ -5,7 +5,7 @@ android {
     buildToolsVersion "29.0.3"
 
     defaultConfig {
-        applicationId "io.gitub.isubham.astra"
+        applicationId "com.pitavya.astra.astra_admin"
         minSdkVersion 16
         targetSdkVersion 29
         versionCode 1
