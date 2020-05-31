@@ -1,2 +1,4 @@
+include ':astra_gen'
+include ':astra_common'
 rootProject.name='Astra'
-include ':app'
+include ':astra_admin'
