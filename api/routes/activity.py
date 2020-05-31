@@ -35,7 +35,7 @@ def view_activity(start_date, end_date):
     report_file_namea = '{}_{}.xlsx'.format(start_date, end_date)
     report_path = os.path.join(base_report_path, user_folder, report_file_namea)
     report_absolute_location = os.path.abspath(report_path)
-    make_directory(base_report_path, user_folder)
+    Utility.make_directory(base_report_path, user_folder)
 
     if not os.path.exists(report_absolute_location):
 
@@ -53,11 +53,7 @@ def get_date(date_time_string):
     return datetime(day=_day, month=_month, year=_year)
 
 
-def make_directory(path, directory_name):
-    directory_path = os.path.join(path, directory_name)
-    if not os.path.exists(directory_path):
-        os.mkdir(directory_path)
-        
+  
 
 
 def upsert_activities(activities, start_date, end_date, report_location):
@@ -65,7 +61,9 @@ def upsert_activities(activities, start_date, end_date, report_location):
         workbook = Workbook()
         sheet = workbook.active
         sheet.title = "{}_{}".format(start_date, end_date)
-        sheet.append(["when", "in/out", "name", "father's name",  "mobile", "purpose"])
+
+        sheet.append(["DATE", "IN/OUT", "FULL NAME", "FATHER NAME",  "MOBILE", "PURPOSE"])
+
         row_readable = {1 : "in", 2 : "out"}
         for row in activities:
             sheet.append([row.when.strftime("%d-%B-%Y %H:%M"), row_readable[row.type], row.People.first_name, row.People.father_name, row.People.contact, row.purpose])

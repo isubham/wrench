@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="io.github.isubham.astra">
+    package="io.github.isubham.astra_client">
     <!-- For Internet -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -23,51 +23,50 @@
     <application
         android:name=".tools.ApplicationController"
         android:allowBackup="true"
-        android:icon="@mipmap/app_logo"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/app_logo"
+        android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="n">
         <activity
-            android:name=".adminUser.AdminViewReportDialog"
+            android:name="io.github.isubham.astra_client.adminUser.AdminViewReportDialog"
             android:screenOrientation="portrait"
             android:theme="@style/ActivityDialog"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".adminUser.AdminSignIn"
+            android:name="io.github.isubham.astra_client.adminUser.AdminSignIn"
             android:noHistory="true"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <!--            <intent-filter>-->
+            <!--                <action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
+            <!--            </intent-filter>-->
         </activity>
         <activity
-            android:name=".adminUser.AdminVerifyDoc"
+            android:name="io.github.isubham.astra_client.adminUser.AdminVerifyDoc"
             android:screenOrientation="portrait"
             android:theme="@style/ActivityDialog"
             tools:ignore="LockedOrientationActivity" />
 
         <activity
-            android:name=".adminUser.AdminHomeScreen"
+            android:name="io.github.isubham.astra_client.adminUser.AdminHomeScreen"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".generalUser.CreateGeneralUser"
+            android:name="io.github.isubham.astra_client.generalUser.CreateGeneralUser"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
-        <activity android:name=".adminUser.AdminCreateAccount" />
-        <activity android:name=".generalUser.GeneralUserSearchUser" />
-        <activity android:name=".generalUser.GeneralUserViewQr" />
-        <activity android:name=".generalUser.GeneralUserHomeScreen">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
+        <activity android:name="io.github.isubham.astra_client.adminUser.AdminCreateAccount" />
+        <activity android:name="io.github.isubham.astra_client.generalUser.GeneralUserSearchUser" />
+        <activity android:name="io.github.isubham.astra_client.generalUser.GeneralUserViewQr" />
+        <activity android:name="io.github.isubham.astra_client.generalUser.GeneralUserHomeScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"

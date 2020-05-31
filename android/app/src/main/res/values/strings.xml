@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name"> ASTRA </string>
+    <string name="app_name">Astra</string>
     <string name="LOGOUT">Logout</string>
     <string name="REGISTER_USER">REGISTER NEW USER</string>
     <string name="email">Email</string>
@@ -88,6 +88,8 @@
     <string name="excel_mime_type">application/vnd.openxmlformats-officedocument.spreadsheetml.sheet</string>
     <string name="download_template">astra-</string>
     <string name="download_title">Astra</string>
+    <string name="purpose">Purpose</string>
+    <string name="search">Search</string>
 
 
 </resources>
