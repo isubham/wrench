@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="io.github.isubham.astra_client">
+    package="com.pitavya.astra.astra_admin">
 
 
     <application
@@ -14,12 +14,12 @@
         android:theme="@style/AppTheme"
         tools:targetApi="n">
         <activity
-            android:name="com.pitavya.astra.astra_admin.adminUser.AdminViewReportDialog"
+            android:name=".adminUser.AdminViewReportDialog"
             android:screenOrientation="portrait"
             android:theme="@style/ActivityDialog"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="com.pitavya.astra.astra_admin.adminUser.AdminSignIn"
+            android:name=".adminUser.AdminSignIn"
             android:noHistory="true"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity">
@@ -30,17 +30,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.pitavya.astra.astra_admin.adminUser.AdminVerifyDoc"
+            android:name=".adminUser.AdminVerifyDoc"
             android:screenOrientation="portrait"
             android:theme="@style/ActivityDialog"
             tools:ignore="LockedOrientationActivity" />
 
         <activity
-            android:name="com.pitavya.astra.astra_admin.adminUser.AdminHomeScreen"
+            android:name=".adminUser.AdminHomeScreen"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
 
-        <activity android:name="com.pitavya.astra.astra_admin.adminUser.AdminCreateAccount" />
+        <activity android:name=".adminUser.AdminCreateAccount" />
 
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"

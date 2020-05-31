@@ -13,8 +13,8 @@
         android:theme="@style/AppTheme">
 
 
-        <activity android:name="com.pitavya.astra.astra_gen.GeneralUserSearchUser" />
-        <activity android:name="com.pitavya.astra.astra_gen.GeneralUserHomeScreen">
+        <activity android:name=".GeneralUserSearchUser" />
+        <activity android:name=".GeneralUserHomeScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
