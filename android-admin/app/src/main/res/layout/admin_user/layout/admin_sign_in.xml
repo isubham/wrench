@@ -38,6 +38,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/admin_sign_in_password"
             style="@style/baseFulWidthElement"
+            android:inputType="textPassword"
             android:imeOptions="actionNext" />
 
     </com.google.android.material.textfield.TextInputLayout>

@@ -73,7 +73,7 @@ public class GeneralUserSearchUser extends AppCompatActivity implements CustomDa
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private String getUserName() {
-        return Objects.requireNonNull(binding.generalUserTilName.getEditText()).getText().toString().toUpperCase().trim();
+        return Objects.requireNonNull(binding.generalUserTilName.getEditText()).getText().toString().trim();
     }
 
     private void resetErrors() {
@@ -147,7 +147,7 @@ public class GeneralUserSearchUser extends AppCompatActivity implements CustomDa
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private String getFatherName() {
-        return Objects.requireNonNull(binding.generalUserTilFatherName.getEditText()).getText().toString().toUpperCase().trim();
+        return Objects.requireNonNull(binding.generalUserTilFatherName.getEditText()).getText().toString().trim();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)

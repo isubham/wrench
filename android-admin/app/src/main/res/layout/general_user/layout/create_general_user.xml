@@ -71,7 +71,7 @@
                     android:id="@+id/full_name"
                     style="@style/baseFulWidthElementWithSmallText"
                     android:imeOptions="actionNext"
-                    android:inputType="textPersonName|textCapCharacters" />
+                    android:inputType="textPersonName" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -86,7 +86,7 @@
                     android:id="@+id/father_name"
                     style="@style/baseFulWidthElementWithSmallText"
                     android:imeOptions="actionNext"
-                    android:inputType="textPersonName|textCapCharacters" />
+                    android:inputType="textPersonName" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

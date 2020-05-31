@@ -45,6 +45,7 @@
                 android:id="@+id/admin_create_account_password"
                 style="@style/baseFulWidthElement"
                 android:imeOptions="actionNext"
+                android:inputType="textPassword"
                 android:nextFocusDown="@id/admin_create_account_confirm_password"
                  />
 
@@ -61,6 +62,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/admin_create_account_confirm_password"
                 style="@style/baseFulWidthElement"
+                android:inputType="textPassword"
                 android:imeOptions="actionNext"
                 android:nextFocusDown="@id/admin_create_account_license_text"
                 />
