@@ -25,6 +25,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.pitavya.astra.astra_admin.R;
+import com.pitavya.astra.astra_admin.databinding.AdminHomeScreenBinding;
 import com.pitavya.astra.astra_common.CreateGeneralUser;
 import com.pitavya.astra.astra_common.model.GeneralUser;
 import com.pitavya.astra.astra_common.tools.ApplicationController;
@@ -39,8 +41,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import io.github.isubham.astra_client.R;
-import io.github.isubham.astra_client.databinding.AdminHomeScreenBinding;
 
 
 public class AdminHomeScreen extends AppCompatActivity {
