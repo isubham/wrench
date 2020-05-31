@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Common Attributes -->
+    <dimen name="basic_button_elevation">20dp</dimen>
+    <dimen name="text_heading_one">40sp</dimen>
+    <dimen name="text_heading_two">25dp</dimen>
+    <dimen name="text_heading_three">20dp</dimen>
+    <dimen name="button_heading">30sp</dimen>
+    <dimen name="app_padding">10dp</dimen>
+    <dimen name="material_layout_padding">16dp</dimen>
+    <dimen name="material_small_padding">2dp</dimen>
+    <dimen name="material_element_margin">8dp</dimen>
+    <dimen name="general_margin">20dp</dimen>
+    <dimen name="space">16dp</dimen>
+
+
+    <!--Snack Bar Designs-->
+    <dimen name="snackbar_textview_textSize">14sp</dimen>
+    <dimen name="snackbar_button_textSize">14sp</dimen>
+
+    <!--TextInputLayout-->
+    <dimen name="textinputlayout_textSize">14sp</dimen>
+    <dimen name="textinputlayout_radius">5sp</dimen>
+
+
+    <!--admin home attributes-->
+    <dimen name="admin_home_switch_padding">5dp</dimen>
+    <dimen name="admin_home_switch_margin">15dp</dimen>
+    <dimen name="admin_home_switch_label">12sp</dimen>
+    <dimen name="admin_home_bottom_container_height">60dp</dimen>
+
+    <!--create general user-->
+    <dimen name="create_gen_user_doc_holder_padding">2dp</dimen>
+    <dimen name="create_gen_user_doc_holder_height">130dp</dimen>
+    <dimen name="app_padding_create_user">16dp</dimen>
+    <dimen name="create_general_user_profile_pic_length">60dp</dimen>
+    <dimen name="create_general_user_textView">100dp</dimen>
+
+    <!--general user homepage-->
+    <dimen name="padding_userhomepage">2dp</dimen>
+
+    <!--admin Verify doc-->
+    <dimen name="view_pager_dot_dimension">8dp</dimen>
+    <dimen name="dot_margins">8</dimen>
+    <dimen name="admin_verify_doc_profile_pic_length">100dp</dimen>
+
+    <dimen name="txt_big">20sp</dimen>
+
+    <!--general user view qr-->
+    <dimen name="view_profile_pic_general_user">140dp</dimen>
+    <dimen name="general_user_search_component_padding">5dp</dimen>
+
+
+</resources>
