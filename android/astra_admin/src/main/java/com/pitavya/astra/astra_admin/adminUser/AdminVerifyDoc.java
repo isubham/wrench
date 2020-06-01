@@ -3,11 +3,8 @@ package com.pitavya.astra.astra_admin.adminUser;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
@@ -44,6 +41,7 @@ import com.pitavya.astra.astra_common.tools.CameraUtils;
 import com.pitavya.astra.astra_common.tools.Constants;
 import com.pitavya.astra.astra_common.tools.Endpoints;
 import com.pitavya.astra.astra_common.tools.Errors;
+import com.pitavya.astra.astra_common.tools.GpsTracker;
 import com.pitavya.astra.astra_common.tools.Headers;
 import com.pitavya.astra.astra_common.tools.LoginPersistance;
 import com.pitavya.astra.astra_common.tools.ResponseCode;
@@ -60,9 +58,9 @@ import java.util.Map;
 public class AdminVerifyDoc extends AppCompatActivity {
 
 
-    private static final int REQUEST_LOCATION = 1;
-    LocationManager locationManager;
-    String latitude, longitude;
+    //  private static final int REQUEST_LOCATION = 1;
+    //  private LocationManager locationManager;
+    double latitude, longitude;
     int personId;
     private String TAG = "AdminVerifyDoc";
     private AdminVerifyDocBinding binding;
@@ -139,7 +137,7 @@ public class AdminVerifyDoc extends AppCompatActivity {
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Need Permissions").
-                setMessage("This app needs permission to use this feature . You can enable them in settings").setCancelable(false).setPositiveButton("SETTINGS", new DialogInterface.OnClickListener() {
+                setMessage("This app require location permission to use this feature . You can enable them in settings").setCancelable(false).setPositiveButton("SETTINGS", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
@@ -157,17 +155,17 @@ public class AdminVerifyDoc extends AppCompatActivity {
 
     @SuppressLint("MissingPermission")
     private void getLocation() {
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        assert locationManager != null;
-        Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        if (locationGPS != null) {
-            double lat = locationGPS.getLatitude();
-            double longi = locationGPS.getLongitude();
-            latitude = String.valueOf(lat);
-            longitude = String.valueOf(longi);
+        GpsTracker gps = new GpsTracker(AdminVerifyDoc.this);
+
+        if (gps.canGetLocation()) {
+
+            latitude = gps.getLatitude();
+            longitude = gps.getLongitude();
+
         } else {
-            Toast.makeText(this, "Unable to find location.", Toast.LENGTH_SHORT).show();
+            requestLocationPermission();
         }
+
     }
 
 
@@ -208,6 +206,8 @@ public class AdminVerifyDoc extends AppCompatActivity {
 
         showProgressBar();
         CreateLog newCreateLog = new CreateLog(personId, latitude + "," + longitude, action_in_out, !TextUtils.isEmpty(binding.purpose.getText()) ? binding.purpose.getText().toString() : Constants.EMPTY_STRING);
+        Log.e("Json", "" + new Gson().toJson(newCreateLog));
+
         try {
 
             JsonObjectRequest createLogRequest = new JsonObjectRequest(Endpoints.CREATE_LOG,
