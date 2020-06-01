@@ -36,6 +36,9 @@ import com.karumi.dexter.listener.DexterError;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.PermissionRequestErrorListener;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.pitavya.astra.astra_admin.R;
+import com.pitavya.astra.astra_admin.adapters.ViewPagerAdapter;
+import com.pitavya.astra.astra_admin.databinding.AdminVerifyDocBinding;
 import com.pitavya.astra.astra_common.model.CreateLog;
 import com.pitavya.astra.astra_common.tools.CameraUtils;
 import com.pitavya.astra.astra_common.tools.Constants;
@@ -52,10 +55,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import io.github.isubham.astra_client.R;
-import com.pitavya.astra.astra_admin.adapters.ViewPagerAdapter;
-import io.github.isubham.astra_client.databinding.AdminVerifyDocBinding;
 
 
 public class AdminVerifyDoc extends AppCompatActivity {

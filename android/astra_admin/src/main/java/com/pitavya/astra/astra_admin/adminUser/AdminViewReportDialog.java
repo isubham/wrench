@@ -22,6 +22,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.DialogFragment;
 
+import com.pitavya.astra.astra_admin.R;
+import com.pitavya.astra.astra_admin.databinding.AdminViewReportDialogBinding;
 import com.pitavya.astra.astra_common.tools.CustomDatePickerFragment;
 import com.pitavya.astra.astra_common.tools.DateUtils;
 import com.pitavya.astra.astra_common.tools.Endpoints;
@@ -29,9 +31,6 @@ import com.pitavya.astra.astra_common.tools.LoginPersistance;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import io.github.isubham.astra_client.R;
-import io.github.isubham.astra_client.databinding.AdminViewReportDialogBinding;
 
 
 public class AdminViewReportDialog extends AppCompatActivity implements CustomDatePickerFragment.TheListener {

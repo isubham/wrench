@@ -5,7 +5,8 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
-import io.github.isubham.astra_client.R;
+import com.pitavya.astra.astra_admin.R;
+
 
 public class GetEmail extends Activity {
 
