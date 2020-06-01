@@ -59,6 +59,11 @@ public class Constants {
     public static final boolean FALSE = false;
     public static final String VERIFICATION_SUCCESSFUL = "Verification Successful";
     public static final String TRY_AGAIN = "Verification Unsuccessful !! Try Again ..";
+    public static final String NO_INTERNET_CONNECTION = "No Internet Connection";
+    public static final String WEAK_INTERNET_CONNECTION = "Weak Internet Connection";
+    public static final String INTERNAL_SERVER_ERROR = "Internal Server Error";
+    public static final String GPS_IS_OFF = "Location is off";
     public static String password_confirm_password_dont_match = "Password and Confirm password do not match";
+
 
 }
