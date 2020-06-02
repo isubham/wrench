@@ -102,10 +102,20 @@ public class CameraUtils {
     public static File getOutputMediaFile(int type, String side) {
 
         // External sdcard location
+//        File mediaStorageDir = new File(
+//                Environment
+//                        .getExternalStoragePublicDirectory(Environment.getExternalStorageState()),
+//                Constants.GALLERY_DIRECTORY_NAME);
+
         File mediaStorageDir = new File(
                 Environment
-                        .getExternalStoragePublicDirectory(Environment.getExternalStorageState()),
-                Constants.GALLERY_DIRECTORY_NAME);
+                        .getExternalStorageDirectory(), Constants.GALLERY_DIRECTORY_NAME);
+
+        //App Folder
+        Log.e("mediaStorageDir", mediaStorageDir.toString());
+
+        //baseImage Folder In Astra
+        File subFolderForImages = null;
 
         // Create the storage directory if it does not exist
         if (!mediaStorageDir.exists()) {
@@ -114,7 +124,23 @@ public class CameraUtils {
                         + Constants.GALLERY_DIRECTORY_NAME + " directory");
                 return null;
             }
+
+            subFolderForImages = new File(Environment.getExternalStorageDirectory() +"/"+ Constants.GALLERY_DIRECTORY_NAME, Constants.ASTRA_IMAGES);
+            Log.e("subFolderForImages", subFolderForImages.toString());
+
+            if (!subFolderForImages.exists()) {
+                if (!subFolderForImages.mkdirs()) {
+                    Log.e(Constants.GALLERY_DIRECTORY_NAME, "Oops! Failed to create "
+                            + Constants.GALLERY_DIRECTORY_NAME+"/"+Constants.ASTRA_IMAGES + " directory");
+                    return null;
+                }
+            }
+
+
         }
+
+
+
 
         // Preparing media file naming convention
         // adds timestamp
@@ -122,7 +148,7 @@ public class CameraUtils {
                 Locale.getDefault()).format(new Date());
         File mediaFile;
         if (type == Constants.MEDIA_TYPE_IMAGE) {
-            mediaFile = new File(mediaStorageDir.getPath() + File.separator
+            mediaFile = new File(subFolderForImages.getPath() + File.separator
                     + side + "_" + timeStamp + "." + Constants.IMAGE_EXTENSION);
         } else {
             return null;
