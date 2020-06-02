@@ -28,6 +28,7 @@ public class GeneralUserHomeScreen extends AppCompatActivity {
 
         findViewByIds();
         toolbarSetup();
+        hideProgressBar();
     }
 
     @Override
@@ -96,6 +97,7 @@ public class GeneralUserHomeScreen extends AppCompatActivity {
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             toolbar.setTitleTextColor(getResources().getColor(R.color.colorPrimaryDark));
+
         }
     }
 
