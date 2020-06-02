@@ -1,8 +1,10 @@
 package com.pitavya.astra.astra_gen;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
@@ -41,6 +43,8 @@ import java.util.Objects;
 
 public class GeneralUserSearchUser extends AppCompatActivity implements CustomDatePickerFragment.TheListener {
     private String TAG = "GeneralUserSearchUser";
+    private String TOOLBAR_TITLE = "Search User";
+
     private Gson gson;
     private GeneralUserSearchUserBinding binding;
     private ProgressBar progressBar;
@@ -54,8 +58,10 @@ public class GeneralUserSearchUser extends AppCompatActivity implements CustomDa
         findViewByIds();
         hideProgressBar();
         toolbarSetup();
+        setupDatePicket();
+    }
 
-        //DatePicker
+    private void setupDatePicket() {
         binding.generalUserEtDob.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -66,7 +72,7 @@ public class GeneralUserSearchUser extends AppCompatActivity implements CustomDa
     }
 
 
-    public boolean validateString(String s) {
+    public boolean validateFields(String s) {
         return s.length() > 0;
     }
 
@@ -163,7 +169,7 @@ public class GeneralUserSearchUser extends AppCompatActivity implements CustomDa
     }
 
     private boolean validateFatherName(String userfathername) {
-        if (!validateString(userfathername)) {
+        if (!validateFields(userfathername)) {
             binding.generalUserTilFatherName.setError("Please enter father name as your ID!");
             return false;
         } else {
@@ -173,7 +179,7 @@ public class GeneralUserSearchUser extends AppCompatActivity implements CustomDa
     }
 
     private boolean validateDob(String userdob) {
-        if (!validateString(userdob)) {
+        if (!validateFields(userdob)) {
             binding.generalUserTilDob.setError("Please enter DOB as your ID!");
             return false;
         } else {
@@ -183,7 +189,7 @@ public class GeneralUserSearchUser extends AppCompatActivity implements CustomDa
     }
 
     private boolean validateUsername(String username) {
-        if (!validateString(username)) {
+        if (!validateFields(username)) {
             binding.generalUserTilName.setError("Please enter full name as your ID!");
             return false;
         } else {
@@ -220,7 +226,22 @@ public class GeneralUserSearchUser extends AppCompatActivity implements CustomDa
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             toolbar.setTitleTextColor(getResources().getColor(R.color.colorPrimaryDark));
+            getSupportActionBar().setTitle(TOOLBAR_TITLE);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setIcon(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                this.finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void findViewByIds() {

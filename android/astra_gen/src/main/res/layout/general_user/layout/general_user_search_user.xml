@@ -15,16 +15,6 @@
         android:layout_height="match_parent"
         android:padding="@dimen/app_padding">
 
-        <TextView
-            android:id="@+id/textView_search_user"
-            style="@style/baseFulWidthElement"
-            android:gravity="center"
-            android:padding="@dimen/app_padding"
-            android:text="@string/search_general_user"
-            android:textSize="@dimen/text_heading_one">
-
-        </TextView>
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

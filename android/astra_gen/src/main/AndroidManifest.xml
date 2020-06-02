@@ -13,7 +13,9 @@
         android:theme="@style/AppTheme">
 
 
-        <activity android:name=".GeneralUserSearchUser" />
+        <activity android:name=".GeneralUserSearchUser"
+            android:parentActivityName=".GeneralUserHomeScreen"
+            />
         <activity android:name=".GeneralUserHomeScreen">
 
             <intent-filter>

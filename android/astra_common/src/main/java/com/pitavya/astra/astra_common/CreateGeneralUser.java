@@ -8,12 +8,14 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -79,6 +81,8 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
     private Gson gson;
 
     private GeneralUser generalUser = null;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -374,11 +378,14 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
         }
     }
 
+    private String TOOLBAR_TITLE = "Create User";
     private void toolbarSetup() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             toolbar.setTitleTextColor(getResources().getColor(R.color.colorPrimaryDark));
+            getSupportActionBar().setIcon(new ColorDrawable(getResources().getColor(android.R.color.transparent)));            getSupportActionBar().setTitle(TOOLBAR_TITLE);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 
@@ -683,5 +690,16 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                this.finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
 }
