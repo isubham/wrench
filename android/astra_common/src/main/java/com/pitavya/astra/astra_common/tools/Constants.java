@@ -3,8 +3,7 @@ package com.pitavya.astra.astra_common.tools;
 public class Constants {
 
     // Gallery directory name to store the images or videos
-    public static final String GALLERY_DIRECTORY_NAME = "Astra";
-    public static final String IMAGE_EXTENSION = "jpg";
+    public static final String APP_DIRECTORY = "Astra";
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final float BYTES_IN_MB = 1024.0f * 1024.0f;
     public static final float BYTES_PER_PX = 4.0f;
@@ -63,9 +62,25 @@ public class Constants {
     public static final String WEAK_INTERNET_CONNECTION = "Weak Internet Connection";
     public static final String INTERNAL_SERVER_ERROR = "Internal Server Error";
     public static final String GPS_IS_OFF = "Location is off";
-    public static final String ASTRA_IMAGES = "Astra Images";
-    public static final String ASTRA_REPORT = "Astra Reports";
     public static String password_confirm_password_dont_match = "Password and Confirm password do not match";
+
+
+    //DIRECTORIES
+    public static final String APP_LOGS = Constants.APP_DIRECTORY + " Logs";
+    public static final String APP_IMAGES = Constants.APP_DIRECTORY + " Images";
+    public static final String APP_LOG_FILE = "bug_report_log";
+
+    //FILE EXTENSIONS
+    public static final String IMAGE_EXTENSION = ".jpg";
+    public static final String TXT_EXTENSION = ".txt";
+
+    //CREATE ERROR LOGS
+    public static final String ERROR_DESCRIPTION = "errorDescription";
+    public static final String ERROR_TAG = "tag";
+    public static final String ERROR_TIMESTAMP = "timestamp";
+
+
+
 
 
 }

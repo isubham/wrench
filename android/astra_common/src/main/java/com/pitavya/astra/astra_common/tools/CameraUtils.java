@@ -9,7 +9,6 @@ import android.graphics.BitmapFactory;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.text.TextUtils;
@@ -19,8 +18,6 @@ import android.util.Log;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
-
-import com.pitavya.astra.astra_common.BuildConfig;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -86,8 +83,8 @@ public class CameraUtils {
     public static void openSettings(Context context) {
         Intent intent = new Intent();
         intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        intent.setData(Uri.fromParts("package", BuildConfig.APPLICATION_ID, null));
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setData(Uri.fromParts("package", context.getPackageName(), null));
+        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
 
@@ -100,56 +97,18 @@ public class CameraUtils {
      * create file directory , path , name formation
      */
     public static File getOutputMediaFile(int type, String side) {
-
-        // External sdcard location
-//        File mediaStorageDir = new File(
-//                Environment
-//                        .getExternalStoragePublicDirectory(Environment.getExternalStorageState()),
-//                Constants.GALLERY_DIRECTORY_NAME);
-
-        File mediaStorageDir = new File(
-                Environment
-                        .getExternalStorageDirectory(), Constants.GALLERY_DIRECTORY_NAME);
-
-        //App Folder
-        Log.e("mediaStorageDir", mediaStorageDir.toString());
-
-        //baseImage Folder In Astra
-        File subFolderForImages = null;
-
-        // Create the storage directory if it does not exist
-        if (!mediaStorageDir.exists()) {
-            if (!mediaStorageDir.mkdirs()) {
-                Log.e(Constants.GALLERY_DIRECTORY_NAME, "Oops! Failed to create "
-                        + Constants.GALLERY_DIRECTORY_NAME + " directory");
-                return null;
-            }
-
-            subFolderForImages = new File(Environment.getExternalStorageDirectory() +"/"+ Constants.GALLERY_DIRECTORY_NAME, Constants.ASTRA_IMAGES);
-            Log.e("subFolderForImages", subFolderForImages.toString());
-
-            if (!subFolderForImages.exists()) {
-                if (!subFolderForImages.mkdirs()) {
-                    Log.e(Constants.GALLERY_DIRECTORY_NAME, "Oops! Failed to create "
-                            + Constants.GALLERY_DIRECTORY_NAME+"/"+Constants.ASTRA_IMAGES + " directory");
-                    return null;
-                }
-            }
+        File subFolderForImages = AppDirectories.checkForAppImagesDirectoryExistence();
+        if (subFolderForImages == null)
+            return null;
 
 
-        }
-
-
-
-
-        // Preparing media file naming convention
         // adds timestamp
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
                 Locale.getDefault()).format(new Date());
         File mediaFile;
         if (type == Constants.MEDIA_TYPE_IMAGE) {
             mediaFile = new File(subFolderForImages.getPath() + File.separator
-                    + side + "_" + timeStamp + "." + Constants.IMAGE_EXTENSION);
+                    + side + "_" + timeStamp + Constants.IMAGE_EXTENSION);
         } else {
             return null;
         }
