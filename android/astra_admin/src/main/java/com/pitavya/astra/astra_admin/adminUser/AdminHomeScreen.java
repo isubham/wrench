@@ -35,6 +35,7 @@ import com.pitavya.astra.astra_common.tools.CustomSnackbar;
 import com.pitavya.astra.astra_common.tools.Endpoints;
 import com.pitavya.astra.astra_common.tools.Errors;
 import com.pitavya.astra.astra_common.tools.LoginPersistance;
+import com.pitavya.astra.astra_common.tools.PermissionActivity;
 
 import org.json.JSONObject;
 
@@ -65,8 +66,13 @@ public class AdminHomeScreen extends AppCompatActivity {
         setBundleData();
         hideProgressBar();
 
+        if (!PermissionActivity.checkStoragePermissions(this))
+            PermissionActivity.requestStoragePermission(this);
+
         addRegisterUserLongPressAction();
+
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -86,7 +92,6 @@ public class AdminHomeScreen extends AppCompatActivity {
                 return true;
 
             case R.id.downloadReport:
-                //startActivity(new Intent(this, AdminReportDashboard.class));
                 startActivity(new Intent(this, AdminViewReportDialog.class));
                 return true;
 
@@ -184,23 +189,31 @@ public class AdminHomeScreen extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 hideProgressBar();
 
-                if (response.optString(Constants.MESSAGE).equals(Constants.TOKEN_INVALID)) {
-                    customMessageSnackBar(Constants.TOKEN_EXPIRED);
-                    return;
-                }
+                try {
+                    // Object s = null;
+                    // s.toString();
 
-                if (!String.valueOf(response).equals(Constants.EMPTY_JSON)) {
-                    binding.adminHomeInputUsername.setText(null);
-                    parseResponse(String.valueOf(response), userName);
-                } else {
-                    customMessageSnackBar(Constants.INVALID_USERNAME);
+                    if (response.optString(Constants.MESSAGE).equals(Constants.TOKEN_INVALID)) {
+                        customMessageSnackBar(Constants.TOKEN_EXPIRED);
+                        return;
+                    }
+
+                    if (!String.valueOf(response).equals(Constants.EMPTY_JSON)) {
+                        binding.adminHomeInputUsername.setText(null);
+                        parseResponse(String.valueOf(response), userName);
+                    } else {
+                        customMessageSnackBar(Constants.INVALID_USERNAME);
+                    }
+
+                } catch (Exception e) {
+                    Errors.createErrorLog(e, TAG, AdminHomeScreen.this, true);
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 hideProgressBar();
-                Errors.handleVolleyError(error, TAG, AdminHomeScreen.this);
+                Errors.handleVolleyError(error, TAG, AdminHomeScreen.this, true);
             }
         }) {
             @Override

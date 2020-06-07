@@ -91,5 +91,7 @@
     <string name="purpose">Purpose</string>
     <string name="search">Search</string>
 
+    <string name="test">Welcom <b> Hi there </b> you there</string>
+
 
 </resources>

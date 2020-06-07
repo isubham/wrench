@@ -631,7 +631,7 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
             @Override
             public void onErrorResponse(VolleyError error) {
                 hideProgressBar();
-                Errors.handleVolleyError(error, TAG, CreateGeneralUser.this);
+                Errors.handleVolleyError(error, TAG, CreateGeneralUser.this,true);
             }
         }) {
             @Override

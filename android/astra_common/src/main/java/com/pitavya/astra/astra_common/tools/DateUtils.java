@@ -1,5 +1,6 @@
 package com.pitavya.astra.astra_common.tools;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -20,6 +21,10 @@ public class DateUtils {
     public static String getDate(Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         return sdf.format(date.getTime());
+    }
+
+    public static Timestamp getCurrentTimestamp() {
+        return new Timestamp(System.currentTimeMillis());
     }
 
     public static boolean isEndDateGreaterThanFromDate(String fromDate, String toDate) {

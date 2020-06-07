@@ -229,7 +229,7 @@ public class AdminVerifyDoc extends AppCompatActivity {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             hideProgressBar();
-                            Errors.handleVolleyError(error, TAG, AdminVerifyDoc.this);
+                            Errors.handleVolleyError(error, TAG, AdminVerifyDoc.this,true);
                         }
                     }) {
 
