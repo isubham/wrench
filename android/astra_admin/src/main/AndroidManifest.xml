@@ -7,9 +7,9 @@
     <application
         android:name="com.pitavya.astra.astra_common.tools.ApplicationController"
         android:allowBackup="true"
-        android:icon="@mipmap/app_logo"
+        android:icon="@drawable/ic_coronalogo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/app_logo"
+        android:roundIcon="@drawable/ic_coronalogo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="n">
