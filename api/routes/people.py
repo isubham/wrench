@@ -6,6 +6,7 @@ from models import User, People, person_schema
 from sqlalchemy.exc import IntegrityError
 from . import routes
 from resources import Resources
+from sqlalchemy import func
 
 @routes.route('/person/create/', methods=['POST'])
 def create_people_by_admin():
@@ -66,7 +67,9 @@ def person_search():
     first_name, father_name, dob = request.json["name"], request.json["father_name"], \
                                    Utility.get_date(request.json["dob"])
     user_found = db.session.query(People) \
-        .filter_by(first_name=first_name, father_name=father_name, dob = dob).first()
+        .filter(first_name.lower==first_name.lower, 
+            father_name.lower==father_name.lower, 
+            dob== dob).first()
 
     if user_found is not None:
         return person_schema.jsonify(user_found)
