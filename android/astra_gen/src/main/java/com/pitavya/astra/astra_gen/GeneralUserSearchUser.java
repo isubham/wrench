@@ -127,7 +127,7 @@ public class GeneralUserSearchUser extends AppCompatActivity implements CustomDa
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             hideProgressBar();
-                            Errors.handleVolleyError(error, TAG, GeneralUserSearchUser.this);
+                            Errors.handleVolleyError(error, TAG, GeneralUserSearchUser.this,true);
                         }
 
                     }) {
