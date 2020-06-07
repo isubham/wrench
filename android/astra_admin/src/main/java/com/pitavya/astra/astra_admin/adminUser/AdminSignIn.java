@@ -129,8 +129,8 @@ public class AdminSignIn extends AppCompatActivity {
     }
 
     private void hideAllFields() {
-        binding.adminSignInEmailLayout.setVisibility(View.GONE);
-        binding.adminSignInPasswordLayout.setVisibility(View.GONE);
+        binding.adminSignInEmailTextInputLayout.setVisibility(View.GONE);
+        binding.adminSignInPasswordTextInputLayout.setVisibility(View.GONE);
         binding.adminSignInEmail.setVisibility(View.GONE);
         binding.adminSignInPassword.setVisibility(View.GONE);
         binding.adminSignInCreateAccountLink.setVisibility(View.GONE);
@@ -166,8 +166,9 @@ public class AdminSignIn extends AppCompatActivity {
     private boolean validatePassword() {
         String passwordValidationErrors =
                 Validators.passwordHasErrors(AdminSignIn.this, getPassword());
+        binding.adminSignInPasswordTextInputLayout.setErrorEnabled(false);
         if (!passwordValidationErrors.equals("")) {
-            binding.adminSignInPassword.setError(passwordValidationErrors);
+            binding.adminSignInPasswordTextInputLayout.setError(passwordValidationErrors);
         }
         return passwordValidationErrors.equals("");
     }
@@ -175,8 +176,10 @@ public class AdminSignIn extends AppCompatActivity {
     private boolean validateEmail() {
         String emailValidationErrors =
                 Validators.emailHasErrors(AdminSignIn.this, getEmail());
+        binding.adminSignInEmailTextInputLayout.setErrorEnabled(false);
+
         if (!emailValidationErrors.equals("")) {
-            binding.adminSignInEmail.setError(emailValidationErrors);
+            binding.adminSignInEmailTextInputLayout.setError(emailValidationErrors);
         }
         return emailValidationErrors.equals("");
     }

@@ -132,10 +132,10 @@ public class AdminCreateAccount extends AppCompatActivity {
     }
 
     private void hideAllFields() {
-        binding.adminCreateAccountEmailLayout.setVisibility(View.GONE);
-        binding.adminCreateAccountPasswordLayout.setVisibility(View.GONE);
-        binding.adminCreateAccountConfirmPasswordLayout.setVisibility(View.GONE);
-        binding.adminCreateAccountLicenseTextLayout.setVisibility(View.GONE);
+        binding.adminCreateAccountEmailTextInputLayout.setVisibility(View.GONE);
+        binding.adminCreateAccountPasswordTextInputLayout.setVisibility(View.GONE);
+        binding.adminCreateAccountConfirmPasswordTextInputLayout.setVisibility(View.GONE);
+        binding.adminCreateAccountLicenseTextInputLayout.setVisibility(View.GONE);
 
         binding.adminCreateAccountEmail.setVisibility(View.GONE);
         binding.adminCreateAccountPassword.setVisibility(View.GONE);
@@ -204,8 +204,9 @@ public class AdminCreateAccount extends AppCompatActivity {
     private boolean validateLicenseText() {
         String licenseValidationErrors =
                 Validators.licenseHasErrors(AdminCreateAccount.this, getLicenseKey());
+        binding.adminCreateAccountLicenseTextInputLayout.setErrorEnabled(false);
         if (!licenseValidationErrors.equals("")) {
-            binding.adminCreateAccountLicenseText.setError(licenseValidationErrors);
+            binding.adminCreateAccountLicenseTextInputLayout.setError(licenseValidationErrors);
         }
         return licenseValidationErrors.equals("");
     }
@@ -213,11 +214,12 @@ public class AdminCreateAccount extends AppCompatActivity {
     private boolean validateConfirmPassword() {
         String confirmPasswordValidationErrors =
                 Validators.passwordHasErrors(AdminCreateAccount.this, getConfirmPassword());
+        binding.adminCreateAccountConfirmPasswordTextInputLayout.setErrorEnabled(false);
         if (!confirmPasswordValidationErrors.equals("")) {
-            binding.adminCreateAccountConfirmPassword.setError(confirmPasswordValidationErrors);
+            binding.adminCreateAccountConfirmPasswordTextInputLayout.setError(confirmPasswordValidationErrors);
         }
         if (!getPassword().equals(getConfirmPassword())) {
-            binding.adminCreateAccountConfirmPassword.setError(Constants.password_confirm_password_dont_match);
+            binding.adminCreateAccountConfirmPasswordTextInputLayout.setError(Constants.password_confirm_password_dont_match);
             confirmPasswordValidationErrors = Constants.password_confirm_password_dont_match;
         }
         return confirmPasswordValidationErrors.equals("");
@@ -226,8 +228,9 @@ public class AdminCreateAccount extends AppCompatActivity {
     private boolean validatePassword() {
         String passwordValidationErrors =
                 Validators.passwordHasErrors(AdminCreateAccount.this, getPassword());
+        binding.adminCreateAccountPasswordTextInputLayout.setErrorEnabled(false);
         if (!passwordValidationErrors.equals("")) {
-            binding.adminCreateAccountPassword.setError(passwordValidationErrors);
+            binding.adminCreateAccountPasswordTextInputLayout.setError(passwordValidationErrors);
         }
         return passwordValidationErrors.equals("");
     }
@@ -235,8 +238,9 @@ public class AdminCreateAccount extends AppCompatActivity {
     private boolean validateEmail() {
         String emailValidationErrors =
                 Validators.emailHasErrors(AdminCreateAccount.this, getEmail());
+        binding.adminCreateAccountEmailTextInputLayout.setErrorEnabled(false);
         if (!emailValidationErrors.equals("")) {
-            binding.adminCreateAccountEmail.setError(emailValidationErrors);
+            binding.adminCreateAccountEmailTextInputLayout.setError(emailValidationErrors);
         }
         return emailValidationErrors.equals("");
     }
