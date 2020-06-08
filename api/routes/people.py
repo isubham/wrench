@@ -67,9 +67,7 @@ def person_search():
     first_name, father_name, dob = request.json["name"], request.json["father_name"], \
                                    Utility.get_date(request.json["dob"])
     user_found = db.session.query(People) \
-        .filter(first_name.lower==first_name.lower, 
-            father_name.lower==father_name.lower, 
-            dob== dob).first()
+        .filter(People.first_name.ilike(first_name), People.father_name.ilike(father_name), dob== dob).first()
 
     if user_found is not None:
         return person_schema.jsonify(user_found)
