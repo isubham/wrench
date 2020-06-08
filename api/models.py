@@ -1,12 +1,15 @@
 from app import db
 from app import mb
 from datetime import datetime
-import os
+import os, time
 from sqlalchemy.orm import relationship
 from cryptography.fernet import Fernet
 from cryptography.fernet import InvalidToken
 
 from utility import Utility
+
+os.environ['TZ'] = 'Asia/Kolkata'
+time.tzset()
 
 
 class User(db.Model):
