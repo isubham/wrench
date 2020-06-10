@@ -1,6 +1,5 @@
 package com.pitavya.astra.astra_admin.adminUser;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -26,13 +25,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.MultiplePermissionsReport;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.DexterError;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.PermissionRequestErrorListener;
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.pitavya.astra.astra_admin.R;
 import com.pitavya.astra.astra_admin.adapters.ViewPagerAdapter;
 import com.pitavya.astra.astra_admin.databinding.AdminVerifyDocBinding;
@@ -44,6 +36,7 @@ import com.pitavya.astra.astra_common.tools.Errors;
 import com.pitavya.astra.astra_common.tools.GpsTracker;
 import com.pitavya.astra.astra_common.tools.Headers;
 import com.pitavya.astra.astra_common.tools.LoginPersistance;
+import com.pitavya.astra.astra_common.tools.PermissionActivity;
 import com.pitavya.astra.astra_common.tools.ResponseCode;
 
 import org.json.JSONException;
@@ -86,52 +79,20 @@ public class AdminVerifyDoc extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         imageUrls = new ArrayList<>();
+        try {
+            findViewById();
+            // setupPagerAdapter();
+            setBundleData();
+            hideProgressBar();
 
-        findViewById();
-        // setupPagerAdapter();
-        setBundleData();
-        requestLocationPermission();
-        hideProgressBar();
+            if (!PermissionActivity.checkLocationPermissions(this))
+                PermissionActivity.requestLocationPermission(this);
 
+        } catch (Exception e) {
+            Errors.createErrorLog(e, TAG, AdminVerifyDoc.this, true);
+        }
     }
 
-
-    private boolean requestLocationPermission() {
-        final boolean[] granted = {false};
-        Dexter.withActivity(this)
-                .withPermissions(
-                        Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.ACCESS_FINE_LOCATION)
-                .withListener(new MultiplePermissionsListener() {
-                    @Override
-                    public void onPermissionsChecked(MultiplePermissionsReport report) {
-                        if (report.areAllPermissionsGranted()) {
-                            granted[0] = true;
-                        }
-                        if (report.isAnyPermissionPermanentlyDenied()) {
-                            // show alert dialog navigating to Settings
-                            showSettingsDialog();
-                            granted[0] = false;
-
-                        }
-                    }
-
-                    @Override
-                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
-                        token.continuePermissionRequest();
-                    }
-                }).
-                withErrorListener(new PermissionRequestErrorListener() {
-                    @Override
-                    public void onError(DexterError error) {
-                        Toast.makeText(getApplicationContext(), "Error occurred , while acquiring permission .", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .onSameThread()
-                .check();
-
-        return granted[0];
-    }
 
     private void showSettingsDialog() {
 
@@ -163,7 +124,8 @@ public class AdminVerifyDoc extends AppCompatActivity {
             longitude = gps.getLongitude();
 
         } else {
-            requestLocationPermission();
+            if (!PermissionActivity.checkLocationPermissions(this))
+                PermissionActivity.requestLocationPermission(this);
         }
 
     }
@@ -199,9 +161,11 @@ public class AdminVerifyDoc extends AppCompatActivity {
     }
 
     public void LogActivity(View view) throws JSONException {
-        if (!requestLocationPermission())
+        if (!PermissionActivity.checkLocationPermissions(this)) {
+            PermissionActivity.requestLocationPermission(this);
             return;
 
+        }
         getLocation();
 
         showProgressBar();
@@ -229,7 +193,7 @@ public class AdminVerifyDoc extends AppCompatActivity {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             hideProgressBar();
-                            Errors.handleVolleyError(error, TAG, AdminVerifyDoc.this,true);
+                            Errors.handleVolleyError(error, TAG, AdminVerifyDoc.this, true);
                         }
                     }) {
 

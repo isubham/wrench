@@ -50,7 +50,7 @@ public class PermissionActivity {
                         }
                         if (report.isAnyPermissionPermanentlyDenied()) {
                             // show alert dialog navigating to Settings
-                            showSettingsDialog(context);
+                            showSettingsDialog(context , "Storage");
                             granted[0] = false;
                         }
                     }
@@ -72,11 +72,11 @@ public class PermissionActivity {
         return granted[0];
     }
 
-    private static void showSettingsDialog(final Activity context) {
+    private static void showSettingsDialog(final Activity context, String permissionType) {
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Need Permissions").
-                setMessage("This app require storage permission to use this feature . You can enable them in settings").setCancelable(false).setPositiveButton("SETTINGS", new DialogInterface.OnClickListener() {
+                setMessage("This app require " + permissionType + " permission to use this feature . You can enable them in settings").setCancelable(false).setPositiveButton("SETTINGS", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 context.startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", context.getPackageName(), null)));
@@ -92,5 +92,43 @@ public class PermissionActivity {
 
 
     }
+
+    public static boolean requestLocationPermission(final Activity context) {
+        final boolean[] granted = {false};
+        Dexter.withActivity(context)
+                .withPermissions(
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION)
+                .withListener(new MultiplePermissionsListener() {
+                    @Override
+                    public void onPermissionsChecked(MultiplePermissionsReport report) {
+                        if (report.areAllPermissionsGranted()) {
+                            granted[0] = true;
+                        }
+                        if (report.isAnyPermissionPermanentlyDenied()) {
+                            // show alert dialog navigating to Settings
+                            showSettingsDialog(context , "Location");
+                            granted[0] = false;
+
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                }).
+                withErrorListener(new PermissionRequestErrorListener() {
+                    @Override
+                    public void onError(DexterError error) {
+                        Toast.makeText(context, "Error occurred , while acquiring permission .", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .onSameThread()
+                .check();
+
+        return granted[0];
+    }
+
 
 }

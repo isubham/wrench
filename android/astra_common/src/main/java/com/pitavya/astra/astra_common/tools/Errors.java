@@ -33,6 +33,7 @@ public class Errors {
     }
 
     public static void createErrorLog(Exception error, String TAG, Context context, boolean doLog) {
+        Toast.makeText(context, "Error Occurred . Please Contact Pitavya Team .", Toast.LENGTH_SHORT).show();
 
         Log.e(TAG, error.toString());
         if (doLog)

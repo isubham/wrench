@@ -1,25 +1,20 @@
 package com.pitavya.astra.astra_admin.adminUser;
 
-import android.Manifest;
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.pitavya.astra.astra_admin.R;
@@ -27,7 +22,9 @@ import com.pitavya.astra.astra_admin.databinding.AdminViewReportDialogBinding;
 import com.pitavya.astra.astra_common.tools.CustomDatePickerFragment;
 import com.pitavya.astra.astra_common.tools.DateUtils;
 import com.pitavya.astra.astra_common.tools.Endpoints;
+import com.pitavya.astra.astra_common.tools.Errors;
 import com.pitavya.astra.astra_common.tools.LoginPersistance;
+import com.pitavya.astra.astra_common.tools.PermissionActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +60,11 @@ public class AdminViewReportDialog extends AppCompatActivity implements CustomDa
         setContentView(binding.getRoot());
 
         setupSpinner();
-        isWriteStoragePermissionGranted();
+//        isWriteStoragePermissionGranted();
+
+        if (!PermissionActivity.checkStoragePermissions(this))
+            PermissionActivity.requestStoragePermission(this);
+
         registerDownloadActions();
     }
 
@@ -166,43 +167,53 @@ public class AdminViewReportDialog extends AppCompatActivity implements CustomDa
 
         return dates;
     }
-
-    public boolean isWriteStoragePermissionGranted() {
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED) {
-                Log.v(TAG, "Permission is granted2");
-                return true;
-            } else {
-
-                Log.v(TAG, "Permission is revoked2");
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
-                return false;
-            }
-        } else { //permission is automatically granted on sdk<23 upon installation
-            Log.v(TAG, "Permission is granted2");
-            return true;
-        }
-    }
+//
+//    public boolean isWriteStoragePermissionGranted() {
+//        if (Build.VERSION.SDK_INT >= 23) {
+//            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+//                    == PackageManager.PERMISSION_GRANTED) {
+//                Log.v(TAG, "Permission is granted2");
+//                return true;
+//            } else {
+//
+//                Log.v(TAG, "Permission is revoked2");
+//                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
+//                return false;
+//            }
+//        } else { //permission is automatically granted on sdk<23 upon installation
+//            Log.v(TAG, "Permission is granted2");
+//            return true;
+//        }
+//    }
 
     public void downloadReport(View view) {
 
-        if (spinnerPosSelected == 4) {
-            if (TextUtils.isEmpty(binding.reportStartDate.getText()) || TextUtils.isEmpty(binding.reportEndDate.getText())) {
-                binding.errorHint.setText(R.string.PLEASE_SELECT_THE_DATES);
-                binding.errorHint.setVisibility(View.VISIBLE);
-                return;
-            }
-
-            if (!DateUtils.isEndDateGreaterThanFromDate(binding.reportStartDate.getText().toString(), binding.reportEndDate.getText().toString())) {
-                binding.errorHint.setText(R.string.ERROR_INVALID_DATE_RANGE);
-                binding.errorHint.setVisibility(View.VISIBLE);
-                return;
-            }
+        if (!PermissionActivity.checkStoragePermissions(this)) {
+            PermissionActivity.requestStoragePermission(this);
+            return;
         }
 
-        List<String> dates = getDatesForSelectedDuration(spinnerPosSelected);
-        startDownload(dates.get(0), dates.get(1));
+
+        try {
+            if (spinnerPosSelected == 4) {
+                if (TextUtils.isEmpty(binding.reportStartDate.getText()) || TextUtils.isEmpty(binding.reportEndDate.getText())) {
+                    binding.errorHint.setText(R.string.PLEASE_SELECT_THE_DATES);
+                    binding.errorHint.setVisibility(View.VISIBLE);
+                    return;
+                }
+
+                if (!DateUtils.isEndDateGreaterThanFromDate(binding.reportStartDate.getText().toString(), binding.reportEndDate.getText().toString())) {
+                    binding.errorHint.setText(R.string.ERROR_INVALID_DATE_RANGE);
+                    binding.errorHint.setVisibility(View.VISIBLE);
+                    return;
+                }
+            }
+
+            List<String> dates = getDatesForSelectedDuration(spinnerPosSelected);
+            startDownload(dates.get(0), dates.get(1));
+        } catch (Exception e) {
+            Errors.createErrorLog(e, TAG, AdminViewReportDialog.this, true);
+        }
     }
 
     @Override
