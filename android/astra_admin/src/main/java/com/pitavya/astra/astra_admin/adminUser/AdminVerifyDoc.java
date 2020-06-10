@@ -1,12 +1,8 @@
 package com.pitavya.astra.astra_admin.adminUser;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -92,28 +88,7 @@ public class AdminVerifyDoc extends AppCompatActivity {
             Errors.createErrorLog(e, TAG, AdminVerifyDoc.this, true);
         }
     }
-
-
-    private void showSettingsDialog() {
-
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Need Permissions").
-                setMessage("This app require location permission to use this feature . You can enable them in settings").setCancelable(false).setPositiveButton("SETTINGS", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-            }
-        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        final AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-
-    }
-
+    
     @SuppressLint("MissingPermission")
     private void getLocation() {
         GpsTracker gps = new GpsTracker(AdminVerifyDoc.this);
