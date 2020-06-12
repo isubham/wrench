@@ -35,7 +35,6 @@ public class PermissionActivity {
                 && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
 
-
     public static boolean requestStoragePermission(final Activity context) {
         final boolean[] granted = {false};
         Dexter.withActivity(context)

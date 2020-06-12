@@ -190,8 +190,6 @@ public class AdminHomeScreen extends AppCompatActivity {
                 hideProgressBar();
 
                 try {
-                    // Object s = null;
-                    // s.toString();
 
                     if (response.optString(Constants.MESSAGE).equals(Constants.TOKEN_INVALID)) {
                         customMessageSnackBar(Constants.TOKEN_EXPIRED);

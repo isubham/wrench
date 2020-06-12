@@ -35,7 +35,6 @@ public class GpsTracker extends Service implements LocationListener {
 
     public GpsTracker(Context context) {
         this.mContext = context;
-        getLocation();
     }
 
     @SuppressLint("MissingPermission")
@@ -96,6 +95,7 @@ public class GpsTracker extends Service implements LocationListener {
                     }
                 }
             }
+            Log.e("lattitude : longitude", "GpsTracker :" + latitude + longitude);
 
         } catch (Exception e) {
             e.printStackTrace();

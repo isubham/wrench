@@ -44,15 +44,22 @@ public class Errors {
 
     public static void logTheErrorInLocalStorageErrorLogFile(Exception error, String error_activity_tag, Context context) {
 
-        File appLogDirectory = AppDirectories.checkForAppLogDirectoryExistence();
-        if (appLogDirectory == null) return;
+        try {
+            File appLogDirectory = AppDirectories.checkForAppLogDirectoryExistence();
+            if (appLogDirectory == null) return;
 
-        String logFileName = Constants.APP_LOG_FILE + Constants.TXT_EXTENSION;
-        File logFile = new File(appLogDirectory, logFileName);
+            String logFileName = Constants.APP_LOG_FILE + Constants.TXT_EXTENSION;
+            File logFile = new File(appLogDirectory, logFileName);
 
-        // read the file //StringBuffer fileContent = readTextFromFile(logFile);
+            // read the file //StringBuffer fileContent = readTextFromFile(logFile);
 
-        writeTextInLogFile(context, logFile, error, error_activity_tag);
+            writeTextInLogFile(context, logFile, error, error_activity_tag);
+
+        } catch (Exception e) {
+            Log.e(TAG, "Not able to create directory :" + e.toString());
+            Toast.makeText(context, "Not able to create directory :" + e.toString(), Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     //appends the error in a file
@@ -68,6 +75,7 @@ public class Errors {
 
         } catch (IOException e) {
             Log.e(TAG, e.toString());
+            Toast.makeText(context, "Error while writing " + e.toString(), Toast.LENGTH_SHORT).show();
         } finally {
             try {
                 if (fileOutputStream != null)

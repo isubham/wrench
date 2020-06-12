@@ -1,6 +1,7 @@
 package com.pitavya.astra.astra_admin.adminUser;
 
 import android.annotation.SuppressLint;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -71,11 +72,13 @@ public class AdminVerifyDoc extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = AdminVerifyDocBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-        imageUrls = new ArrayList<>();
         try {
+
+            binding = AdminVerifyDocBinding.inflate(getLayoutInflater());
+            setContentView(binding.getRoot());
+
+            imageUrls = new ArrayList<>();
+
             findViewById();
             // setupPagerAdapter();
             setBundleData();
@@ -88,23 +91,19 @@ public class AdminVerifyDoc extends AppCompatActivity {
             Errors.createErrorLog(e, TAG, AdminVerifyDoc.this, true);
         }
     }
-    
+
     @SuppressLint("MissingPermission")
-    private void getLocation() {
-        GpsTracker gps = new GpsTracker(AdminVerifyDoc.this);
+    private Location getLocation() {
+        Location loc = null;
+        try {
+            GpsTracker gps = new GpsTracker(AdminVerifyDoc.this);
+            loc = gps.getLocation();
 
-        if (gps.canGetLocation()) {
-
-            latitude = gps.getLatitude();
-            longitude = gps.getLongitude();
-
-        } else {
-            if (!PermissionActivity.checkLocationPermissions(this))
-                PermissionActivity.requestLocationPermission(this);
+        } catch (Exception e) {
+            Errors.createErrorLog(e, TAG, AdminVerifyDoc.this, true);
         }
-
+        return loc;
     }
-
 
     private void findViewById() {
         progressBar = findViewById(R.id.progressBar);
@@ -141,10 +140,13 @@ public class AdminVerifyDoc extends AppCompatActivity {
             return;
 
         }
-        getLocation();
+        Location location = getLocation();
+        if (location == null) {
+            //Toast.makeText(this, "Location Error . Contact pitavya team .", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        showProgressBar();
-        CreateLog newCreateLog = new CreateLog(personId, latitude + "," + longitude, action_in_out, !TextUtils.isEmpty(binding.purpose.getText()) ? binding.purpose.getText().toString() : Constants.EMPTY_STRING);
+        CreateLog newCreateLog = new CreateLog(personId, location.getLatitude() + "," + location.getLongitude(), action_in_out, !TextUtils.isEmpty(binding.purpose.getText()) ? binding.purpose.getText().toString() : Constants.EMPTY_STRING);
         Log.e("Json", "" + new Gson().toJson(newCreateLog));
 
         try {

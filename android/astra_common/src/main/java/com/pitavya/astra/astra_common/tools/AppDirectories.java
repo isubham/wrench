@@ -2,6 +2,7 @@ package com.pitavya.astra.astra_common.tools;
 
 import android.os.Environment;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -68,17 +69,15 @@ public class AppDirectories {
         return subFolderForImages;
     }
 
-    public static boolean checkForAppLogFileExistence(String TAG, File logFile) {
+    public static boolean checkForAppLogFileExistence(String TAG, File logFile) throws IOException {
 
         if (!logFile.exists()) {
-            try {
+
                 if (!logFile.createNewFile()) {
                     Log.e(TAG, "Oops! Failed to create " + Constants.APP_LOG_FILE + " file");
                     return false;
                 }
-            } catch (IOException e) {
-                Log.e(CLASS_TAG, "While Creating Log File" + e.toString());
-            }
+
         }
         return true;
     }
