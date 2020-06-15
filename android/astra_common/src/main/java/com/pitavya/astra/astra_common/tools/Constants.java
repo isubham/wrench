@@ -78,6 +78,7 @@ public class Constants {
     public static final String ERROR_DESCRIPTION = "errorDescription";
     public static final String ERROR_TAG = "tag";
     public static final String ERROR_TIMESTAMP = "timestamp";
+    public static final String ERROR_STACKTRACE = "errorStackTrace";
 
 
 

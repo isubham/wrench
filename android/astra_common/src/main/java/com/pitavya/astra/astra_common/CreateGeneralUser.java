@@ -62,7 +62,6 @@ import java.util.Map;
 import java.util.Objects;
 
 
-
 public class CreateGeneralUser extends AppCompatActivity implements CustomDatePickerFragment.TheListener {
 
     public static final String TAG = "CreateGeneralUser";
@@ -76,13 +75,19 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
     private int powerOf2;
 
     //Data From Bundle
-    private int createdById;
+    private int userType;
+    private String tokenBasedOnUserType;
 
-    private Gson gson;
-
-    private GeneralUser generalUser = null;
-
-
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,18 +109,6 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
         hideProgressBar();
         addFocusChangeListeners();
 
-    }
-
-
-    public static void hideKeyboard(Activity activity) {
-        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        //Find the currently focused view, so we can grab the correct window token from it.
-        View view = activity.getCurrentFocus();
-        //If no view currently has focus, create a new one, just so we can grab a window token from it
-        if (view == null) {
-            view = new View(activity);
-        }
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     /**
@@ -166,7 +159,8 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
         binding.dob.addTextChangedListener(new TextWatcher() {
 
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+            }
 
             @Override
             public void beforeTextChanged(CharSequence s, int start,
@@ -290,7 +284,6 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
         return Objects.requireNonNull(binding.pincode).getText().toString().trim();
     }
 
-
     private boolean validateAadhar() {
 
         String aadharValidators =
@@ -317,7 +310,6 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
         return contactValidators.equals(Constants.EMPTY_STRING);
     }
 
-
     @SuppressLint("NewApi")
     private String getContact() {
         return Objects.requireNonNull(binding.contact).getText().toString().trim();
@@ -332,13 +324,14 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
         return emailValidationErrors.equals(Constants.EMPTY_STRING);
     }
 
+    /**
+     * TODO validation of Fields End
+     **/
+
     @SuppressLint("NewApi")
     private String getEmail() {
         return Objects.requireNonNull(binding.email).getText().toString().trim();
     }
-
-    /**TODO validation of Fields End**/
-
 
     /**
      * Requesting permissions using Dexter library
@@ -374,17 +367,21 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
     private void setBundleData() {
         Bundle b = getIntent().getExtras();
         if (b != null) {
-            createdById = b.getInt(Constants.ID);
+            userType = b.getInt(Constants.USER_TYPE);
+
+            tokenBasedOnUserType = userType == Constants.USER_TYPE_ADMIN ? LoginPersistance.GetToken(this) : LoginPersistance.GetIGeneralUserToken(this);
+
         }
     }
 
-    private String TOOLBAR_TITLE = "Create User";
     private void toolbarSetup() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             toolbar.setTitleTextColor(getResources().getColor(R.color.colorPrimaryDark));
-            getSupportActionBar().setIcon(new ColorDrawable(getResources().getColor(android.R.color.transparent)));            getSupportActionBar().setTitle(TOOLBAR_TITLE);
+            getSupportActionBar().setIcon(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
+            String TOOLBAR_TITLE = "Create User";
+            getSupportActionBar().setTitle(TOOLBAR_TITLE);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
@@ -457,6 +454,7 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
     private void captureImage(String side) {
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
 
         File file = CameraUtils.getOutputMediaFile(Constants.MEDIA_TYPE_IMAGE, side);
         if (file != null) {
@@ -568,12 +566,12 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
 
         if (validateFields()) {
             //bitmap_front_doc, bitmap_back_doc, bitmap_profile_pic  ,createdById  has the updated value for respective images in view
-            generalUser = new GeneralUser(null, CameraUtils.getBase64StringFromBitmap(bitmap_profile_pic, Constants.HIGH_QUALITY), String.valueOf(binding.userName.getText()), String.valueOf(binding.fullName.getText()),
+            GeneralUser generalUser = new GeneralUser(null, CameraUtils.getBase64StringFromBitmap(bitmap_profile_pic, Constants.HIGH_QUALITY), String.valueOf(binding.userName.getText()), String.valueOf(binding.fullName.getText()),
                     String.valueOf(binding.fatherName.getText()), String.valueOf(binding.email.getText()), String.valueOf(binding.dob.getText()), String.valueOf(binding.contact.getText()),
                     String.valueOf(binding.aadhar.getText()), String.valueOf(binding.address.getText()), String.valueOf(binding.pincode.getText()), CameraUtils.getBase64StringFromBitmap(bitmap_front_doc,
-                    Constants.HIGH_QUALITY), CameraUtils.getBase64StringFromBitmap(bitmap_back_doc, Constants.HIGH_QUALITY), createdById);
+                    Constants.HIGH_QUALITY), CameraUtils.getBase64StringFromBitmap(bitmap_back_doc, Constants.HIGH_QUALITY));
 
-            gson = new Gson();
+            Gson gson = new Gson();
             String generalUserJson = gson.toJson(generalUser);
             try {
                 apiRequestToSaveGeneralUser(generalUser, new JSONObject(generalUserJson));
@@ -631,14 +629,14 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
             @Override
             public void onErrorResponse(VolleyError error) {
                 hideProgressBar();
-                Errors.handleVolleyError(error, TAG, CreateGeneralUser.this,true);
+                Errors.handleVolleyError(error, TAG, CreateGeneralUser.this, true);
             }
         }) {
             @Override
             public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<>();
                 headers.put(Headers.CONTENT_TYPE, Headers.APPLICATION_JSON);
-                headers.put(Headers.AUTHORIZATION, "Basic " + LoginPersistance.GetToken(CreateGeneralUser.this));
+                headers.put(Headers.AUTHORIZATION, "Basic " + tokenBasedOnUserType);
                 return headers;
             }
         };
@@ -659,7 +657,7 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
 
             LoginPersistance.update(generalUser.getUsername(), generalUser.getToken(), generalUser.getProfile_pic(), generalUser.getId_front(), generalUser.getId_back(), this);
             startActivity(new Intent(CreateGeneralUser.this, GeneralUserViewQr.class)
-                    .putExtra(Constants.USER_NAME, String.valueOf(binding.userName.getText())).putExtra(Constants.USER_TYPE, Constants.USER_TYPE_GENERAL));
+                    .putExtra(Constants.USER_NAME, String.valueOf(binding.userName.getText())).putExtra(Constants.USER_TYPE, userType));
             finish();
 
         } else if (response.optString(Constants.CODE).equals(ResponseCode.AADHAR_EXISTS)) {

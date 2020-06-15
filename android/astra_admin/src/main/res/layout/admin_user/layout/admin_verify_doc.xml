@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/material_layout_padding"
-        tools:context="io.github.isubham.astra_client.com.pitavya.astra.astra_admin.astra_client.adminUser.AdminVerifyDoc">
+        tools:context="com.pitavya.astra.astra_admin.adminUser.AdminVerifyDoc">
 
         <include layout="@layout/progress_bar" />
 
@@ -124,10 +124,10 @@
 
 
         <Button
-            android:layout_below="@id/textContainer0"
             android:id="@+id/SaveUser"
             android:layout_width="400dp"
             android:layout_height="40dp"
+            android:layout_below="@id/textContainer0"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_margin="4dp"

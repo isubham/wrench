@@ -204,7 +204,7 @@ public class AdminHomeScreen extends AppCompatActivity {
                     }
 
                 } catch (Exception e) {
-                    Errors.createErrorLog(e, TAG, AdminHomeScreen.this, true);
+                    Errors.createErrorLog(e, TAG, AdminHomeScreen.this, true, Thread.currentThread().getStackTrace()[2]);
                 }
             }
         }, new Response.ErrorListener() {
@@ -285,7 +285,8 @@ public class AdminHomeScreen extends AppCompatActivity {
     }
 
     public void registerNewUser(View view) {
-        startActivity(new Intent(this, CreateGeneralUser.class).putExtra(Constants.USER_TYPE, Constants.USER_TYPE_ADMIN));
+        startActivity(new Intent(this, CreateGeneralUser.class).putExtra(Constants.USER_TYPE, Constants.USER_TYPE_ADMIN)
+        );
     }
 
 

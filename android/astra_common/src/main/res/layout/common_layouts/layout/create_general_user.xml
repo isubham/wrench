@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="io.github.isubham.astra_client.com.pitavya.astra.astra_common.CreateGeneralUser">
+    tools:context="com.pitavya.astra.astra_common.CreateGeneralUser">
 
     <include layout="@layout/app_bar" />
 
@@ -36,9 +36,8 @@
             <TextView
                 android:id="@+id/create_general_user_profile_pic_errror_message"
                 style="@style/baseFullWidthErrorTextView"
-                android:gravity="center_horizontal"
                 android:layout_below="@+id/profilePic"
-                />
+                android:gravity="center_horizontal" />
 
 
             <com.google.android.material.textfield.TextInputLayout
@@ -113,27 +112,24 @@
 
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:layout_weight="0.2"
                     style="@style/baseFulWidthElementWithSmallText"
+                    android:layout_weight="0.2"
                     android:hint="@string/create_general_user_dob"
                     android:textColorHint="@color/colorHint">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/dob"
                         style="@style/baseFulWidthElementWithSmallText"
-                        android:imeOptions="actionNext"
-                         />
+                        android:imeOptions="actionNext" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <ImageButton
-                    android:layout_gravity="center_vertical"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@mipmap/date_chooser"
+                    android:layout_gravity="center_vertical"
                     android:onClick="selectDate"
-                    ></ImageButton>
-
+                    android:src="@mipmap/date_chooser"></ImageButton>
 
 
             </LinearLayout>
@@ -223,10 +219,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/create_gen_user_doc_holder_height"
                     android:layout_weight="0.30"
-                    android:src="@mipmap/id_icon"
                     android:contentDescription="@string/front_doc"
                     android:onClick="frontDocScan"
-                    android:padding="@dimen/create_gen_user_doc_holder_padding" />
+                    android:padding="@dimen/create_gen_user_doc_holder_padding"
+                    android:src="@mipmap/id_icon" />
 
                 <ImageView
                     android:id="@+id/back_doc"
@@ -235,32 +231,31 @@
                     android:layout_marginStart="5dp"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="0.30"
-                    android:src="@mipmap/id_icon"
                     android:contentDescription="@string/back_doc"
                     android:onClick="backDocScan"
-                    android:padding="@dimen/create_gen_user_doc_holder_padding" />
+                    android:padding="@dimen/create_gen_user_doc_holder_padding"
+                    android:src="@mipmap/id_icon" />
 
             </LinearLayout>
 
             <LinearLayout
-                android:layout_below="@id/docContainer"
                 android:id="@+id/docErrorContainer"
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:layout_weight="0.5"
-                    android:id="@+id/create_general_user_doc_front_errror_message"
-                    style="@style/baseFullWidthErrorTextView"
-                    android:gravity="center_horizontal"
-                    />
+                android:layout_height="wrap_content"
+                android:layout_below="@id/docContainer"
+                android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/create_general_user_doc_front_errror_message"
+                    style="@style/baseFullWidthErrorTextView"
                     android:layout_weight="0.5"
+                    android:gravity="center_horizontal" />
+
+                <TextView
                     android:id="@+id/create_general_user_doc_back_errror_message"
                     style="@style/baseFullWidthErrorTextView"
-                    android:gravity="center_horizontal"
-                    />
+                    android:layout_weight="0.5"
+                    android:gravity="center_horizontal" />
 
             </LinearLayout>
 

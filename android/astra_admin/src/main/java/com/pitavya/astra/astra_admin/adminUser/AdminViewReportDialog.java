@@ -6,9 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,10 +22,12 @@ import androidx.fragment.app.DialogFragment;
 import com.pitavya.astra.astra_admin.R;
 import com.pitavya.astra.astra_admin.databinding.AdminViewReportDialogBinding;
 import com.pitavya.astra.astra_common.tools.CustomDatePickerFragment;
+import com.pitavya.astra.astra_common.tools.CustomSnackbar;
 import com.pitavya.astra.astra_common.tools.DateUtils;
 import com.pitavya.astra.astra_common.tools.Endpoints;
 import com.pitavya.astra.astra_common.tools.Errors;
 import com.pitavya.astra.astra_common.tools.LoginPersistance;
+import com.pitavya.astra.astra_common.tools.NetStat;
 import com.pitavya.astra.astra_common.tools.PermissionActivity;
 
 import java.util.ArrayList;
@@ -212,7 +216,7 @@ public class AdminViewReportDialog extends AppCompatActivity implements CustomDa
             List<String> dates = getDatesForSelectedDuration(spinnerPosSelected);
             startDownload(dates.get(0), dates.get(1));
         } catch (Exception e) {
-            Errors.createErrorLog(e, TAG, AdminViewReportDialog.this, true);
+            Errors.createErrorLog(e, TAG, AdminViewReportDialog.this, true, Thread.currentThread().getStackTrace()[2]);
         }
     }
 
@@ -235,6 +239,22 @@ public class AdminViewReportDialog extends AppCompatActivity implements CustomDa
     }
 
     private void startDownload(String startDate, String endDate) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            if (!NetStat.isNetworkConnected(this)) {
+                new CustomSnackbar(this, "Offline !! Please connect to a network", "TURN ON", binding.rootLayout) {
+                    @Override
+                    public void onActionClick(View view) {
+                        NetStat.setMobileDataState(AdminViewReportDialog.this, true);
+                        Log.e(TAG + ":" + Thread.currentThread().getStackTrace()[2].getLineNumber(), "" + NetStat.getMobileDataState(AdminViewReportDialog.this));
+                    }
+                }.showWithAction();
+                return;
+            }
+        } else {
+            Toast.makeText(this, "Offline !! Please connect to a network", Toast.LENGTH_SHORT).show();
+        }
+
+
         String url = String.format(Endpoints.DOWNLOAD_REPORT, startDate, endDate);
         Uri uri = Uri.parse(url);
 

@@ -4,21 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.pitavya.astra.astra_gen.generalUser.GeneralUserHomeScreen">
+    tools:context="com.pitavya.astra.astra_gen.GeneralUserHomeScreen">
 
     <include layout="@layout/app_bar" />
 
     <include layout="@layout/progress_bar" />
 
 
-
-
     <RelativeLayout
-        android:padding="@dimen/space"
         android:id="@+id/button_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:padding="@dimen/space"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.8">

@@ -88,7 +88,7 @@ public class AdminVerifyDoc extends AppCompatActivity {
                 PermissionActivity.requestLocationPermission(this);
 
         } catch (Exception e) {
-            Errors.createErrorLog(e, TAG, AdminVerifyDoc.this, true);
+            Errors.createErrorLog(e, TAG, AdminVerifyDoc.this, true, Thread.currentThread().getStackTrace()[2]);
         }
     }
 
@@ -100,7 +100,7 @@ public class AdminVerifyDoc extends AppCompatActivity {
             loc = gps.getLocation();
 
         } catch (Exception e) {
-            Errors.createErrorLog(e, TAG, AdminVerifyDoc.this, true);
+            Errors.createErrorLog(e, TAG, AdminVerifyDoc.this, true, Thread.currentThread().getStackTrace()[2]);
         }
         return loc;
     }
@@ -146,6 +146,7 @@ public class AdminVerifyDoc extends AppCompatActivity {
             return;
         }
 
+        showProgressBar();
         CreateLog newCreateLog = new CreateLog(personId, location.getLatitude() + "," + location.getLongitude(), action_in_out, !TextUtils.isEmpty(binding.purpose.getText()) ? binding.purpose.getText().toString() : Constants.EMPTY_STRING);
         Log.e("Json", "" + new Gson().toJson(newCreateLog));
 

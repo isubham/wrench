@@ -49,15 +49,6 @@ public class GeneralUserViewQr extends AppCompatActivity {
     }
 
 
-//
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//
-//        binding.profilePic.setImageBitmap(CameraUtils.getBitmapFromBase64ImageString(LoginPersistance.GetProfilePic(this)));
-//        setBundleData();
-//    }
-
     private void setBundleData() {
         if (getIntent().getExtras() != null) {
 
@@ -74,7 +65,7 @@ public class GeneralUserViewQr extends AppCompatActivity {
                 formQrCode(userName);
                 binding.username.setText(userName);
             }
-            assert userType != Constants.USER_TYPE_GENERAL;
+            // assert userType != Constants.USER_TYPE_GENERAL;
 
             showHideSaveButton(userType);
         }
@@ -86,10 +77,10 @@ public class GeneralUserViewQr extends AppCompatActivity {
 
 
         if (userType == Constants.USER_TYPE_ADMIN || LoginPersistance.GetGeneralUserName(this) != null) {
-            binding.saveqr.setVisibility(View.INVISIBLE);
-            if (userType == Constants.USER_TYPE_ADMIN) {
-                binding.usernameCopyBt.setVisibility(View.INVISIBLE);
-            }
+            binding.saveqr.setVisibility(View.GONE);
+//            if (userType == Constants.USER_TYPE_ADMIN) {
+//                binding.usernameCopyBt.setVisibility(View.INVISIBLE);
+//            }
         }
 
     }
@@ -102,7 +93,7 @@ public class GeneralUserViewQr extends AppCompatActivity {
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         LoginPersistance.update(LoginPersistance.GetIGeneralUserName(GeneralUserViewQr.this), LoginPersistance.GetIGeneralUserToken(GeneralUserViewQr.this), LoginPersistance.GetIGeneralProfilePic(GeneralUserViewQr.this), LoginPersistance.GetIdFront(GeneralUserViewQr.this), LoginPersistance.GetIdBack(GeneralUserViewQr.this), GeneralUserViewQr.this);
-                        binding.saveqr.setVisibility(View.INVISIBLE);
+                        binding.saveqr.setVisibility(View.GONE);
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -115,7 +106,6 @@ public class GeneralUserViewQr extends AppCompatActivity {
     }
 
     private void formQrCode(String userName) {
-
         qrGenerator(userName);
     }
 

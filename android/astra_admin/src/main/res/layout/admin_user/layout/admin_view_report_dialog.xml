@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
+    android:id="@+id/rootLayout"
     tools:context="com.pitavya.astra.astra_admin.adminUser.AdminViewReportDialog">
 
     <RelativeLayout

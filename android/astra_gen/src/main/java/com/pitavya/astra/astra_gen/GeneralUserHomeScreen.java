@@ -85,11 +85,9 @@ public class GeneralUserHomeScreen extends AppCompatActivity {
     }
 
     public void RegisterUser(View view) {
-//        showProgressBar();
-        Intent i = new Intent(GeneralUserHomeScreen.this, CreateGeneralUser.class);
-        i.putExtra(Constants.USER_TYPE, Constants.USER_TYPE_GENERAL);
-        startActivity(i);
-//        hideProgressBar();
+        startActivity(new Intent(GeneralUserHomeScreen.this, CreateGeneralUser.class).putExtra(Constants.USER_TYPE, Constants.USER_TYPE_ADMIN)
+        );
+
     }
 
     private void toolbarSetup() {
