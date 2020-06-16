@@ -16,26 +16,36 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="@dimen/app_padding">
-
         <LinearLayout
             android:id="@+id/switch_container"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
             android:layout_marginEnd="@dimen/admin_home_switch_margin"
             android:layout_marginRight="@dimen/admin_home_switch_margin"
-            android:orientation="vertical"
-            android:padding="@dimen/admin_home_switch_padding">
+            android:orientation="horizontal"
+            android:padding="@dimen/admin_home_switch_padding"
+            android:gravity="end"
+            >
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="@string/admin_home_switch_label_in"
+                android:textSize="@dimen/admin_home_switch_label"
+                android:textStyle="bold" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/admin_home_switch"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:padding="@dimen/admin_home_switch_padding"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:gravity="center_vertical"
                 android:text="@string/admin_home_switch_label_out"
                 android:textSize="@dimen/admin_home_switch_label"
                 android:textStyle="bold" />

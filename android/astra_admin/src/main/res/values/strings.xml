@@ -90,7 +90,7 @@
     <string name="download_title">Astra</string>
     <string name="purpose">Purpose</string>
     <string name="search">Search</string>
-
+    <string name="admin_home_switch_label_in">IN</string>
 
 
 </resources>
