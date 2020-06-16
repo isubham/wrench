@@ -10,9 +10,17 @@ from sqlalchemy import func
 
 @routes.route('/person/create/', methods=['POST'])
 def create_people_by_admin():
+
     people = request.json
     # user = User(people["email"], people["password"], os.environ["ASTRA_CODE"])
     user = User(None, None, os.environ["ASTRA_CODE"])
+
+    created_by_user_id = -1
+
+    if request.environ.__contains__('HTTP_AUTHORIZATION'):
+        token = request.environ['HTTP_AUTHORIZATION']
+        if(token != 'Bearer null'):
+            created_by_user_id  = Utility.get_payload_from_jwt(token)["id"]
 
     person_found_by_aadhar = db.session.query(People).filter_by(aadhar_id=people["aadhar_id"]).first()
     if person_found_by_aadhar is not None:
@@ -29,7 +37,7 @@ def create_people_by_admin():
         return jsonify(Resources.data["error_existing_email"])
 
     people = People(user.id, people["name"], None, Utility.get_date(people["dob"]), people["profile_pic"],
-                    people["id_front"], people["id_back"], people["father_name"], people["username"], people["created_by"],
+                    people["id_front"], people["id_back"], people["father_name"], people["username"], created_by_user_id,
                     people['contact'], people['pincode'], people['address'], people['email'], people["aadhar_id"])
     try:
         db.session.add(people)
