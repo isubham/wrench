@@ -35,6 +35,10 @@ public class PermissionActivity {
                 && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
 
+    public static boolean checkReadPhoneStatePermissions(Activity context) {
+        return (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED);
+    }
+
     public static boolean requestStoragePermission(final Activity context) {
         final boolean[] granted = {false};
         Dexter.withActivity(context)
@@ -49,7 +53,7 @@ public class PermissionActivity {
                         }
                         if (report.isAnyPermissionPermanentlyDenied()) {
                             // show alert dialog navigating to Settings
-                            showSettingsDialog(context , "Storage");
+                            showSettingsDialog(context, "Storage");
                             granted[0] = false;
                         }
                     }
@@ -106,7 +110,7 @@ public class PermissionActivity {
                         }
                         if (report.isAnyPermissionPermanentlyDenied()) {
                             // show alert dialog navigating to Settings
-                            showSettingsDialog(context , "Location");
+                            showSettingsDialog(context, "Location");
                             granted[0] = false;
 
                         }
@@ -129,5 +133,43 @@ public class PermissionActivity {
         return granted[0];
     }
 
+
+    public static boolean readPhoneStatePermission(final Activity context) {
+
+        final boolean[] granted = {false};
+        Dexter.withActivity(context)
+                .withPermissions(
+                        Manifest.permission.READ_PHONE_STATE)
+                .withListener(new MultiplePermissionsListener() {
+                    @Override
+                    public void onPermissionsChecked(MultiplePermissionsReport report) {
+                        if (report.areAllPermissionsGranted()) {
+                            granted[0] = true;
+                        }
+                        if (report.isAnyPermissionPermanentlyDenied()) {
+                            // show alert dialog navigating to Settings
+                            showSettingsDialog(context, "Phone State");
+                            granted[0] = false;
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                }).
+                withErrorListener(new PermissionRequestErrorListener() {
+                    @Override
+                    public void onError(DexterError error) {
+                        Toast.makeText(context, "Error occurred , while acquiring permission .", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .onSameThread()
+                .check();
+
+        return granted[0];
+
+
+    }
 
 }

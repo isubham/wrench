@@ -10,7 +10,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -68,6 +67,9 @@ public class AdminViewReportDialog extends AppCompatActivity implements CustomDa
 
         if (!PermissionActivity.checkStoragePermissions(this))
             PermissionActivity.requestStoragePermission(this);
+
+        if (!PermissionActivity.checkReadPhoneStatePermissions(this))
+            PermissionActivity.readPhoneStatePermission(this);
 
         registerDownloadActions();
     }
@@ -239,21 +241,34 @@ public class AdminViewReportDialog extends AppCompatActivity implements CustomDa
     }
 
     private void startDownload(String startDate, String endDate) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            if (!NetStat.isNetworkConnected(this)) {
+
+        // checking Network Stat
+        //TODO Facing issue in switching on Mobile Data ,
+        // For now keeping that aside , WIFI would be switched ON .
+
+        if (!NetStat.isNetworkConnected(this)) {
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 new CustomSnackbar(this, "Offline !! Please connect to a network", "TURN ON", binding.rootLayout) {
                     @Override
                     public void onActionClick(View view) {
-                        NetStat.setMobileDataState(AdminViewReportDialog.this, true);
-                        Log.e(TAG + ":" + Thread.currentThread().getStackTrace()[2].getLineNumber(), "" + NetStat.getMobileDataState(AdminViewReportDialog.this));
+                        //  NetStat.setMobileDataState(AdminViewReportDialog.this, true);
+                        NetStat.switchWifiOn(AdminViewReportDialog.this);
+
                     }
                 }.showWithAction();
                 return;
+            } else {
+                new CustomSnackbar(this, "Offline !! Please connect to a network", "", binding.rootLayout) {
+                    @Override
+                    public void onActionClick(View view) {
+                    }
+                }.show();
+                return;
             }
-        } else {
-            Toast.makeText(this, "Offline !! Please connect to a network", Toast.LENGTH_SHORT).show();
         }
 
+        // INFO : If Data is on then we can do the processing
 
         String url = String.format(Endpoints.DOWNLOAD_REPORT, startDate, endDate);
         Uri uri = Uri.parse(url);
