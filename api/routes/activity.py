@@ -39,12 +39,12 @@ def view_activity(start_date, end_date):
 
     if os.path.exists(report_absolute_location):
         os.remove(report_absolute_location)
-    else:
-        parsed_start_date = get_date(start_date)
-        parsed_end_date   = get_date(end_date) + timedelta(days=1)
-        result = db.session.query(Activity).filter(Activity.when >= parsed_start_date, Activity.when < parsed_end_date , Activity.user_id==_user_id).all()
+    
+    parsed_start_date = get_date(start_date)
+    parsed_end_date   = get_date(end_date) + timedelta(days=1)
+    result = db.session.query(Activity).filter(Activity.when >= parsed_start_date, Activity.when < parsed_end_date , Activity.user_id==_user_id).all()
 
-        upsert_activities(result, start_date, end_date, report_absolute_location)
+    upsert_activities(result, start_date, end_date, report_absolute_location)
 
     return send_file(report_path, attachment_filename=report_file_namea)
 
