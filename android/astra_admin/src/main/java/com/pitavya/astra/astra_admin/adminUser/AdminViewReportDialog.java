@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.TextUtils;
@@ -21,7 +20,6 @@ import androidx.fragment.app.DialogFragment;
 import com.pitavya.astra.astra_admin.R;
 import com.pitavya.astra.astra_admin.databinding.AdminViewReportDialogBinding;
 import com.pitavya.astra.astra_common.tools.CustomDatePickerFragment;
-import com.pitavya.astra.astra_common.tools.CustomSnackbar;
 import com.pitavya.astra.astra_common.tools.DateUtils;
 import com.pitavya.astra.astra_common.tools.Endpoints;
 import com.pitavya.astra.astra_common.tools.Errors;
@@ -241,35 +239,13 @@ public class AdminViewReportDialog extends AppCompatActivity implements CustomDa
     }
 
     private void startDownload(String startDate, String endDate) {
-
         // checking Network Stat
-        //TODO Facing issue in switching on Mobile Data ,
-        // For now keeping that aside , WIFI would be switched ON .
-
         if (!NetStat.isNetworkConnected(this)) {
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                new CustomSnackbar(this, "Offline !! Please connect to a network", "TURN ON", binding.rootLayout) {
-                    @Override
-                    public void onActionClick(View view) {
-                        //  NetStat.setMobileDataState(AdminViewReportDialog.this, true);
-                        NetStat.switchWifiOn(AdminViewReportDialog.this);
-
-                    }
-                }.showWithAction();
-                return;
-            } else {
-                new CustomSnackbar(this, "Offline !! Please connect to a network", "", binding.rootLayout) {
-                    @Override
-                    public void onActionClick(View view) {
-                    }
-                }.show();
-                return;
-            }
+            NetStat.connectToANetwork(AdminViewReportDialog.this,binding.rootLayout);
+            return;
         }
 
         // INFO : If Data is on then we can do the processing
-
         String url = String.format(Endpoints.DOWNLOAD_REPORT, startDate, endDate);
         Uri uri = Uri.parse(url);
 
@@ -286,7 +262,7 @@ public class AdminViewReportDialog extends AppCompatActivity implements CustomDa
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
                 getString(R.string.download_template)
                         .concat(startDate)
-                        .concat("-")
+                        .concat("_")
                         .concat(endDate)
                         .concat(".xlsx"));
         request.setMimeType(getString(R.string.excel_mime_type));

@@ -9,6 +9,7 @@ import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.RequiresApi;
 
@@ -76,16 +77,38 @@ public class NetStat {
 
     }
 
-    public static boolean switchWifiOn(Context context) {
+    public static void switchWifiOn(Context context) {
+        try {
+            WifiManager wifi = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 
-        WifiManager wifi = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+            if (!wifi.isWifiEnabled()) {
+                wifi.setWifiEnabled(true);
 
-        if (!wifi.isWifiEnabled()) {
-            wifi.setWifiEnabled(true);
-            return true;
+            }
+        } catch (Exception e) {
+            Errors.createErrorLog(new Exception("Unable to swicth Wifi ON :" + e), TAG, context, true, Thread.currentThread().getStackTrace()[2]);
         }
-        return false;
     }
 
+    //TODO Facing issue in switching on Mobile Data ,
+    // For now keeping that aside , WIFI would be switched ON .
+    public static void connectToANetwork(final Context context, View rootLayout) {
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            new CustomSnackbar(context, "Offline !! Please connect to a network", "TURN ON", rootLayout) {
+                @Override
+                public void onActionClick(View view) {
+                    //  NetStat.setMobileDataState(AdminViewReportDialog.this, true);
+                    NetStat.switchWifiOn(context);
+
+                }
+            }.showWithAction();
+        } else {
+            new CustomSnackbar(context, "Offline !! Please connect to a network", "", rootLayout) {
+                @Override
+                public void onActionClick(View view) {
+                }
+            }.show();
+        }
+    }
 }
