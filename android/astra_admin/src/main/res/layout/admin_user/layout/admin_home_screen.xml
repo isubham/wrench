@@ -85,7 +85,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:orientation="horizontal"
-        android:padding="5dp"
+        android:padding="@dimen/material_layout_padding"
         android:weightSum="1">
 
         <com.google.android.material.textfield.TextInputEditText
