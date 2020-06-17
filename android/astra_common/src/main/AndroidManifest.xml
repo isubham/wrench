@@ -30,6 +30,9 @@
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
+    <!--    System services permission-->
+    <uses-permission android:name="android.permission.VIBRATE" />
+
 
     <uses-feature
         android:name="android.hardware.telephony"
@@ -49,15 +52,6 @@
 
         <activity android:name="com.pitavya.astra.astra_common.GeneralUserViewQr" />
 
-<!--        <receiver android:name="com.pitavya.astra.astra_common.recievers.NetworkChangeReciever" >-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"-->
-<!--                    tools:ignore="BatteryLife" />-->
-<!--                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>-->
-<!--                <action android:name="android.intent.action.ACTION_POWER_CONNECTED"/>-->
-<!--                &lt;!&ndash;                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />&ndash;&gt;-->
-<!--            </intent-filter>-->
-<!--        </receiver>-->
 
         <provider
             android:name="androidx.core.content.FileProvider"

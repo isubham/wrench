@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -19,6 +20,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.pitavya.astra.astra_admin.R;
 import com.pitavya.astra.astra_admin.databinding.AdminViewReportDialogBinding;
+import com.pitavya.astra.astra_common.receivers.NetworkChangeReceiver;
 import com.pitavya.astra.astra_common.tools.CustomDatePickerFragment;
 import com.pitavya.astra.astra_common.tools.DateUtils;
 import com.pitavya.astra.astra_common.tools.Endpoints;
@@ -33,6 +35,8 @@ import java.util.List;
 
 public class AdminViewReportDialog extends AppCompatActivity implements CustomDatePickerFragment.TheListener {
 
+    //recievers
+    NetworkChangeReceiver networkChangeReceiver = new NetworkChangeReceiver();
     BroadcastReceiver onComplete = new BroadcastReceiver() {
         public void onReceive(Context ctxt, Intent intent) {
             // TODO action on complete
@@ -129,6 +133,24 @@ public class AdminViewReportDialog extends AppCompatActivity implements CustomDa
         DialogFragment fragment = new CustomDatePickerFragment();
         fragment.show(getSupportFragmentManager(), "date picker");
     }
+//
+//    public boolean isWriteStoragePermissionGranted() {
+//        if (Build.VERSION.SDK_INT >= 23) {
+//            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+//                    == PackageManager.PERMISSION_GRANTED) {
+//                Log.v(TAG, "Permission is granted2");
+//                return true;
+//            } else {
+//
+//                Log.v(TAG, "Permission is revoked2");
+//                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
+//                return false;
+//            }
+//        } else { //permission is automatically granted on sdk<23 upon installation
+//            Log.v(TAG, "Permission is granted2");
+//            return true;
+//        }
+//    }
 
     public void selectFromDate(View view) {
         binding.errorHint.setVisibility(View.INVISIBLE);
@@ -171,24 +193,6 @@ public class AdminViewReportDialog extends AppCompatActivity implements CustomDa
 
         return dates;
     }
-//
-//    public boolean isWriteStoragePermissionGranted() {
-//        if (Build.VERSION.SDK_INT >= 23) {
-//            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-//                    == PackageManager.PERMISSION_GRANTED) {
-//                Log.v(TAG, "Permission is granted2");
-//                return true;
-//            } else {
-//
-//                Log.v(TAG, "Permission is revoked2");
-//                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
-//                return false;
-//            }
-//        } else { //permission is automatically granted on sdk<23 upon installation
-//            Log.v(TAG, "Permission is granted2");
-//            return true;
-//        }
-//    }
 
     public void downloadReport(View view) {
 
@@ -241,7 +245,7 @@ public class AdminViewReportDialog extends AppCompatActivity implements CustomDa
     private void startDownload(String startDate, String endDate) {
         // checking Network Stat
         if (!NetStat.isNetworkConnected(this)) {
-            NetStat.connectToANetwork(AdminViewReportDialog.this,binding.rootLayout);
+            NetStat.connectToANetwork(AdminViewReportDialog.this, binding.rootLayout);
             return;
         }
 
@@ -271,5 +275,23 @@ public class AdminViewReportDialog extends AppCompatActivity implements CustomDa
         Toast.makeText(this, "File downloading. Check Notification area", Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+//        EXTRA_NO_CONNECTIVITY
+        IntentFilter filter = new IntentFilter();
 
+        filter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);
+        filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+
+        filter.addCategory(Intent.CATEGORY_DEFAULT);
+        registerReceiver(networkChangeReceiver, filter);
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(networkChangeReceiver);
+    }
 }
