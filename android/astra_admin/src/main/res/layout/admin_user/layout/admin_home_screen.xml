@@ -74,7 +74,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:text="@string/or"
         android:textColor="@color/colorPrimaryDark"
         android:textStyle="bold" />
@@ -83,7 +83,7 @@
         android:id="@+id/bottomContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:orientation="horizontal"
         android:padding="@dimen/material_layout_padding"
         android:weightSum="1">
@@ -109,9 +109,10 @@
     </LinearLayout>
 
     <TextView
-        style="@style/baseWrapWidthElementWithSmallText"
-        android:layout_marginTop="50dp"
-        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center"
         android:onClick="registerNewUser"
         android:padding="@dimen/app_padding"
         android:text="@string/REGISTER_USER"
