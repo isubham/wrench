@@ -1,6 +1,5 @@
 package com.pitavya.astra.astra_admin.adminUser;
 
-import android.annotation.SuppressLint;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -92,19 +91,6 @@ public class AdminVerifyDoc extends AppCompatActivity {
         }
     }
 
-    @SuppressLint("MissingPermission")
-    private Location getLocation() {
-        Location loc = null;
-        try {
-            GpsTracker gps = new GpsTracker(AdminVerifyDoc.this);
-            loc = gps.getLocation();
-
-        } catch (Exception e) {
-            Errors.createErrorLog(e, TAG, AdminVerifyDoc.this, true, Thread.currentThread().getStackTrace()[2]);
-        }
-        return loc;
-    }
-
     private void findViewById() {
         progressBar = findViewById(R.id.progressBar);
 
@@ -140,9 +126,8 @@ public class AdminVerifyDoc extends AppCompatActivity {
             return;
 
         }
-        Location location = getLocation();
+        Location location = new GpsTracker(AdminVerifyDoc.this).getLocation();
         if (location == null) {
-            //Toast.makeText(this, "Location Error . Contact pitavya team .", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -193,7 +178,7 @@ public class AdminVerifyDoc extends AppCompatActivity {
 
             Volley.newRequestQueue(AdminVerifyDoc.this).add(createLogRequest);
         } catch (JsonSyntaxException e) {
-            Log.e("error", "json exception");
+            Errors.createErrorLog(e, TAG, AdminVerifyDoc.this, true, Thread.currentThread().getStackTrace()[2]);
         }
     }
 
@@ -201,6 +186,8 @@ public class AdminVerifyDoc extends AppCompatActivity {
 
         if (response.optString(Constants.CODE).equals(ResponseCode.CREATE_LOG_SUCCESS_CODE)) {
             Toast.makeText(AdminVerifyDoc.this, Constants.VERIFICATION_SUCCESSFUL, Toast.LENGTH_LONG).show();
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
         } else {
             Toast.makeText(this, Constants.TRY_AGAIN, Toast.LENGTH_LONG).show();
         }
@@ -209,6 +196,7 @@ public class AdminVerifyDoc extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 finish();
             }
         }, Constants.DELAYED_CLOSE_FOR_RESULT);
