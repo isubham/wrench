@@ -36,6 +36,7 @@ import com.pitavya.astra.astra_common.tools.Endpoints;
 import com.pitavya.astra.astra_common.tools.Errors;
 import com.pitavya.astra.astra_common.tools.LoginPersistance;
 import com.pitavya.astra.astra_common.tools.PermissionActivity;
+import com.pitavya.astra.astra_common.tools.ScreenshotPreventor;
 
 import org.json.JSONObject;
 
@@ -56,6 +57,7 @@ public class AdminHomeScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ScreenshotPreventor.preventScreenshot(AdminHomeScreen.this);
 
         binding = AdminHomeScreenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());

@@ -28,6 +28,7 @@ import com.pitavya.astra.astra_common.tools.Errors;
 import com.pitavya.astra.astra_common.tools.LoginPersistance;
 import com.pitavya.astra.astra_common.tools.NetStat;
 import com.pitavya.astra.astra_common.tools.PermissionActivity;
+import com.pitavya.astra.astra_common.tools.ScreenshotPreventor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +62,8 @@ public class AdminViewReportDialog extends AppCompatActivity implements CustomDa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ScreenshotPreventor.preventScreenshot(AdminViewReportDialog.this);
+
         binding = AdminViewReportDialogBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 

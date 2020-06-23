@@ -23,6 +23,7 @@ import com.pitavya.astra.astra_common.databinding.GeneralUserViewQrBinding;
 import com.pitavya.astra.astra_common.tools.CameraUtils;
 import com.pitavya.astra.astra_common.tools.Constants;
 import com.pitavya.astra.astra_common.tools.LoginPersistance;
+import com.pitavya.astra.astra_common.tools.ScreenshotPreventor;
 
 
 public class GeneralUserViewQr extends AppCompatActivity {
@@ -34,6 +35,8 @@ public class GeneralUserViewQr extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ScreenshotPreventor.preventScreenshot(GeneralUserViewQr.this);
         binding = GeneralUserViewQrBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         toolbarSetup();

@@ -34,6 +34,7 @@ import com.pitavya.astra.astra_common.tools.Headers;
 import com.pitavya.astra.astra_common.tools.LoginPersistance;
 import com.pitavya.astra.astra_common.tools.PermissionActivity;
 import com.pitavya.astra.astra_common.tools.ResponseCode;
+import com.pitavya.astra.astra_common.tools.ScreenshotPreventor;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -72,6 +73,7 @@ public class AdminVerifyDoc extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
+            ScreenshotPreventor.preventScreenshot(AdminVerifyDoc.this);
 
             binding = AdminVerifyDocBinding.inflate(getLayoutInflater());
             setContentView(binding.getRoot());

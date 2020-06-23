@@ -16,6 +16,7 @@ import com.pitavya.astra.astra_common.CreateGeneralUser;
 import com.pitavya.astra.astra_common.GeneralUserViewQr;
 import com.pitavya.astra.astra_common.tools.Constants;
 import com.pitavya.astra.astra_common.tools.LoginPersistance;
+import com.pitavya.astra.astra_common.tools.ScreenshotPreventor;
 
 public class GeneralUserHomeScreen extends AppCompatActivity {
 
@@ -24,6 +25,8 @@ public class GeneralUserHomeScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ScreenshotPreventor.preventScreenshot(GeneralUserHomeScreen.this);
+
         setContentView(R.layout.general_user_home_screen);
 
         findViewByIds();

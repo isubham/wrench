@@ -24,6 +24,7 @@ import com.pitavya.astra.astra_common.tools.Endpoints;
 import com.pitavya.astra.astra_common.tools.Errors;
 import com.pitavya.astra.astra_common.tools.Headers;
 import com.pitavya.astra.astra_common.tools.LoginPersistance;
+import com.pitavya.astra.astra_common.tools.ScreenshotPreventor;
 import com.pitavya.astra.astra_common.tools.StatefulButton;
 import com.pitavya.astra.astra_common.tools.Validators;
 
@@ -43,6 +44,7 @@ public class AdminSignIn extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ScreenshotPreventor.preventScreenshot(AdminSignIn.this);
 
         binding = AdminSignInBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
