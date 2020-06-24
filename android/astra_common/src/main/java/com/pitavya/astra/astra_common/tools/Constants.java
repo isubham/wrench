@@ -80,5 +80,6 @@ public class Constants {
     public static final String SUBJECT_FOR_BUG = "BugReported";
     public static final String BUG_DESCRIPTION_HERE_HELP_TEXT = "Describe the bug here";
     public static final String CONTACT_SUBJECT = "Regarding :";
+    public static final String GREET_TEAM = "Hi Team "+APP_DIRECTORY;
 
 }

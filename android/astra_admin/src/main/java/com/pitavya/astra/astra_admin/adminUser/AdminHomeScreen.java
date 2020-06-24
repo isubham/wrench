@@ -35,6 +35,7 @@ import com.pitavya.astra.astra_common.tools.ContactUs;
 import com.pitavya.astra.astra_common.tools.CustomSnackbar;
 import com.pitavya.astra.astra_common.tools.Endpoints;
 import com.pitavya.astra.astra_common.tools.Errors;
+import com.pitavya.astra.astra_common.tools.FileChooser;
 import com.pitavya.astra.astra_common.tools.LoginPersistance;
 import com.pitavya.astra.astra_common.tools.PermissionActivity;
 import com.pitavya.astra.astra_common.tools.ScreenshotPreventor;
@@ -114,25 +115,11 @@ public class AdminHomeScreen extends AppCompatActivity {
 
     private void contactUs() {
         ContactUs.contactUs(AdminHomeScreen.this);
-
     }
 
     private void sendBug() {
-
-        ContactUs.reportBug(AdminHomeScreen.this);
-
-//
-//        Intent sendIntent = new Intent();
-//        sendIntent.setAction(Intent.ACTION_SEND);
-//        sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
-//        sendIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"contact@pitavya.com","pitavya-dev@gmail.com"});
-//        sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Bug Reported");
-//        sendIntent.putExtra(Intent.EXTRA_CC, new String[]{"faizrocks9211@gmail.com", "subhamkumarchandrawansi@gmail.com", "coolmanishks@gmail.com", "sthakur1920@gmail.com"});
-//        sendIntent.setType("text/plain");
-//
-//        Intent shareIntent = Intent.createChooser(sendIntent, null);
-//        startActivity(shareIntent);
-
+        // ContactUs.reportBug(AdminHomeScreen.this);
+        FileChooser.chooseAndShareBugFile(AdminHomeScreen.this, TAG);
     }
 
     @Override
