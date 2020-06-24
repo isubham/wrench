@@ -31,6 +31,7 @@ import com.pitavya.astra.astra_common.CreateGeneralUser;
 import com.pitavya.astra.astra_common.model.GeneralUser;
 import com.pitavya.astra.astra_common.tools.ApplicationController;
 import com.pitavya.astra.astra_common.tools.Constants;
+import com.pitavya.astra.astra_common.tools.ContactUs;
 import com.pitavya.astra.astra_common.tools.CustomSnackbar;
 import com.pitavya.astra.astra_common.tools.Endpoints;
 import com.pitavya.astra.astra_common.tools.Errors;
@@ -97,9 +98,40 @@ public class AdminHomeScreen extends AppCompatActivity {
                 startActivity(new Intent(this, AdminViewReportDialog.class));
                 return true;
 
+            case R.id.contactUs:
+                contactUs();
+                return true;
+
+            case R.id.reportBug:
+                sendBug();
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
+
+    }
+
+    private void contactUs() {
+        ContactUs.contactUs(AdminHomeScreen.this);
+
+    }
+
+    private void sendBug() {
+
+        ContactUs.reportBug(AdminHomeScreen.this);
+
+//
+//        Intent sendIntent = new Intent();
+//        sendIntent.setAction(Intent.ACTION_SEND);
+//        sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
+//        sendIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"contact@pitavya.com","pitavya-dev@gmail.com"});
+//        sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Bug Reported");
+//        sendIntent.putExtra(Intent.EXTRA_CC, new String[]{"faizrocks9211@gmail.com", "subhamkumarchandrawansi@gmail.com", "coolmanishks@gmail.com", "sthakur1920@gmail.com"});
+//        sendIntent.setType("text/plain");
+//
+//        Intent shareIntent = Intent.createChooser(sendIntent, null);
+//        startActivity(shareIntent);
 
     }
 

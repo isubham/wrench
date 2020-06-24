@@ -13,5 +13,16 @@
         android:id="@+id/logout"
         android:title="@string/LOGOUT"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/contactUs"
+        android:title="Contact Us"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/reportBug"
+        android:title="Report Bug"
+        app:showAsAction="never" />
+
+
 </menu>
 
