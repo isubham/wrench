@@ -268,7 +268,7 @@ public class AdminHomeScreen extends AppCompatActivity {
                 .putExtra(Constants.USER_NAME, userName)
                 .putExtra(Constants.NAME, name)
                 .putExtra(Constants.ID, userId)
-                .putExtra(Constants.ACTION_IN_OUT, binding.adminHomeSwitch.isChecked() ? Constants.ACTION_IN : Constants.ACTION_OUT)
+                .putExtra(Constants.ACTION_IN_OUT, binding.adminHomeSwitch.isChecked() ? Constants.ACTION_OUT : Constants.ACTION_IN)
 
         );
     }
