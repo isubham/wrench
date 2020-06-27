@@ -18,7 +18,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true">
+            android:layout_above="@+id/genera_uset_bt_search_user"
+            android:layout_marginBottom="68dp">
 
 
             <com.google.android.material.textfield.TextInputLayout
@@ -73,15 +74,15 @@
             android:id="@+id/genera_uset_bt_search_user"
             style="@style/baseFulWidthElementWithSmallText"
             android:layout_alignParentBottom="true"
+            android:layout_marginBottom="99dp"
             android:background="@color/colorPrimaryDark"
             android:drawableTint="@color/colorWhite"
             android:onClick="searchUser"
             android:padding="5dp"
             android:text="@string/search"
             android:textColor="@color/colorOffWhite"
-            android:textSize="20sp"
 
-            />
+            android:textSize="20sp" />
     </RelativeLayout>
 
 </LinearLayout>
