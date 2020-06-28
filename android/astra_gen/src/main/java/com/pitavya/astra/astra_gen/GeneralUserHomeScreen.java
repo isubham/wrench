@@ -54,21 +54,17 @@ public class GeneralUserHomeScreen extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.myqr:
-                if (LoginPersistance.GetGeneralUserName(this) != null) {
-                    startActivity(new Intent(this, GeneralUserViewQr.class).putExtra(Constants.USER_TYPE, Constants.USER_TYPE_ADMIN));
+                if(LoginPersistance.GetGeneralUserName(this)!=null) {
+                    startActivity(new Intent(this, GeneralUserViewQr.class).putExtra(Constants.USER_NAME, LoginPersistance.GetGeneralUserName(this)).putExtra(Constants.USER_TYPE, Constants.USER_TYPE_ADMIN));
                     return true;
-                } else {
+                }
+                else{
                     Toast.makeText(this, "Please Save your QR Code by searching through existing user", Toast.LENGTH_LONG).show();
                     return true;
                 }
             case R.id.removemyqr:
-                LoginPersistance.update(null, null, null, null, null, this);
+                LoginPersistance.update(null,null,null,null,null,this);
                 Toast.makeText(this, "MyQR sucessfully removed", Toast.LENGTH_LONG).show();
-
-//                sendStatusForLogout();
-//                Intent toSignInWithoutHistory = new Intent(this, AdminSignIn.class);
-//                startActivity(toSignInWithoutHistory);
-//                finishAffinity();
                 item.setVisible(false);
 //                this.onCreate(null);
                 return true;

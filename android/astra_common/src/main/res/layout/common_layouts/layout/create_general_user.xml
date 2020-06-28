@@ -222,7 +222,7 @@
                     android:contentDescription="@string/front_doc"
                     android:onClick="frontDocScan"
                     android:padding="@dimen/create_gen_user_doc_holder_padding"
-                    android:src="@mipmap/id_icon" />
+                    android:src="@mipmap/id_front_icon" />
 
                 <ImageView
                     android:id="@+id/back_doc"
@@ -234,7 +234,7 @@
                     android:contentDescription="@string/back_doc"
                     android:onClick="backDocScan"
                     android:padding="@dimen/create_gen_user_doc_holder_padding"
-                    android:src="@mipmap/id_icon" />
+                    android:src="@mipmap/id_back_icon" />
 
             </LinearLayout>
 

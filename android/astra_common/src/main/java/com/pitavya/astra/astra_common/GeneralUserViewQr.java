@@ -40,15 +40,19 @@ public class GeneralUserViewQr extends AppCompatActivity {
         binding = GeneralUserViewQrBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         toolbarSetup();
-        if (LoginPersistance.GetProfilePic(this) != null) {
+        setProfilepic();
+        setBundleData();
+
+    }
+    private void setProfilepic(){
+        if(LoginPersistance.GetProfilePic(this)!=null && LoginPersistance.GetGeneralUserName(this).equals(userName)) {
             binding.profilePic.setImageBitmap(CameraUtils.getBitmapFromBase64ImageString(LoginPersistance.GetProfilePic(this)));
 
-        } else {
+        }
+        else{
             binding.profilePic.setImageBitmap(CameraUtils.getBitmapFromBase64ImageString(LoginPersistance.GetIGeneralProfilePic(this)));
 
         }
-        setBundleData();
-
     }
 
 
@@ -60,15 +64,16 @@ public class GeneralUserViewQr extends AppCompatActivity {
 
 //            formQrCode(userName);
 
-            if (LoginPersistance.GetGeneralUserName(this) != null) {
+            if(LoginPersistance.GetGeneralUserName(this)!=null && LoginPersistance.GetGeneralUserName(this).equals(userName)) {
                 formQrCode(LoginPersistance.GetGeneralUserName(this));
                 binding.username.setText(LoginPersistance.GetGeneralUserName(this));
 
-            } else {
+            }
+            else{
                 formQrCode(userName);
                 binding.username.setText(userName);
             }
-            // assert userType != Constants.USER_TYPE_GENERAL;
+            assert userType != Constants.USER_TYPE_GENERAL;
 
             showHideSaveButton(userType);
         }
@@ -79,24 +84,24 @@ public class GeneralUserViewQr extends AppCompatActivity {
     private void showHideSaveButton(int userType) {
 
 
-        if (userType == Constants.USER_TYPE_ADMIN || LoginPersistance.GetGeneralUserName(this) != null) {
-            binding.saveqr.setVisibility(View.GONE);
-//            if (userType == Constants.USER_TYPE_ADMIN) {
-//                binding.usernameCopyBt.setVisibility(View.INVISIBLE);
-//            }
+        if (userType==Constants.USER_TYPE_ADMIN || LoginPersistance.GetGeneralUserName(this)!=null){
+            binding.saveqr.setVisibility(View.INVISIBLE);
+            if (userType==Constants.USER_TYPE_ADMIN) {
+                binding.usernameCopyBt.setVisibility(View.INVISIBLE);
+            }
         }
 
     }
 
-    public void saveQR(View v) {
+    public void saveQR(View v){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Are you sure this is your QR You want to SAVE?")
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        LoginPersistance.update(LoginPersistance.GetIGeneralUserName(GeneralUserViewQr.this), LoginPersistance.GetIGeneralUserToken(GeneralUserViewQr.this), LoginPersistance.GetIGeneralProfilePic(GeneralUserViewQr.this), LoginPersistance.GetIdFront(GeneralUserViewQr.this), LoginPersistance.GetIdBack(GeneralUserViewQr.this), GeneralUserViewQr.this);
-                        binding.saveqr.setVisibility(View.GONE);
+                        LoginPersistance.update(LoginPersistance.GetIGeneralUserName(GeneralUserViewQr.this),LoginPersistance.GetIGeneralUserToken(GeneralUserViewQr.this),LoginPersistance.GetIGeneralProfilePic(GeneralUserViewQr.this),LoginPersistance.GetIdFront(GeneralUserViewQr.this),LoginPersistance.GetIdBack(GeneralUserViewQr.this),GeneralUserViewQr.this);
+                        binding.saveqr.setVisibility(View.INVISIBLE);
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
