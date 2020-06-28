@@ -40,21 +40,20 @@ public class GeneralUserViewQr extends AppCompatActivity {
         binding = GeneralUserViewQrBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         toolbarSetup();
-        setProfilepic();
+        //setProfilepic();
         setBundleData();
 
     }
-    private void setProfilepic(){
-        if(LoginPersistance.GetProfilePic(this)!=null && LoginPersistance.GetGeneralUserName(this).equals(userName)) {
+
+    private void setProfilepic() {
+        if (LoginPersistance.GetProfilePic(this) != null && LoginPersistance.GetGeneralUserName(this).equals(userName)) {
             binding.profilePic.setImageBitmap(CameraUtils.getBitmapFromBase64ImageString(LoginPersistance.GetProfilePic(this)));
 
-        }
-        else{
+        } else {
             binding.profilePic.setImageBitmap(CameraUtils.getBitmapFromBase64ImageString(LoginPersistance.GetIGeneralProfilePic(this)));
 
         }
     }
-
 
     private void setBundleData() {
         if (getIntent().getExtras() != null) {
@@ -62,45 +61,52 @@ public class GeneralUserViewQr extends AppCompatActivity {
             String userName = getIntent().getExtras().getString(Constants.USER_NAME);
             int userType = getIntent().getExtras().getInt(Constants.USER_TYPE);
 
-//            formQrCode(userName);
+            if (LoginPersistance.GetIGeneralUserName(this) != null && LoginPersistance.GetIGeneralUserName(this).equals(userName)) {
+                formQrCode(LoginPersistance.GetIGeneralUserName(this));
+                binding.username.setText(LoginPersistance.GetIGeneralUserName(this));
+                binding.profilePic.setImageBitmap(CameraUtils.getBitmapFromBase64ImageString(LoginPersistance.GetIGeneralProfilePic(this)));
 
-            if(LoginPersistance.GetGeneralUserName(this)!=null && LoginPersistance.GetGeneralUserName(this).equals(userName)) {
-                formQrCode(LoginPersistance.GetGeneralUserName(this));
-                binding.username.setText(LoginPersistance.GetGeneralUserName(this));
-
-            }
-            else{
-                formQrCode(userName);
+            } else {
+                binding.profilePic.setImageBitmap(CameraUtils.getBitmapFromBase64ImageString(LoginPersistance.GetProfilePic(this)));
                 binding.username.setText(userName);
-            }
-            assert userType != Constants.USER_TYPE_GENERAL;
+                formQrCode(userName);
 
+            }
             showHideSaveButton(userType);
         }
 
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        LoginPersistance.Iupdate(null, null, null, null, null, GeneralUserViewQr.this);
+    }
 
     private void showHideSaveButton(int userType) {
 
 
-        if (userType==Constants.USER_TYPE_ADMIN || LoginPersistance.GetGeneralUserName(this)!=null){
+        if (userType == Constants.USER_TYPE_ADMIN || LoginPersistance.GetGeneralUserName(this) != null) {
             binding.saveqr.setVisibility(View.INVISIBLE);
-            if (userType==Constants.USER_TYPE_ADMIN) {
+            if (userType == Constants.USER_TYPE_ADMIN) {
                 binding.usernameCopyBt.setVisibility(View.INVISIBLE);
             }
         }
 
     }
 
-    public void saveQR(View v){
+    public void saveQR(View v) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Are you sure this is your QR You want to SAVE?")
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        LoginPersistance.update(LoginPersistance.GetIGeneralUserName(GeneralUserViewQr.this),LoginPersistance.GetIGeneralUserToken(GeneralUserViewQr.this),LoginPersistance.GetIGeneralProfilePic(GeneralUserViewQr.this),LoginPersistance.GetIdFront(GeneralUserViewQr.this),LoginPersistance.GetIdBack(GeneralUserViewQr.this),GeneralUserViewQr.this);
+                        LoginPersistance.update(LoginPersistance.GetIGeneralUserName(GeneralUserViewQr.this),
+                                LoginPersistance.GetIGeneralUserToken(GeneralUserViewQr.this), LoginPersistance.GetIGeneralProfilePic(GeneralUserViewQr.this),
+                                LoginPersistance.GetIIdFront(GeneralUserViewQr.this), LoginPersistance.GetIIdBack(GeneralUserViewQr.this),
+                                GeneralUserViewQr.this);
+                      //  LoginPersistance.Iupdate(null, null, null, null, null, GeneralUserViewQr.this);
                         binding.saveqr.setVisibility(View.INVISIBLE);
                     }
                 })

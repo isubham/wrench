@@ -19,7 +19,6 @@
             android:layout_width="@dimen/view_profile_pic_general_user"
             android:layout_height="@dimen/view_profile_pic_general_user"
             android:layout_centerHorizontal="true"
-            android:onClick="getUserPic"
             android:src="@mipmap/user"
             app:civ_border_color="@color/colorHint"
             app:civ_border_width="0.75dp" />

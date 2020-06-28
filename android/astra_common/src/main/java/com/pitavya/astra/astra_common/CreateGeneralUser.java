@@ -648,7 +648,7 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
             public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<>();
                 headers.put(Headers.CONTENT_TYPE, Headers.APPLICATION_JSON);
-                headers.put(Headers.AUTHORIZATION, "Basic " + tokenBasedOnUserType);
+                headers.put(Headers.AUTHORIZATION, userType!=Constants.USER_TYPE_GENERAL ? "Basic " + tokenBasedOnUserType : "Bearer null");
                 return headers;
             }
         };
@@ -667,7 +667,7 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
 
         if (!response.optString(Constants.TOKEN).equals(Constants.EMPTY_STRING)) {
 
-            LoginPersistance.update(generalUser.getUsername(), generalUser.getToken(), generalUser.getProfile_pic(), generalUser.getId_front(), generalUser.getId_back(), this);
+            LoginPersistance.Iupdate(generalUser.getUsername(), generalUser.getToken(), generalUser.getProfile_pic(), generalUser.getId_front(), generalUser.getId_back(), this);
             startActivity(new Intent(CreateGeneralUser.this, GeneralUserViewQr.class)
                     .putExtra(Constants.USER_NAME, String.valueOf(binding.userName.getText())).putExtra(Constants.USER_TYPE, userType));
             finish();
