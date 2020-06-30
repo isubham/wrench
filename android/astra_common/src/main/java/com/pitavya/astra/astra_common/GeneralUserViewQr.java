@@ -5,11 +5,13 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -87,9 +89,9 @@ public class GeneralUserViewQr extends AppCompatActivity {
 
 
         if (userType == Constants.USER_TYPE_ADMIN || LoginPersistance.GetGeneralUserName(this) != null) {
-            binding.saveqr.setVisibility(View.INVISIBLE);
+            binding.saveqr.setVisibility(View.GONE);
             if (userType == Constants.USER_TYPE_ADMIN) {
-                binding.usernameCopyBt.setVisibility(View.INVISIBLE);
+                binding.usernameCopyBt.setVisibility(View.VISIBLE);
             }
         }
 
@@ -98,7 +100,7 @@ public class GeneralUserViewQr extends AppCompatActivity {
     public void saveQR(View v) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Are you sure this is your QR You want to SAVE?")
+        builder.setMessage("Is it your QR. Save It ?")
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
@@ -107,7 +109,7 @@ public class GeneralUserViewQr extends AppCompatActivity {
                                 LoginPersistance.GetIIdFront(GeneralUserViewQr.this), LoginPersistance.GetIIdBack(GeneralUserViewQr.this),
                                 GeneralUserViewQr.this);
                       //  LoginPersistance.Iupdate(null, null, null, null, null, GeneralUserViewQr.this);
-                        binding.saveqr.setVisibility(View.INVISIBLE);
+                        binding.saveqr.setVisibility(View.GONE);
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -146,9 +148,11 @@ public class GeneralUserViewQr extends AppCompatActivity {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void copyText(View v) {
         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("TextView", binding.username.getText().toString());
+        binding.username.setTextColor(getColor(R.color.colorPrimaryDark));
         clipboard.setPrimaryClip(clip);
         Toast.makeText(this, "Copied username: " + binding.username.getText().toString(), Toast.LENGTH_SHORT).show();
     }

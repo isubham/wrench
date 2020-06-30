@@ -15,12 +15,15 @@ import androidx.appcompat.widget.Toolbar;
 import com.pitavya.astra.astra_common.CreateGeneralUser;
 import com.pitavya.astra.astra_common.GeneralUserViewQr;
 import com.pitavya.astra.astra_common.tools.Constants;
+import com.pitavya.astra.astra_common.tools.ContactUs;
+import com.pitavya.astra.astra_common.tools.FileChooser;
 import com.pitavya.astra.astra_common.tools.LoginPersistance;
 import com.pitavya.astra.astra_common.tools.ScreenshotPreventor;
 
 public class GeneralUserHomeScreen extends AppCompatActivity {
 
     private ProgressBar progressBar;
+    private String TAG = GeneralUserHomeScreen.class.getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,15 +62,25 @@ public class GeneralUserHomeScreen extends AppCompatActivity {
                             LoginPersistance.GetGeneralUserName(this)).putExtra(Constants.USER_TYPE, Constants.USER_TYPE_ADMIN));
                     return true;
                 } else {
-                    Toast.makeText(this, "Please Save your QR Code by searching through existing user", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Please save your QR code by searching through existing user", Toast.LENGTH_LONG).show();
                     return true;
                 }
             case R.id.removemyqr:
                 LoginPersistance.update(null, null, null, null, null, this);
-                Toast.makeText(this, "MyQR sucessfully removed", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Saved QR removed successfully", Toast.LENGTH_LONG).show();
                 item.setVisible(false);
 //                this.onCreate(null);
                 return true;
+
+            case R.id.contactUsMenu:
+                ContactUs.contactUs(GeneralUserHomeScreen.this);
+                return true;
+
+            case R.id.reportBugMenu:
+                // ContactUs.reportBug(AdminHomeScreen.this);
+                FileChooser.chooseAndShareBugFile(GeneralUserHomeScreen.this, TAG);
+                return true;
+
 
             default:
                 return super.onOptionsItemSelected(item);

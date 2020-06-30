@@ -6,9 +6,9 @@
     <application
         android:name="com.pitavya.astra.astra_common.tools.ApplicationController"
         android:allowBackup="true"
-        android:icon="@mipmap/app_icon"
+        android:icon="@mipmap/astragenlogo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/app_icon"
+        android:roundIcon="@mipmap/astragenlogo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 

@@ -100,26 +100,18 @@ public class AdminHomeScreen extends AppCompatActivity {
                 return true;
 
             case R.id.contactUs:
-                contactUs();
+                ContactUs.contactUs(AdminHomeScreen.this);
                 return true;
 
             case R.id.reportBug:
-                sendBug();
+                // ContactUs.reportBug(AdminHomeScreen.this);
+                FileChooser.chooseAndShareBugFile(AdminHomeScreen.this, TAG);
                 return true;
 
             default:
                 return super.onOptionsItemSelected(item);
         }
 
-    }
-
-    private void contactUs() {
-        ContactUs.contactUs(AdminHomeScreen.this);
-    }
-
-    private void sendBug() {
-        // ContactUs.reportBug(AdminHomeScreen.this);
-        FileChooser.chooseAndShareBugFile(AdminHomeScreen.this, TAG);
     }
 
     @Override

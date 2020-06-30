@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:padding="@dimen/app_padding">
+        android:padding="@dimen/material_layout_padding">
 
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/profilePic"
@@ -28,7 +28,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/profilePic"
+            android:layout_alignBaseline="@+id/username_copy_bt"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="6dp"
             android:text="Username"
             android:textSize="@dimen/text_heading_two" />
 
@@ -37,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/profilePic"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="5dp"
             android:layout_toEndOf="@+id/username"
             android:layout_toRightOf="@+id/username"
             android:onClick="copyText"
@@ -45,15 +47,15 @@
 
         <ImageView
             android:id="@+id/qr_code"
-            android:layout_width="350dp"
+            android:layout_width="match_parent"
             android:layout_height="350dp"
-            android:layout_below="@+id/username"
+            android:layout_below="@+id/username_copy_bt"
             android:layout_centerHorizontal="true"
             android:src="@drawable/qr" />
 
         <Button
             android:id="@+id/saveqr"
-            style="@style/baseFulWidthElement"
+            style="@style/materialButton"
             android:layout_alignParentBottom="true"
             android:background="@color/colorPrimaryDark"
             android:onClick="saveQR"

@@ -3,7 +3,7 @@
     <!--Common Attributes -->
     <dimen name="basic_button_elevation">20dp</dimen>
     <dimen name="text_heading_one">40sp</dimen>
-    <dimen name="text_heading_two">25dp</dimen>
+    <dimen name="text_heading_two">25sp</dimen>
     <dimen name="text_heading_three">20dp</dimen>
     <dimen name="button_heading">30sp</dimen>
     <dimen name="app_padding">10dp</dimen>
@@ -34,7 +34,7 @@
     <dimen name="create_gen_user_doc_holder_height">130dp</dimen>
     <dimen name="app_padding_create_user">16dp</dimen>
     <dimen name="create_general_user_profile_pic_length">60dp</dimen>
-    <dimen name="create_general_user_textView">100dp</dimen>
+    <dimen name="create_general_user_textView">200dp</dimen>
 
     <!--general user homepage-->
     <dimen name="padding_userhomepage">2dp</dimen>

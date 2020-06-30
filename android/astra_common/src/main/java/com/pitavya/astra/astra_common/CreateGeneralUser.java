@@ -612,7 +612,7 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
         boolean emailValid = validateEmail();
 
         boolean profilePicValid = Validators.validatePics(
-                bitmap_profile_pic, binding.createGeneralUserProfilePicErrrorMessage, "Pic Cannot be empty");
+                bitmap_profile_pic, binding.createGeneralUserProfilePicErrrorMessage, "Profile pic cannot be empty");
 
 
         boolean docBackValid = Validators.validatePics(

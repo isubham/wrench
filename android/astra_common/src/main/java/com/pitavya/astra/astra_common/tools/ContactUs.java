@@ -7,7 +7,7 @@ import android.net.Uri;
 public class ContactUs {
 
     public static final String greetTeam = Constants.GREET_TEAM;
-    private static String[] toList = new String[]{"contact@pitavya.com", "pitavya-dev@gmail.com"};
+    private static String[] toList = new String[]{"contact@pitavya.com"};
     private static String[] ccList = new String[]{"faizrocks9211@gmail.com", "subhamkumarchandrawansi@gmail.com", "coolmanishks@gmail.com", "sthakur1920@gmail.com"};
     private static String[] bccList = new String[]{};
     private static String bugSubject = Constants.SUBJECT_FOR_BUG;
@@ -21,7 +21,7 @@ public class ContactUs {
         shareBugIntent.putExtra(Intent.EXTRA_TEXT, bugDescriptionHere);
         shareBugIntent.putExtra(Intent.EXTRA_EMAIL, toList);
         shareBugIntent.putExtra(Intent.EXTRA_SUBJECT, bugSubject);
-        shareBugIntent.putExtra(Intent.EXTRA_CC, ccList);
+        //shareBugIntent.putExtra(Intent.EXTRA_CC, ccList);
         shareBugIntent.setType("text/html");
         shareBugIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
         context.startActivity(Intent.createChooser(shareBugIntent, "Pitavya : Sharing With Team Astra"));
@@ -35,7 +35,7 @@ public class ContactUs {
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_EMAIL, toList);
         sendIntent.putExtra(Intent.EXTRA_SUBJECT, contactSubject);
-        sendIntent.putExtra(Intent.EXTRA_CC, ccList);
+        //sendIntent.putExtra(Intent.EXTRA_CC, ccList);
         sendIntent.putExtra(Intent.EXTRA_TEXT, greetTeam+",");
         sendIntent.setType("text/plain");
 
