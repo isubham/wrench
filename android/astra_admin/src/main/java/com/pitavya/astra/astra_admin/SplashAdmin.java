@@ -41,8 +41,6 @@ public class SplashAdmin extends AppCompatActivity {
     }
 
     private void manageTheRoute() {
-
-
         startActivity(new Intent(SplashAdmin.this, AdminSignIn.class));
         finish();
 
