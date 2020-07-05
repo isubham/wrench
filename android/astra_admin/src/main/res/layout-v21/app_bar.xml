@@ -5,7 +5,6 @@
     android:layout_height="?attr/actionBarSize"
     android:background="@color/appbarBgColor"
     android:elevation="2dp"
-    app:logo="@mipmap/app_logo"
     app:popupTheme="@style/MyCustomPopupTheme"
     app:theme="@style/MyCustomToolbarTheme"
     xmlns:android="http://schemas.android.com/apk/res/android"

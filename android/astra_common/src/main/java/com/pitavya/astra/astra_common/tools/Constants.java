@@ -81,5 +81,12 @@ public class Constants {
     public static final String BUG_DESCRIPTION_HERE_HELP_TEXT = "Describe the bug here";
     public static final String CONTACT_SUBJECT = "Regarding :";
     public static final String GREET_TEAM = "Hi Team "+APP_DIRECTORY;
+    public static final String RENEW_LICENSE_STATEMENT = "Please renew my license against discontinued services." ;
+
+    //POLICY
+    public static final String POLICY_TYPE = "policy_type";
+    public static final int POLICY_EULA = 1;
+    public static final int POLICY_PP = 2;
+
 
 }

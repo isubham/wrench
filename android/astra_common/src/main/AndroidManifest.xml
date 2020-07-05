@@ -36,6 +36,8 @@
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".FragmentContainerForPolicies"
+            android:theme="@style/ActivityDialog"></activity>
         <activity
             android:name=".CreateGeneralUser"
             android:screenOrientation="portrait"

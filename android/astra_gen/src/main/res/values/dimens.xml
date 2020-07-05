@@ -2,7 +2,7 @@
 <resources>
     <!--Common Attributes -->
     <dimen name="basic_button_elevation">20dp</dimen>
-    <dimen name="text_heading_one">40sp</dimen>
+    <dimen name="text_heading_one">45sp</dimen>
     <dimen name="text_heading_two">25dp</dimen>
     <dimen name="text_heading_three">20dp</dimen>
     <dimen name="button_heading">30sp</dimen>

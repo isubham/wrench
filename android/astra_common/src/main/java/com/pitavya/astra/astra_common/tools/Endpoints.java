@@ -12,7 +12,7 @@ public class Endpoints {
     public static final String SEARCH_BY_USER_NAME = SERVER_URL + "person/username/";
     public static final String SEARCH_EXISTING_USER = SERVER_URL + "person/fuzzy/";
     public static final String DOWNLOAD_REPORT = SERVER_URL + "activity/%1$s/%2$s/";
-
+    public static final String LICENSE_VALIDITY_CHECK = SERVER_URL + "license/validate/";
 
 
 }

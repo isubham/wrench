@@ -26,7 +26,7 @@ public class FileChooser {
             return;
         Uri fileUri = FileProvider.getUriForFile(context, context.getPackageName() + ".provider", logFile);
        // created the fileUri to be shared and share it using below static method
-        ContactUs.reportBug(context, fileUri);
+        SendMail.toReportBug(context, fileUri);
     }
 
 }

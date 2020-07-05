@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -15,8 +16,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.pitavya.astra.astra_admin.R;
 import com.pitavya.astra.astra_admin.databinding.AdminCreateAccountBinding;
 import com.pitavya.astra.astra_common.CreateGeneralUser;
+import com.pitavya.astra.astra_common.EulaAgreement;
+import com.pitavya.astra.astra_common.FragmentContainerForPolicies;
+import com.pitavya.astra.astra_common.PrivacyPolicy;
+import com.pitavya.astra.astra_common.databinding.EulaAgreementBinding;
 import com.pitavya.astra.astra_common.model.ErrorResponse;
 import com.pitavya.astra.astra_common.model.User;
 import com.pitavya.astra.astra_common.tools.Constants;
@@ -269,4 +275,12 @@ public class AdminCreateAccount extends AppCompatActivity {
         startActivity(new Intent(AdminCreateAccount.this, AdminHomeScreen.class));
     }
 
+    public void openEula(View view) {
+        startActivity(new Intent(this, FragmentContainerForPolicies.class).putExtra(Constants.POLICY_TYPE, Constants.POLICY_EULA));
+    }
+
+    public void openPrivacyPolicies(View view) {
+        startActivity(new Intent(this,FragmentContainerForPolicies.class).putExtra(Constants.POLICY_TYPE, Constants.POLICY_PP));
+    }
 }
+

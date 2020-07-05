@@ -4,16 +4,21 @@
     android:id="@+id/admin_sign_in"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:orientation="vertical"
     android:padding="@dimen/material_layout_padding"
     tools:context="com.pitavya.astra.astra_admin.adminUser.AdminSignIn">
 
-    <ImageView
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="@dimen/material_element_margin"
-        android:src="@mipmap/app_logo" />
+
+    <TextView
+        android:id="@+id/label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:padding="@dimen/material_layout_padding"
+        android:text="@string/app_name"
+        android:textColor="@color/colorAccent"
+        android:textSize="45sp" />
 
     <!--    email-->
     <com.google.android.material.textfield.TextInputLayout

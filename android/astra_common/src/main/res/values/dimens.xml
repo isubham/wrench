@@ -2,7 +2,7 @@
 <resources>
     <!--Common Attributes -->
     <dimen name="basic_button_elevation">20dp</dimen>
-    <dimen name="text_heading_one">40sp</dimen>
+    <dimen name="text_heading_one">45sp</dimen>
     <dimen name="text_heading_two">25sp</dimen>
     <dimen name="text_heading_three">20dp</dimen>
     <dimen name="button_heading">30sp</dimen>
@@ -49,6 +49,7 @@
     <!--general user view qr-->
     <dimen name="view_profile_pic_general_user">140dp</dimen>
     <dimen name="general_user_search_component_padding">5dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 
 
 </resources>

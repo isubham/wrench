@@ -9,33 +9,47 @@ import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.play.core.install.model.ActivityResult;
 import com.pitavya.astra.astra_common.CreateGeneralUser;
 import com.pitavya.astra.astra_common.GeneralUserViewQr;
 import com.pitavya.astra.astra_common.tools.Constants;
-import com.pitavya.astra.astra_common.tools.ContactUs;
+import com.pitavya.astra.astra_common.tools.SendMail;
+import com.pitavya.astra.astra_common.tools.CustomSnackbar;
 import com.pitavya.astra.astra_common.tools.FileChooser;
 import com.pitavya.astra.astra_common.tools.LoginPersistance;
 import com.pitavya.astra.astra_common.tools.ScreenshotPreventor;
+import com.pitavya.astra.astra_gen.databinding.GeneralUserHomeScreenBinding;
 
 public class GeneralUserHomeScreen extends AppCompatActivity {
 
+    private GeneralUserHomeScreenBinding binding;
     private ProgressBar progressBar;
     private String TAG = GeneralUserHomeScreen.class.getName();
+    private int requestUpdateCode = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ScreenshotPreventor.preventScreenshot(GeneralUserHomeScreen.this);
 
-        setContentView(R.layout.general_user_home_screen);
+        binding = GeneralUserHomeScreenBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         findViewByIds();
         toolbarSetup();
         hideProgressBar();
+
+        checkForAppLatestTheUpdate();
     }
+
+    private void checkForAppLatestTheUpdate() {
+        new GenAppUpdate(GeneralUserHomeScreen.this, GeneralUserHomeScreen.this).checkForUpdate(requestUpdateCode);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -73,7 +87,7 @@ public class GeneralUserHomeScreen extends AppCompatActivity {
                 return true;
 
             case R.id.contactUsMenu:
-                ContactUs.contactUs(GeneralUserHomeScreen.this);
+                SendMail.toContactUs(GeneralUserHomeScreen.this);
                 return true;
 
             case R.id.reportBugMenu:
@@ -126,5 +140,39 @@ public class GeneralUserHomeScreen extends AppCompatActivity {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        if (requestCode == requestUpdateCode) {
+            switch (resultCode) {
+                case ActivityResult.RESULT_IN_APP_UPDATE_FAILED:
+                    new CustomSnackbar(GeneralUserHomeScreen.this, "Update Failed. Please try again", "", binding.rootContainer) {
+                        @Override
+                        public void onActionClick(View view) {
+
+                        }
+                    }.show();
+                    break;
+                case RESULT_CANCELED:
+                    new CustomSnackbar(GeneralUserHomeScreen.this, "Update Cancelled. Please try again", "", binding.rootContainer) {
+                        @Override
+                        public void onActionClick(View view) {
+
+                        }
+                    }.show();
+                    break;
+                case RESULT_OK:
+                    new CustomSnackbar(GeneralUserHomeScreen.this, "Successfully Updated", "", binding.rootContainer) {
+                        @Override
+                        public void onActionClick(View view) {
+
+                        }
+                    }.show();
+                    break;
+
+            }
+        }
+
+    }
 }
