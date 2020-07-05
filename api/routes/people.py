@@ -36,8 +36,8 @@ def create_people_by_admin():
     except IntegrityError as e:
         return jsonify(Resources.data["error_existing_email"])
 
-    people = People(user.id, people["name"], None, Utility.get_date(people["dob"]), people["profile_pic"],
-                    people["id_front"], people["id_back"], people["father_name"], people["username"], created_by_user_id,
+    people = People(user.id, people["name"].lower(), None, Utility.get_date(people["dob"]), people["profile_pic"],
+                    people["id_front"], people["id_back"], people["father_name"].lower(), people["username"], created_by_user_id,
                     people['contact'], people['pincode'], people['address'], people['email'], people["aadhar_id"])
     try:
         db.session.add(people)
@@ -72,11 +72,12 @@ def get_person_by_username(_username):
 
 @routes.route('/person/fuzzy/', methods=['POST'])
 def person_search():
-    first_name, father_name, dob = request.json["name"], request.json["father_name"], \
+    _first_name, _father_name, _dob = request.json["name"], request.json["father_name"], \
                                    Utility.get_date(request.json["dob"])
-    user_found = db.session.query(People) \
-        .filter(People.first_name.ilike(first_name), People.father_name.ilike(father_name), dob== dob).first()
+    _first_name = _first_name.lower()
+    _father_name = _father_name.lower()
 
+    user_found : People = db.session.query(People).filter_by(dob=_dob, father_name = _father_name, first_name=_first_name).first()
     if user_found is not None:
         return person_schema.jsonify(user_found)
     else:

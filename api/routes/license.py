@@ -34,7 +34,7 @@ def create_license():
 
 
 
-@routes.route('/license/validate/', methods=['POST'])
+@routes.route('/license/validate/', methods=['GET'])
 def validate_license():
     app_code = os.environ["ASTRA_CODE"]
     token = request.environ['HTTP_AUTHORIZATION']

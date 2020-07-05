@@ -32,7 +32,7 @@ def signup():
     if not license_found.license_key.decode() == license_key:
         return jsonify(Resources.data["error_license_incorrect"])
 
-    if not license_found.license_valid(email, os.environ["ASTRA_CODE"], license_key):
+    if not license_found.license_valid(email, os.environ["ASTRA_CODE"], license_key.encode()):
         return jsonify(Resources.data["error_license_invalid"])
 
     user = User(email, Utility.get_hash(password), os.environ["ASTRA_CODE"])
