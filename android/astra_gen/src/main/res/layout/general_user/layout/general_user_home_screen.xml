@@ -10,16 +10,40 @@
 
     <include layout="@layout/progress_bar" />
 
+    <ImageView
+        android:id="@+id/astra_icon"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/create_gen_user_doc_holder_height"
+        android:layout_marginBottom="104dp"
+        android:layout_weight="0.30"
+        android:padding="@dimen/create_gen_user_doc_holder_padding"
+        android:src="@mipmap/app_icon"
+        app:layout_constraintBottom_toTopOf="@+id/button_layout"
+        app:layout_constraintTop_toBottomOf="@+id/include"
+        tools:layout_editor_absoluteX="-16dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_heading_one"
+        app:layout_constraintBottom_toTopOf="@+id/button_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/astra_icon"
+        app:layout_constraintVertical_bias="0.0" />
 
     <RelativeLayout
         android:id="@+id/button_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:padding="@dimen/space"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.8">
+
+
 
         <View
             android:id="@+id/strut"

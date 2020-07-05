@@ -50,6 +50,7 @@ import com.pitavya.astra.astra_common.tools.Errors;
 import com.pitavya.astra.astra_common.tools.Headers;
 import com.pitavya.astra.astra_common.tools.LoginPersistance;
 import com.pitavya.astra.astra_common.tools.ResponseCode;
+import com.pitavya.astra.astra_common.tools.ScreenshotPreventor;
 import com.pitavya.astra.astra_common.tools.Validators;
 
 import org.json.JSONException;
@@ -92,6 +93,7 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ScreenshotPreventor.preventScreenshot(CreateGeneralUser.this);
 
         binding = CreateGeneralUserBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -100,14 +102,18 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
         toolbarSetup();
         //showProgressBar();
         setBundleData();
+        try {
+            //check For Permission
+            if (!CameraUtils.checkPermissions(CreateGeneralUser.this))
+                requestCameraPermission();
 
-        //check For Permission
-        if (!CameraUtils.checkPermissions(CreateGeneralUser.this))
-            requestCameraPermission();
 
+            hideProgressBar();
+            addFocusChangeListeners();
 
-        hideProgressBar();
-        addFocusChangeListeners();
+        } catch (Exception e) {
+            Errors.createErrorLog(e, TAG, CreateGeneralUser.this, true, Thread.currentThread().getStackTrace()[2]);
+        }
 
     }
 
@@ -564,27 +570,33 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
 
     public void saveGeneralUser(View view) {
 
-        if (validateFields()) {
-            //bitmap_front_doc, bitmap_back_doc, bitmap_profile_pic  ,createdById  has the updated value for respective images in view
-            GeneralUser generalUser = new GeneralUser(null, CameraUtils.getBase64StringFromBitmap(bitmap_profile_pic, Constants.HIGH_QUALITY), String.valueOf(binding.userName.getText()), String.valueOf(binding.fullName.getText()),
-                    String.valueOf(binding.fatherName.getText()), String.valueOf(binding.email.getText()), String.valueOf(binding.dob.getText()), String.valueOf(binding.contact.getText()),
-                    String.valueOf(binding.aadhar.getText()), String.valueOf(binding.address.getText()), String.valueOf(binding.pincode.getText()), CameraUtils.getBase64StringFromBitmap(bitmap_front_doc,
-                    Constants.HIGH_QUALITY), CameraUtils.getBase64StringFromBitmap(bitmap_back_doc, Constants.HIGH_QUALITY));
+        try {
 
-            Gson gson = new Gson();
-            String generalUserJson = gson.toJson(generalUser);
-            try {
-                apiRequestToSaveGeneralUser(generalUser, new JSONObject(generalUserJson));
-            } catch (JSONException e) {
-                e.printStackTrace();
+            if (validateFields()) {
+                //bitmap_front_doc, bitmap_back_doc, bitmap_profile_pic  ,createdById  has the updated value for respective images in view
+                GeneralUser generalUser = new GeneralUser(null, CameraUtils.getBase64StringFromBitmap(bitmap_profile_pic, Constants.HIGH_QUALITY), String.valueOf(binding.userName.getText()), String.valueOf(binding.fullName.getText()),
+                        String.valueOf(binding.fatherName.getText()), String.valueOf(binding.email.getText()), String.valueOf(binding.dob.getText()), String.valueOf(binding.contact.getText()),
+                        String.valueOf(binding.aadhar.getText()), String.valueOf(binding.address.getText()), String.valueOf(binding.pincode.getText()), CameraUtils.getBase64StringFromBitmap(bitmap_front_doc,
+                        Constants.HIGH_QUALITY), CameraUtils.getBase64StringFromBitmap(bitmap_back_doc, Constants.HIGH_QUALITY));
+
+                Gson gson = new Gson();
+                String generalUserJson = gson.toJson(generalUser);
+                try {
+                    apiRequestToSaveGeneralUser(generalUser, new JSONObject(generalUserJson));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            } else {
+                new CustomSnackbar(CreateGeneralUser.this, getString(R.string.please_correct_all_the_errors), null, binding.layoutContainer) {
+                    @Override
+                    public void onActionClick(View view) {
+                    }
+                }.show();
             }
 
-        } else {
-            new CustomSnackbar(CreateGeneralUser.this, getString(R.string.please_correct_all_the_errors), null, binding.layoutContainer) {
-                @Override
-                public void onActionClick(View view) {
-                }
-            }.show();
+        } catch (Exception e) {
+            Errors.createErrorLog(e, TAG, CreateGeneralUser.this, true, Thread.currentThread().getStackTrace()[2]);
         }
     }
 
@@ -600,7 +612,7 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
         boolean emailValid = validateEmail();
 
         boolean profilePicValid = Validators.validatePics(
-                bitmap_profile_pic, binding.createGeneralUserProfilePicErrrorMessage, "Pic Cannot be empty");
+                bitmap_profile_pic, binding.createGeneralUserProfilePicErrrorMessage, "Profile pic cannot be empty");
 
 
         boolean docBackValid = Validators.validatePics(
@@ -636,7 +648,7 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
             public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<>();
                 headers.put(Headers.CONTENT_TYPE, Headers.APPLICATION_JSON);
-                headers.put(Headers.AUTHORIZATION, "Basic " + tokenBasedOnUserType);
+                headers.put(Headers.AUTHORIZATION, userType!=Constants.USER_TYPE_GENERAL ? "Basic " + tokenBasedOnUserType : "Bearer null");
                 return headers;
             }
         };
@@ -655,7 +667,7 @@ public class CreateGeneralUser extends AppCompatActivity implements CustomDatePi
 
         if (!response.optString(Constants.TOKEN).equals(Constants.EMPTY_STRING)) {
 
-            LoginPersistance.update(generalUser.getUsername(), generalUser.getToken(), generalUser.getProfile_pic(), generalUser.getId_front(), generalUser.getId_back(), this);
+            LoginPersistance.Iupdate(generalUser.getUsername(), generalUser.getToken(), generalUser.getProfile_pic(), generalUser.getId_front(), generalUser.getId_back(), this);
             startActivity(new Intent(CreateGeneralUser.this, GeneralUserViewQr.class)
                     .putExtra(Constants.USER_NAME, String.valueOf(binding.userName.getText())).putExtra(Constants.USER_TYPE, userType));
             finish();

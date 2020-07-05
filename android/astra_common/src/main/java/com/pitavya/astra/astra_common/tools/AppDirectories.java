@@ -2,10 +2,8 @@ package com.pitavya.astra.astra_common.tools;
 
 import android.os.Environment;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.io.File;
-import java.io.IOException;
 
 public class AppDirectories {
 
@@ -69,16 +67,36 @@ public class AppDirectories {
         return subFolderForImages;
     }
 
-    public static boolean checkForAppLogFileExistence(String TAG, File logFile) throws IOException {
-
-        if (!logFile.exists()) {
+    public static boolean checkForAppLogFileExistence(String TAG, File logFile) {
+        try {
+            if (!logFile.exists()) {
 
                 if (!logFile.createNewFile()) {
                     Log.e(TAG, "Oops! Failed to create " + Constants.APP_LOG_FILE + " file");
                     return false;
                 }
 
+            }
+        } catch (Exception e) {
+            Log.e("Error", "Exception Occured while creating Bug file . Contact Team");
         }
         return true;
     }
+
+    /**
+     * @return On success full check , it will return the base Directory
+     **/
+    public static File checkForAppDirectoryExistence() {
+        // Create the storage directory if it does not exist
+        File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), Constants.APP_DIRECTORY);
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                Log.e(Constants.APP_DIRECTORY, "Oops! Failed to create "
+                        + Constants.APP_DIRECTORY + " directory");
+                return null;
+            }
+        }
+        return mediaStorageDir;
+    }
+
 }

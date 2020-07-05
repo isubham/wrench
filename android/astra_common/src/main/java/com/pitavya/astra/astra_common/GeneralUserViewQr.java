@@ -5,11 +5,13 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -23,6 +25,7 @@ import com.pitavya.astra.astra_common.databinding.GeneralUserViewQrBinding;
 import com.pitavya.astra.astra_common.tools.CameraUtils;
 import com.pitavya.astra.astra_common.tools.Constants;
 import com.pitavya.astra.astra_common.tools.LoginPersistance;
+import com.pitavya.astra.astra_common.tools.ScreenshotPreventor;
 
 
 public class GeneralUserViewQr extends AppCompatActivity {
@@ -34,20 +37,25 @@ public class GeneralUserViewQr extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ScreenshotPreventor.preventScreenshot(GeneralUserViewQr.this);
         binding = GeneralUserViewQrBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         toolbarSetup();
-        if (LoginPersistance.GetProfilePic(this) != null) {
+        //setProfilepic();
+        setBundleData();
+
+    }
+
+    private void setProfilepic() {
+        if (LoginPersistance.GetProfilePic(this) != null && LoginPersistance.GetGeneralUserName(this).equals(userName)) {
             binding.profilePic.setImageBitmap(CameraUtils.getBitmapFromBase64ImageString(LoginPersistance.GetProfilePic(this)));
 
         } else {
             binding.profilePic.setImageBitmap(CameraUtils.getBitmapFromBase64ImageString(LoginPersistance.GetIGeneralProfilePic(this)));
 
         }
-        setBundleData();
-
     }
-
 
     private void setBundleData() {
         if (getIntent().getExtras() != null) {
@@ -55,32 +63,36 @@ public class GeneralUserViewQr extends AppCompatActivity {
             String userName = getIntent().getExtras().getString(Constants.USER_NAME);
             int userType = getIntent().getExtras().getInt(Constants.USER_TYPE);
 
-//            formQrCode(userName);
-
-            if (LoginPersistance.GetGeneralUserName(this) != null) {
-                formQrCode(LoginPersistance.GetGeneralUserName(this));
-                binding.username.setText(LoginPersistance.GetGeneralUserName(this));
+            if (LoginPersistance.GetIGeneralUserName(this) != null && LoginPersistance.GetIGeneralUserName(this).equals(userName)) {
+                formQrCode(LoginPersistance.GetIGeneralUserName(this));
+                binding.username.setText(LoginPersistance.GetIGeneralUserName(this));
+                binding.profilePic.setImageBitmap(CameraUtils.getBitmapFromBase64ImageString(LoginPersistance.GetIGeneralProfilePic(this)));
 
             } else {
-                formQrCode(userName);
+                binding.profilePic.setImageBitmap(CameraUtils.getBitmapFromBase64ImageString(LoginPersistance.GetProfilePic(this)));
                 binding.username.setText(userName);
-            }
-            // assert userType != Constants.USER_TYPE_GENERAL;
+                formQrCode(userName);
 
+            }
             showHideSaveButton(userType);
         }
 
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        LoginPersistance.Iupdate(null, null, null, null, null, GeneralUserViewQr.this);
+    }
 
     private void showHideSaveButton(int userType) {
 
 
         if (userType == Constants.USER_TYPE_ADMIN || LoginPersistance.GetGeneralUserName(this) != null) {
             binding.saveqr.setVisibility(View.GONE);
-//            if (userType == Constants.USER_TYPE_ADMIN) {
-//                binding.usernameCopyBt.setVisibility(View.INVISIBLE);
-//            }
+            if (userType == Constants.USER_TYPE_ADMIN) {
+                binding.usernameCopyBt.setVisibility(View.VISIBLE);
+            }
         }
 
     }
@@ -88,11 +100,15 @@ public class GeneralUserViewQr extends AppCompatActivity {
     public void saveQR(View v) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Are you sure this is your QR You want to SAVE?")
+        builder.setMessage("Is it your QR. Save It ?")
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        LoginPersistance.update(LoginPersistance.GetIGeneralUserName(GeneralUserViewQr.this), LoginPersistance.GetIGeneralUserToken(GeneralUserViewQr.this), LoginPersistance.GetIGeneralProfilePic(GeneralUserViewQr.this), LoginPersistance.GetIdFront(GeneralUserViewQr.this), LoginPersistance.GetIdBack(GeneralUserViewQr.this), GeneralUserViewQr.this);
+                        LoginPersistance.update(LoginPersistance.GetIGeneralUserName(GeneralUserViewQr.this),
+                                LoginPersistance.GetIGeneralUserToken(GeneralUserViewQr.this), LoginPersistance.GetIGeneralProfilePic(GeneralUserViewQr.this),
+                                LoginPersistance.GetIIdFront(GeneralUserViewQr.this), LoginPersistance.GetIIdBack(GeneralUserViewQr.this),
+                                GeneralUserViewQr.this);
+                      //  LoginPersistance.Iupdate(null, null, null, null, null, GeneralUserViewQr.this);
                         binding.saveqr.setVisibility(View.GONE);
                     }
                 })
@@ -132,9 +148,11 @@ public class GeneralUserViewQr extends AppCompatActivity {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void copyText(View v) {
         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("TextView", binding.username.getText().toString());
+        binding.username.setTextColor(getColor(R.color.colorPrimaryDark));
         clipboard.setPrimaryClip(clip);
         Toast.makeText(this, "Copied username: " + binding.username.getText().toString(), Toast.LENGTH_SHORT).show();
     }

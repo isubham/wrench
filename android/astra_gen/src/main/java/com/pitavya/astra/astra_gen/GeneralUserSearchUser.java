@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -30,6 +31,7 @@ import com.pitavya.astra.astra_common.tools.Endpoints;
 import com.pitavya.astra.astra_common.tools.Errors;
 import com.pitavya.astra.astra_common.tools.Headers;
 import com.pitavya.astra.astra_common.tools.LoginPersistance;
+import com.pitavya.astra.astra_common.tools.ScreenshotPreventor;
 import com.pitavya.astra.astra_gen.databinding.GeneralUserSearchUserBinding;
 
 import org.json.JSONException;
@@ -52,6 +54,8 @@ public class GeneralUserSearchUser extends AppCompatActivity implements CustomDa
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ScreenshotPreventor.preventScreenshot(GeneralUserSearchUser.this);
+
         binding = GeneralUserSearchUserBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -113,6 +117,7 @@ public class GeneralUserSearchUser extends AppCompatActivity implements CustomDa
                         @Override
                         public void onResponse(JSONObject response) {
                             hideProgressBar();
+                            Log.e(TAG, response.toString());
 
                             if(response.has(Constants.CODE)) {
                                 populateServerErrors();

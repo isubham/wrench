@@ -2,6 +2,7 @@ package com.pitavya.astra.astra_common.tools;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.view.View;
 import android.widget.TextView;
 
 import com.pitavya.astra.astra_common.R;
@@ -90,12 +91,13 @@ public class Validators {
 
 
     public static boolean validatePics(Bitmap imgResource, TextView errorTextView, String errorImageResource) {
-        if(imgResource == null) {
+        if (imgResource == null) {
+            errorTextView.setVisibility(View.VISIBLE);
             errorTextView.setText(errorImageResource);
             return false;
-        }
-        else{
+        } else {
             errorTextView.setText("");
+            errorTextView.setVisibility(View.GONE);
             return true;
         }
     }

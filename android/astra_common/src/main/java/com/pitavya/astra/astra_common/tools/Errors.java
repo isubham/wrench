@@ -37,12 +37,12 @@ public class Errors {
 
         Log.e(TAG, error.toString());
         if (doLog)
-            logTheErrorInLocalStorageErrorLogFile(error, TAG, context,stackTraceElement);
+            logTheErrorInLocalStorageErrorLogFile(error, TAG, context, stackTraceElement);
 
     }
 
 
-    public static void logTheErrorInLocalStorageErrorLogFile(Exception error, String error_activity_tag, Context context, StackTraceElement stackTraceElement) {
+    private static void logTheErrorInLocalStorageErrorLogFile(Exception error, String error_activity_tag, Context context, StackTraceElement stackTraceElement) {
 
         try {
             File appLogDirectory = AppDirectories.checkForAppLogDirectoryExistence();
@@ -53,7 +53,7 @@ public class Errors {
 
             // read the file //StringBuffer fileContent = readTextFromFile(logFile);
 
-            writeTextInLogFile(context, logFile, error, error_activity_tag,stackTraceElement);
+            writeTextInLogFile(context, logFile, error, error_activity_tag, stackTraceElement);
 
         } catch (Exception e) {
             Log.e(TAG, "Not able to create directory :" + e.toString());
@@ -71,7 +71,7 @@ public class Errors {
                 return;
 
             fileOutputStream = new FileOutputStream(logFile, true);
-            fileOutputStream.write(("\n" + formErrorObject(error, error_activity_tag,stackTraceElement)).getBytes());
+            fileOutputStream.write(("\n" + formErrorObject(error, error_activity_tag, stackTraceElement)).getBytes());
 
         } catch (IOException e) {
             Log.e(TAG, e.toString());
@@ -89,7 +89,7 @@ public class Errors {
     }
 
     private static String formErrorObject(Exception error, String error_activity_tag, StackTraceElement stackTraceElement) {
-        return new CreateErrorLog(error_activity_tag, error.toString(), DateUtils.getCurrentTimestamp().toString() , ErrorStackTrace.toString(stackTraceElement) ).toString();
+        return new CreateErrorLog(error_activity_tag, error.toString(), DateUtils.getCurrentTimestamp().toString(), ErrorStackTrace.toString(stackTraceElement)).toString();
     }
 
     private static StringBuffer readTextFromFile(File logFile) {

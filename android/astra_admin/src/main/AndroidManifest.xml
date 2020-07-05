@@ -3,25 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.pitavya.astra.astra_admin">
 
-
     <application
         android:name="com.pitavya.astra.astra_common.tools.ApplicationController"
         android:allowBackup="true"
-        android:icon="@drawable/ic_coronalogo"
+        android:icon="@mipmap/astraadminlogo"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/ic_coronalogo"
+        android:roundIcon="@mipmap/astraadminlogo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="n">
-        <activity
-            android:name=".adminUser.AdminViewReportDialog"
-            android:theme="@style/ActivityDialog" />
-        <activity
-            android:name=".adminUser.AdminSignIn"
-
-            android:noHistory="true"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity">
+        <activity android:name=".SplashAdmin">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,17 +20,27 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".adminUser.AdminViewReportDialog"
+            android:theme="@style/ActivityDialog" />
+        <activity
+            android:name=".adminUser.AdminSignIn"
+            android:noHistory="true"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
+        <activity
             android:name=".adminUser.AdminVerifyDoc"
             android:theme="@style/ActivityDialog" />
-
         <activity
             android:name=".adminUser.AdminHomeScreen"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
-
         <activity android:name=".adminUser.AdminCreateAccount" />
-
-
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="fullSensor"

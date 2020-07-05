@@ -31,11 +31,14 @@ import com.pitavya.astra.astra_common.CreateGeneralUser;
 import com.pitavya.astra.astra_common.model.GeneralUser;
 import com.pitavya.astra.astra_common.tools.ApplicationController;
 import com.pitavya.astra.astra_common.tools.Constants;
+import com.pitavya.astra.astra_common.tools.ContactUs;
 import com.pitavya.astra.astra_common.tools.CustomSnackbar;
 import com.pitavya.astra.astra_common.tools.Endpoints;
 import com.pitavya.astra.astra_common.tools.Errors;
+import com.pitavya.astra.astra_common.tools.FileChooser;
 import com.pitavya.astra.astra_common.tools.LoginPersistance;
 import com.pitavya.astra.astra_common.tools.PermissionActivity;
+import com.pitavya.astra.astra_common.tools.ScreenshotPreventor;
 
 import org.json.JSONObject;
 
@@ -56,6 +59,7 @@ public class AdminHomeScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ScreenshotPreventor.preventScreenshot(AdminHomeScreen.this);
 
         binding = AdminHomeScreenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -93,6 +97,15 @@ public class AdminHomeScreen extends AppCompatActivity {
 
             case R.id.downloadReport:
                 startActivity(new Intent(this, AdminViewReportDialog.class));
+                return true;
+
+            case R.id.contactUs:
+                ContactUs.contactUs(AdminHomeScreen.this);
+                return true;
+
+            case R.id.reportBug:
+                // ContactUs.reportBug(AdminHomeScreen.this);
+                FileChooser.chooseAndShareBugFile(AdminHomeScreen.this, TAG);
                 return true;
 
             default:
@@ -247,7 +260,7 @@ public class AdminHomeScreen extends AppCompatActivity {
                 .putExtra(Constants.USER_NAME, userName)
                 .putExtra(Constants.NAME, name)
                 .putExtra(Constants.ID, userId)
-                .putExtra(Constants.ACTION_IN_OUT, binding.adminHomeSwitch.isChecked() ? Constants.ACTION_IN : Constants.ACTION_OUT)
+                .putExtra(Constants.ACTION_IN_OUT, binding.adminHomeSwitch.isChecked() ? Constants.ACTION_OUT : Constants.ACTION_IN)
 
         );
     }

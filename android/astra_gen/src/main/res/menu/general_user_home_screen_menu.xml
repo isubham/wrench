@@ -12,6 +12,16 @@
         android:title="@string/RemoveQR"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/contactUsMenu"
+        android:title="Contact Us"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/reportBugMenu"
+        android:title="Report Bug"
+        app:showAsAction="never" />
+
 
 </menu>
 

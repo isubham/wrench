@@ -2,28 +2,25 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.pitavya.astra.astra_gen">
 
-
     <application
         android:name="com.pitavya.astra.astra_common.tools.ApplicationController"
         android:allowBackup="true"
-        android:icon="@mipmap/app_icon"
+        android:icon="@mipmap/astragenlogo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/app_icon"
+        android:roundIcon="@mipmap/astragenlogo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-
-        <activity android:name=".GeneralUserSearchUser"
-            android:parentActivityName=".GeneralUserHomeScreen"
-            />
-        <activity android:name=".GeneralUserHomeScreen">
-
+        <activity android:name=".SplashGen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".GeneralUserSearchUser"
+            android:parentActivityName=".GeneralUserHomeScreen" />
+        <activity android:name=".GeneralUserHomeScreen" />
 
     </application>
 

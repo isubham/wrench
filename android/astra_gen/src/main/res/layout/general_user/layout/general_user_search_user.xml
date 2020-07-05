@@ -9,16 +9,46 @@
 
     <include layout="@layout/progress_bar" />
 
+    <LinearLayout
+        android:id="@+id/logo_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/app_padding">
+
+        <ImageView
+            android:id="@+id/astra_icon"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/create_gen_user_doc_holder_height"
+            android:layout_weight="0.30"
+            android:padding="@dimen/create_gen_user_doc_holder_padding"
+            android:src="@mipmap/app_icon"
+             />
+    </LinearLayout>
+     <LinearLayout
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:orientation="vertical"
+         android:layout_gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_heading_one" />
+    </LinearLayout>
+
+
     <RelativeLayout
         android:id="@+id/body_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:padding="@dimen/app_padding">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true">
+            android:layout_above="@+id/genera_uset_bt_search_user"
+            android:layout_marginBottom="@dimen/app_padding">
 
 
             <com.google.android.material.textfield.TextInputLayout
@@ -73,15 +103,15 @@
             android:id="@+id/genera_uset_bt_search_user"
             style="@style/baseFulWidthElementWithSmallText"
             android:layout_alignParentBottom="true"
+            android:layout_marginBottom="52dp"
             android:background="@color/colorPrimaryDark"
             android:drawableTint="@color/colorWhite"
             android:onClick="searchUser"
             android:padding="5dp"
             android:text="@string/search"
             android:textColor="@color/colorOffWhite"
-            android:textSize="20sp"
 
-            />
+            android:textSize="20sp" />
     </RelativeLayout>
 
 </LinearLayout>

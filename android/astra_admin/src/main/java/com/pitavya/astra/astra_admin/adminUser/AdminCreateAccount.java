@@ -16,11 +16,13 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.pitavya.astra.astra_admin.databinding.AdminCreateAccountBinding;
+import com.pitavya.astra.astra_common.CreateGeneralUser;
 import com.pitavya.astra.astra_common.model.ErrorResponse;
 import com.pitavya.astra.astra_common.model.User;
 import com.pitavya.astra.astra_common.tools.Constants;
 import com.pitavya.astra.astra_common.tools.Errors;
 import com.pitavya.astra.astra_common.tools.LoginPersistance;
+import com.pitavya.astra.astra_common.tools.ScreenshotPreventor;
 import com.pitavya.astra.astra_common.tools.StatefulButton;
 import com.pitavya.astra.astra_common.tools.Validators;
 
@@ -29,9 +31,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
-
-
 
 
 public class AdminCreateAccount extends AppCompatActivity {
@@ -43,6 +42,7 @@ public class AdminCreateAccount extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ScreenshotPreventor.preventScreenshot(AdminCreateAccount.this);
 
         binding = AdminCreateAccountBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
@@ -102,7 +102,7 @@ public class AdminCreateAccount extends AppCompatActivity {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Errors.handleVolleyError(error, "admin_c_account", AdminCreateAccount.this,true);
+                            Errors.handleVolleyError(error, "admin_c_account", AdminCreateAccount.this, true);
                         }
                     }) {
                 @Override

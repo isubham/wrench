@@ -198,6 +198,13 @@
 
     </style>
 
+    <style name="materialButton" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">@dimen/material_layout_padding</item>
+
+    </style>
+
     <style name="baseFullWrapHeadingWithMediumText" parent="ThemeOverlay.AppCompat.Light">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

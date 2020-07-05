@@ -62,26 +62,24 @@ public class Constants {
     public static final String WEAK_INTERNET_CONNECTION = "Weak Internet Connection";
     public static final String INTERNAL_SERVER_ERROR = "Internal Server Error";
     public static final String GPS_IS_OFF = "Location is off";
-    public static String password_confirm_password_dont_match = "Password and Confirm password do not match";
-
-
     //DIRECTORIES
     public static final String APP_LOGS = Constants.APP_DIRECTORY + " Logs";
     public static final String APP_IMAGES = Constants.APP_DIRECTORY + " Images";
     public static final String APP_LOG_FILE = "bug_report_log";
-
     //FILE EXTENSIONS
     public static final String IMAGE_EXTENSION = ".jpg";
     public static final String TXT_EXTENSION = ".txt";
-
     //CREATE ERROR LOGS
     public static final String ERROR_DESCRIPTION = "errorDescription";
     public static final String ERROR_TAG = "tag";
     public static final String ERROR_TIMESTAMP = "timestamp";
     public static final String ERROR_STACKTRACE = "errorStackTrace";
+    public static String password_confirm_password_dont_match = "Password and Confirm password do not match";
 
-
-
-
+    // CONTACT US OR REPORT BUG CONSTANTS
+    public static final String SUBJECT_FOR_BUG = "BugReported";
+    public static final String BUG_DESCRIPTION_HERE_HELP_TEXT = "Describe the bug here";
+    public static final String CONTACT_SUBJECT = "Regarding :";
+    public static final String GREET_TEAM = "Hi Team "+APP_DIRECTORY;
 
 }
