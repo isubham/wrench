@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -16,16 +15,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.pitavya.astra.astra_admin.R;
 import com.pitavya.astra.astra_admin.databinding.AdminCreateAccountBinding;
-import com.pitavya.astra.astra_common.CreateGeneralUser;
-import com.pitavya.astra.astra_common.EulaAgreement;
 import com.pitavya.astra.astra_common.FragmentContainerForPolicies;
-import com.pitavya.astra.astra_common.PrivacyPolicy;
-import com.pitavya.astra.astra_common.databinding.EulaAgreementBinding;
 import com.pitavya.astra.astra_common.model.ErrorResponse;
 import com.pitavya.astra.astra_common.model.User;
 import com.pitavya.astra.astra_common.tools.Constants;
+import com.pitavya.astra.astra_common.tools.CustomSnackbar;
 import com.pitavya.astra.astra_common.tools.Errors;
 import com.pitavya.astra.astra_common.tools.LoginPersistance;
 import com.pitavya.astra.astra_common.tools.ScreenshotPreventor;
@@ -72,6 +67,16 @@ public class AdminCreateAccount extends AppCompatActivity {
         if (!validateFields()) {
             Toast.makeText(this, "Please Correct Errors", Toast.LENGTH_SHORT).show();
         } else {
+
+            if (!binding.acceptanceOfPolicies.isChecked()) {
+                new CustomSnackbar(AdminCreateAccount.this, "Acceptance of policy is required", "OK", binding.adminCreateAccount) {
+                    @Override
+                    public void onActionClick(View view) {
+                        binding.acceptanceOfPolicies.setChecked(true);
+                    }
+                }.showWithAction();
+                return;
+            }
 
             statefulButton.setLoading();
 
@@ -280,7 +285,7 @@ public class AdminCreateAccount extends AppCompatActivity {
     }
 
     public void openPrivacyPolicies(View view) {
-        startActivity(new Intent(this,FragmentContainerForPolicies.class).putExtra(Constants.POLICY_TYPE, Constants.POLICY_PP));
+        startActivity(new Intent(this, FragmentContainerForPolicies.class).putExtra(Constants.POLICY_TYPE, Constants.POLICY_PP));
     }
 }
 
