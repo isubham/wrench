@@ -1,4 +1,4 @@
-package com.pitavya.astra.astra_admin.adminUser;
+package com.pitavya.astra.android.astra_admin.adminUser;
 
 import android.location.Location;
 import android.os.Bundle;
@@ -22,7 +22,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.pitavya.astra.astra_admin.R;
-import com.pitavya.astra.astra_admin.adapters.ViewPagerAdapter;
+import com.pitavya.astra.android.astra_admin.adapters.ViewPagerAdapter;
 import com.pitavya.astra.astra_admin.databinding.AdminVerifyDocBinding;
 import com.pitavya.astra.astra_common.model.CreateLog;
 import com.pitavya.astra.astra_common.tools.CameraUtils;

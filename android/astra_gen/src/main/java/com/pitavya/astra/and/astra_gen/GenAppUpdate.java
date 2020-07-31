@@ -1,4 +1,4 @@
-package com.pitavya.astra.astra_gen;
+package com.pitavya.astra.android.astra_gen;
 
 import android.app.Activity;
 import android.content.Context;

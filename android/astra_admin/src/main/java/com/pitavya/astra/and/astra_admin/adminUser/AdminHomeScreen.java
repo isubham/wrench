@@ -1,4 +1,4 @@
-package com.pitavya.astra.astra_admin.adminUser;
+package com.pitavya.astra.android.astra_admin.adminUser;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -29,7 +29,7 @@ import com.google.android.play.core.install.model.ActivityResult;
 import com.google.gson.Gson;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import com.pitavya.astra.astra_admin.AdminAppUpdate;
+import com.pitavya.astra.android.astra_admin.AdminAppUpdate;
 import com.pitavya.astra.astra_admin.R;
 import com.pitavya.astra.astra_admin.databinding.AdminHomeScreenBinding;
 import com.pitavya.astra.astra_common.CreateGeneralUser;

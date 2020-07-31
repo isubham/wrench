@@ -1,4 +1,4 @@
-package com.pitavya.astra.astra_admin.auth;
+package com.pitavya.astra.android.astra_admin.auth;
 
 import android.app.Activity;
 

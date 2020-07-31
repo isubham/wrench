@@ -1,4 +1,4 @@
-package com.pitavya.astra.astra_admin;
+package com.pitavya.astra.android.astra_admin;
 
 import android.app.Activity;
 import android.content.Context;

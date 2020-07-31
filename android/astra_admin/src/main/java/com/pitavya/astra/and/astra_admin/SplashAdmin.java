@@ -1,4 +1,4 @@
-package com.pitavya.astra.astra_gen;
+package com.pitavya.astra.android.astra_admin;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,19 +6,22 @@ import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.pitavya.astra.android.astra_admin.adminUser.AdminSignIn;
+import com.pitavya.astra.astra_admin.R;
+import com.pitavya.astra.astra_admin.databinding.SplashAdminBinding;
 import com.pitavya.astra.astra_common.anim.TypeWriterEffect;
 import com.pitavya.astra.astra_common.tools.ScreenshotPreventor;
-import com.pitavya.astra.astra_gen.databinding.SplashGenBinding;
 
-public class SplashGen extends AppCompatActivity {
-    private SplashGenBinding binding;
+public class SplashAdmin extends AppCompatActivity {
+
+    private SplashAdminBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ScreenshotPreventor.preventScreenshot(SplashGen.this);
+        ScreenshotPreventor.preventScreenshot(SplashAdmin.this);
 
-        binding = SplashGenBinding.inflate(getLayoutInflater());
+        binding = SplashAdminBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         setVersionForTheApp();
@@ -31,16 +34,22 @@ public class SplashGen extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(SplashGen.this, GeneralUserHomeScreen.class));
+                manageTheRoute();
                 finish();
             }
         }, 3000);
 
     }
 
+    private void manageTheRoute() {
+        startActivity(new Intent(SplashAdmin.this, AdminSignIn.class));
+        finish();
+
+    }
+
     private void setVersionForTheApp() {
 
-        binding.appVersion.setText("Version " + BuildConfig.VERSION_NAME);
+         binding.appVersion.setText("Version " + BuildConfig.VERSION_NAME);
 
     }
 }

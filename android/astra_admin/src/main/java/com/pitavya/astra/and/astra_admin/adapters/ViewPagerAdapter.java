@@ -1,4 +1,4 @@
-package com.pitavya.astra.astra_admin.adapters;
+package com.pitavya.astra.android.astra_admin.adapters;
 
 import android.content.Context;
 import android.view.View;

@@ -1,4 +1,4 @@
-package com.pitavya.astra.astra_gen;
+package com.pitavya.astra.android.astra_gen;
 
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -32,6 +32,7 @@ import com.pitavya.astra.astra_common.tools.Errors;
 import com.pitavya.astra.astra_common.tools.Headers;
 import com.pitavya.astra.astra_common.tools.LoginPersistance;
 import com.pitavya.astra.astra_common.tools.ScreenshotPreventor;
+import com.pitavya.astra.astra_gen.R;
 import com.pitavya.astra.astra_gen.databinding.GeneralUserSearchUserBinding;
 
 import org.json.JSONException;

@@ -1,4 +1,4 @@
-package com.pitavya.astra.astra_admin.adminUser;
+package com.pitavya.astra.android.astra_admin.adminUser;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
